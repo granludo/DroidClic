@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout_root"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+    <EditText 
+    	android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="300dip"
+		android:textColor="#000"/>
+	<Button 
+    	android:id="@+id/ok"
+    	android:text="D'acord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="100dip"
+        android:layout_marginLeft="90dip"/>
+	<Button 
+    	android:id="@+id/cancel"
+    	android:text="Cancel·lar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="100dip"
+        android:layout_marginLeft="90dip"/>
+</LinearLayout>

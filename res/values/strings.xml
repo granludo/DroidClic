@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    
+    <string name="menu_ant">Activitat Anterior</string>
+    <string name="menu_seg">Activitat Següent</string>
+    <string name="menu_solucio">Mostrar Solució</string><string name="menu_in_solucio">Continuar amb el joc</string>
+    <string name="menu_about">Sobre</string><string name="menu_buida">Casella Oculta</string><string name="menu_ajuda">Ajuda</string><string name="menu_inici">Inici</string><string name="menu_sortir">Sortir</string>
+    
+    
+    
+    
+    
+    
+    
+     
+     
+    
+    
+     
+     
+     
+
+    
+<string name="titulo"></string><string name="missatge">-</string><string name="correcte">Correctes = 0</string>
+
+<string name="pos1"></string>
+<string name="pos2"></string>
+<string name="pos3"></string>
+<string name="pos4"></string>
+<string name="pos5"></string>
+<string name="pos6"></string>
+<string name="pos7"></string><string name="pos8"></string>
+
+
+
+
+<string name="pos9"></string>
+<string name="pos10"></string>
+<string name="pos11"></string>
+<string name="pos12"></string>
+<string name="pos13"></string>
+
+<string name="pos14"></string>
+<string name="pos15"></string>
+<string name="pos16"></string>
+<string name="pos17"></string>
+<string name="pos18"></string>
+<string name="pos19"></string>
+<string name="pos20"></string>
+<string name="cas1"></string>
+
+<string name="app_name">JClic</string>
+<string name="inici_URL">Escollir del repositori</string>
+<string name="inici_fitxer">Escollir un fitxer</string>
+<string name="inici_exemple">Iniciar una demostració</string>
+
+
+
+
+
+
+
+<string name="menu_novetats">Novetats</string>
+<string name="menu_cercar">Cercar</string>
+</resources>

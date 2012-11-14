@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:id="@+id/ll"
+	android:gravity="center_horizontal|center_vertical">
+    
+	<LinearLayout 
+		android:orientation="horizontal"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" >
+        <TextView 
+        	android:padding="15dip"
+			android:maxLines="1"
+        	android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:id="@+id/titulo"/>
+    </LinearLayout>
+    
+	<TableLayout
+		android:id="@+id/tl"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content">
+	    
+	    <TableRow android:id="@+id/tr1">
+            
+	        <TextView
+	            android:id="@+id/pos1"
+	            android:layout_margin="2dip"/>
+	        <TextView
+	            android:id="@+id/pos2"
+	            android:layout_margin="2dip"/>
+	      	<TextView
+	            android:id="@+id/pos3"
+	            android:layout_margin="2dip"/>
+	    	<TextView
+	            android:id="@+id/pos4"
+	            android:layout_margin="2dip"/>
+	    </TableRow>
+	</TableLayout>
+	
+	<TableLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content">
+	    
+	    <TableRow  android:id="@+id/tr2">
+			<TextView
+	            android:id="@+id/pos5"
+	            android:layout_margin="2dip"/>
+			<TextView
+	            android:id="@+id/pos6"
+	            android:layout_margin="2dip"/>
+			<TextView
+	            android:id="@+id/pos7"
+	            android:layout_margin="2dip"/>
+			<TextView
+	            android:id="@+id/pos8"
+	            android:layout_margin="2dip"/>
+	    </TableRow>
+	</TableLayout>
+	
+	<TableLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content">  
+	    
+	    <TableRow android:id="@+id/tr3">	    
+			<TextView
+	            android:id="@+id/pos9"
+	            android:layout_margin="2dip"/>
+			<TextView
+	            android:id="@+id/pos10"
+	            android:layout_margin="2dip"/>
+			<TextView
+	            android:id="@+id/pos11"
+	            android:layout_margin="2dip"/>
+			<TextView
+	            android:id="@+id/pos12"
+	            android:layout_margin="2dip"/>
+	    </TableRow>
+	</TableLayout>
+	
+	<TableLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"> 
+	      
+	    <TableRow android:id="@+id/tr4">		    
+			<TextView
+	            android:id="@+id/pos13"
+	            android:layout_margin="2dip"/>
+			<TextView
+	            android:id="@+id/pos14"
+	            android:layout_margin="2dip"/>
+			<TextView
+	            android:id="@+id/pos15"
+	            android:layout_margin="2dip"/>
+			<TextView
+	            android:id="@+id/pos16"
+	            android:layout_margin="2dip"/>
+	    </TableRow>
+	</TableLayout>
+	
+	<TableLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content">
+	     
+	    <TableRow android:id="@+id/tr5">		    
+			<TextView
+	            android:id="@+id/pos17"
+	            android:layout_margin="2dip"/>
+			<TextView
+	            android:id="@+id/pos18"
+	            android:layout_margin="2dip"/>
+			<TextView
+	            android:id="@+id/pos19"
+	            android:layout_margin="2dip"/>
+			<TextView
+	            android:id="@+id/pos20"
+	            android:layout_margin="2dip"/>
+	    </TableRow>	            
+	</TableLayout>
+	
+	<LinearLayout android:orientation="horizontal"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" >
+	    
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLength="35"
+            android:id="@+id/missatge"
+            android:textStyle="bold"/>
+	</LinearLayout>
+	
+	<LinearLayout android:orientation="horizontal"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" >
+	    
+		<TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLength="35"
+            android:id="@+id/correcte"
+            android:textStyle="bold"/>
+	</LinearLayout>
+	
+	<LinearLayout android:orientation="horizontal"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" >
+
+		<TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLength="35"
+            android:id="@+id/cas1"
+            android:textStyle="bold"/>
+    </LinearLayout>
+</LinearLayout>
