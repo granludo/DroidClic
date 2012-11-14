@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" 
+    android:id="@+id/ll"
+	android:gravity="center_horizontal|center_vertical">
+    
+	<LinearLayout 
+		android:orientation="horizontal"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" >
+        <TextView 
+        	android:padding="15dip"
+			android:maxLines="1"
+        	android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:id="@+id/titulo"/>
+    </LinearLayout>
+    
+    <ScrollView
+		android:id="@+id/sv"
+	    android:layout_width="wrap_content"
+	   	android:layout_height="wrap_content"
+	   	android:minWidth="400dip"
+	   	android:minHeight="20dip">
+	   	
+<!-- Taula entrada -->	
+		<LinearLayout
+		    android:orientation="vertical"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content">
+		    
+			<TableLayout
+				android:id="@+id/tl"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">
+			    
+			    <TableRow android:id="@+id/tr1">
+		            
+			        <TextView
+			            android:id="@+id/pos1"
+			            android:layout_margin="2dip"/>
+			        <TextView
+			            android:id="@+id/pos2"
+			            android:layout_margin="2dip"/>
+			      	<TextView
+			            android:id="@+id/pos3"
+			            android:layout_margin="2dip"/>
+			    	<TextView
+			            android:id="@+id/pos4"
+			            android:layout_margin="2dip"/>
+			    </TableRow>
+			</TableLayout>
+			
+			<TableLayout
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">
+			    
+			    <TableRow  android:id="@+id/tr2">
+					<TextView
+			            android:id="@+id/pos5"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos6"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos7"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos8"
+			            android:layout_margin="2dip"/>
+			    </TableRow>
+			</TableLayout>
+			
+			<TableLayout
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">  
+			    
+			    <TableRow android:id="@+id/tr3">	    
+					<TextView
+			            android:id="@+id/pos9"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos10"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos11"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos12"
+			            android:layout_margin="2dip"/>
+			    </TableRow>
+			</TableLayout>
+			
+			<TableLayout
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"> 
+			      
+			    <TableRow android:id="@+id/tr4">		    
+					<TextView
+			            android:id="@+id/pos13"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos14"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos15"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos16"
+			            android:layout_margin="2dip"/>
+			    </TableRow>
+			</TableLayout>
+			
+			<TableLayout
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">
+			     
+			    <TableRow android:id="@+id/tr5">		    
+					<TextView
+			            android:id="@+id/pos17"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos18"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos19"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos20"
+			            android:layout_margin="2dip"/>
+			    </TableRow>	            
+			</TableLayout>
+			
+			<TableLayout
+				android:orientation="horizontal"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">
+			    
+			    <TableRow
+			    	android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
+					
+			    	<ImageView 
+						android:id="@+id/bdown"
+						android:src="@drawable/icon_down"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content" 
+						android:layout_marginLeft="15dip"  
+						android:layout_marginTop="10dip"
+						android:layout_marginRight="10dip"/>
+			    
+			    	<LinearLayout android:orientation="vertical"
+					    android:layout_width="wrap_content"
+					    android:layout_height="wrap_content">
+					    
+				        <TextView android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:maxLength="32"
+				            android:width="218dip"
+				            android:maxLines="1"
+				            android:gravity="center_horizontal"
+				            android:id="@+id/missatge"
+				            android:textStyle="bold"/>
+					    
+						<TextView android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:maxLength="32"
+				            android:width="218dip"
+				            android:maxLines="1"
+				            android:gravity="center_horizontal"
+				            android:id="@+id/correcte"
+				            android:textStyle="bold"/>
+				            
+						<TextView android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:maxLength="32"
+				            android:width="218dip"
+				            android:maxLines="1"
+				            android:gravity="center_horizontal"
+				            android:id="@+id/cas1"
+				            android:textStyle="bold"/>
+				    </LinearLayout>
+			    </TableRow>
+			</TableLayout>
+			
+<!-- Taula resultat -->
+			<TableLayout
+				android:id="@+id/tl2"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">
+			    
+			    <TableRow android:id="@+id/tr6">
+		            
+			        <TextView
+			            android:id="@+id/pos21"
+			            android:layout_margin="2dip"/>
+			        <TextView
+			            android:id="@+id/pos22"
+			            android:layout_margin="2dip"/>
+			      	<TextView
+			            android:id="@+id/pos23"
+			            android:layout_margin="2dip"/>
+			    	<TextView
+			            android:id="@+id/pos24"
+			            android:layout_margin="2dip"/>
+			    </TableRow>
+			</TableLayout>
+			
+			<TableLayout
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">
+			    
+			    <TableRow  android:id="@+id/tr7">
+					<TextView
+			            android:id="@+id/pos25"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos26"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos27"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos28"
+			            android:layout_margin="2dip"/>
+			    </TableRow>
+			</TableLayout>
+			
+			<TableLayout
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">  
+			    
+			    <TableRow android:id="@+id/tr8">	    
+					<TextView
+			            android:id="@+id/pos29"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos30"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos31"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos32"
+			            android:layout_margin="2dip"/>
+			    </TableRow>
+			</TableLayout>
+			
+			<TableLayout
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"> 
+			      
+			    <TableRow android:id="@+id/tr9">		    
+					<TextView
+			            android:id="@+id/pos33"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos34"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos35"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos36"
+			            android:layout_margin="2dip"/>
+			    </TableRow>
+			</TableLayout>
+			
+			<TableLayout
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">
+			     
+			    <TableRow android:id="@+id/tr10">		    
+					<TextView
+			            android:id="@+id/pos37"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos38"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos39"
+			            android:layout_margin="2dip"/>
+					<TextView
+			            android:id="@+id/pos40"
+			            android:layout_margin="2dip"/>
+			    </TableRow>	            
+			</TableLayout>
+			
+			<TableLayout
+				android:orientation="horizontal"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content">
+			    
+			    <TableRow
+			    	android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
+					
+			    	<ImageView 
+						android:id="@+id/bup"
+						android:src="@drawable/icon_up"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content" 
+						android:layout_marginLeft="15dip"  
+						android:layout_marginTop="10dip"
+						android:layout_marginRight="10dip"/>
+			    
+			    	<LinearLayout android:orientation="vertical"
+					    android:layout_width="wrap_content"
+					    android:layout_height="wrap_content">
+					    
+				        <TextView android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:maxLength="32"
+				            android:width="218dip"
+				            android:maxLines="1"
+				            android:gravity="center_horizontal"
+				            android:id="@+id/missatge2"
+				            android:textStyle="bold"/>
+					    
+						<TextView android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:maxLength="32"
+				            android:width="218dip"
+				            android:maxLines="1"
+				            android:gravity="center_horizontal"
+				            android:id="@+id/correcte2"
+				            android:textStyle="bold"/>
+				            
+						<TextView android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:maxLength="32"
+				            android:width="218dip"
+				            android:maxLines="1"
+				            android:gravity="center_horizontal"
+				            android:id="@+id/cas2"
+				            android:textStyle="bold"/>
+				    </LinearLayout>
+			    </TableRow>
+			</TableLayout>
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>

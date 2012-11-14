@@ -1,0 +1,1865 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<JClicProject name="balenes" version="0.1.3">
+ <settings>
+  <title>Balenes i altres animals marins</title>
+  <revision description="Creació del paquet d'activitats en Clic 3.0" date="7/17/08" />
+  <revision description="Conversió de Clic3 a JClic" date="7/17/08">
+   <author name="Equip Clic" mail="clic@xtec.net" organization="Àrea TIC - Departament d'Educació" />
+  </revision>
+  <author name="Lidia Viñals Serra" mail="lvinals@xtec.cat" />
+  <organization name="CEIP Abat Oliba" mail="a8026521@centres.xtec.es" url="http://www.xtec.es/centres/a8026521" city="Sant Hipòlit de Voltregà" state="Catalunya" />
+  <language>català</language>
+  <description>
+   <p>Projecte d'activitats complementàries al projecte sobre balenes i animals marins que es realitza a l'escola. El projecte està format per trencaclosques, associacions, jocs de memòria, sopes de lletres, mots encreuats i activitats de text. Les activitats estan dividides en dues parts:</p>
+   <p>&lt;ul&gt;</p>
+   <p>&lt;li&gt;Mamífers aquàtics</p>
+   <p>&lt;li&gt;Animals marins</p>
+   <p>&lt;/ul&gt;</p>
+  </description>
+  <descriptors area="Ciències experimentals" level="Infantil (3-6), Primària (6-12)" />
+  <skin file="@blue.xml" />
+ </settings>
+ <sequence>
+  <item id="start" name="presentació">
+   <jump action="STOP" id="back" />
+  </item>
+  <item name="credits" />
+  <item id="menú" name="menú">
+   <jump action="RETURN" id="forward" />
+  </item>
+  <item id="mamífers aquàtics" name="memoria">
+   <jump action="STOP" id="back" />
+  </item>
+  <item name="puzle balena" />
+  <item name="puzle dofins" />
+  <item name="puzle  lleons marins" />
+  <item name="puzle morsa" />
+  <item name="puzle manati" />
+  <item name="puzle contingut contextual" />
+  <item name="sopa lletres mamífers aquatics" />
+  <item name="associar nom imatge" />
+  <item name="escoltar sons" />
+  <item name="asso animal alimentació" />
+  <item name="on viuen" />
+  <item name="completa" />
+  <item name="quin animal no mamifer" />
+  <item name="Escriu el nom del animal mamífer">
+   <jump action="RETURN" id="forward" />
+  </item>
+  <item id="animals marins" name="memoria 2">
+   <jump action="STOP" id="back" />
+  </item>
+  <item name="puzle tauró" />
+  <item name="puzle rap" />
+  <item name="puzle manta" />
+  <item name="sopa lletres animals marins" />
+  <item name="associar nom  imatge 2" />
+  <item name="asso animal alimentació 2" />
+  <item name="quins són d´aigua salada" />
+  <item name="escriu el nom animal marí" />
+  <item name="endevinalla" />
+  <item name="escoltar sons 2">
+   <jump action="RETURN" id="forward" />
+  </item>
+ </sequence>
+ <activities>
+  <activity class="@text.WrittenAnswer" name="Escriu el nom del animal mamífer" code="">
+   <description>
+    <p>escolta i escriu</p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="20" bold="true" />
+      <color foreground="0x003366" background="0xCCFFFF" />
+     </style>
+     <p> Escolta i escriu el nom del animal, després clica enter</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Genial</p>
+    </cell>
+   </messages>
+   <settings margin="2" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="3" cellWidth="192.0" cellHeight="187.0" border="true" id="primary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="22" bold="true" />
+     <color foreground="0x000066" background="0xFFFFFF" inactive="0xCCCCFF" alternative="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell id="0" image="bal1140.jpg">
+     <media type="PLAY_AUDIO" level="1" file="balena.mp3" />
+    </cell>
+    <cell id="1" image="delfin9 140.jpg">
+     <media type="PLAY_AUDIO" level="1" file="dofí.mp3" />
+    </cell>
+    <cell id="2" image="lleó mari foca140.jpg">
+     <media type="PLAY_AUDIO" level="1" file="veu foca.mp3" />
+    </cell>
+    <cell id="3" image="morse2140.jpg">
+     <media type="PLAY_AUDIO" level="1" file="morsa.mp3" />
+    </cell>
+    <cell id="4" image="manati140.jpg">
+     <media type="PLAY_AUDIO" level="1" file="manatí.mp3" />
+    </cell>
+    <cell id="5" image="orca.jpg">
+     <media type="PLAY_AUDIO" level="1" file="veu orca.mp3" />
+    </cell>
+   </cells>
+   <cells rows="2" cols="3" cellWidth="178.0" cellHeight="101.0" border="true" id="answers">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <color background="0xCCFFFF" inactive="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell>
+     <p>BALENA</p>
+    </cell>
+    <cell>
+     <p>DOFÍ</p>
+    </cell>
+    <cell>
+     <p>FOCA</p>
+    </cell>
+    <cell>
+     <p>MORSA</p>
+    </cell>
+    <cell>
+     <p>MANATÍ</p>
+    </cell>
+    <cell>
+     <p>ORCA</p>
+    </cell>
+   </cells>
+   <scramble times="31" primary="false" />
+   <layout position="AUB" />
+  </activity>
+  <activity class="@associations.ComplexAssociation" name="asso animal alimentació" code="">
+   <description>
+    <p>Relaciona cada animal amb el tipus d´alimentació </p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="24" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Què mengen?</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="24" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Fantàstic</p>
+    </cell>
+   </messages>
+   <settings margin="2" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="3" cellWidth="141.0" cellHeight="143.0" border="false" id="primary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="28" bold="true" />
+     <color foreground="0x000066" background="0xFFFFFF" alternative="0xFFFFFF" />
+     <gradient source="0x66FFFF" dest="0xFFFFFF" angle="246" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell id="0" image="morses 140 Morses-1.jpg" />
+    <cell id="0" image="cries orca140.jpg" />
+    <cell id="2" image="mantí menjant.jpg" />
+    <cell id="1" image="1balena40.jpg" />
+    <cell id="0" image="dolphins1 140.jpg" />
+    <cell id="0" image="fotos-focas140.jpg" />
+   </cells>
+   <cells rows="3" cols="1" cellWidth="265.0" cellHeight="94.0" border="false" id="secondary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial Black" size="20" />
+     <color foreground="0x000066" background="0xCCFFFF" inactive="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="1" rows="3" />
+    <cell imgAlign="right,middle" avoidOverlapping="true" image="banc peces140.jpg">
+     <style>
+      <font family="Arial" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>PEIXOS</p>
+    </cell>
+    <cell imgAlign="right,middle" avoidOverlapping="true" image="plancton140.jpg">
+     <style>
+      <font family="Arial" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>PLÀNCTON</p>
+    </cell>
+    <cell imgAlign="right,middle" avoidOverlapping="true" image="lilialiopsis plant140.jpg">
+     <style>
+      <font family="Arial" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>PLANTES</p>
+    </cell>
+   </cells>
+   <cells rows="2" cols="3" cellWidth="50.0" cellHeight="30.0" border="true" id="solvedPrimary">
+    <style />
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell image="banc peces140.jpg">
+     <p>MORSA PEIXOS</p>
+    </cell>
+    <cell image="banc peces140.jpg">
+     <p>ORCA PEIXOS</p>
+    </cell>
+    <cell image="lilialiopsis plant140.jpg">
+     <style>
+      <font family="Arial" size="22" bold="true" />
+      <color alternative="0x99FFFF" />
+     </style>
+     <p>MANATÍ PLANTES</p>
+    </cell>
+    <cell image="plancton140.jpg">
+     <p>BALENA PLANCTÓN</p>
+    </cell>
+    <cell image="banc peces140.jpg">
+     <p>DOFÍ PEIXOS</p>
+    </cell>
+    <cell image="banc peces140.jpg">
+     <p>FOCA PEIXOS</p>
+    </cell>
+   </cells>
+   <scramble times="31" primary="true" secondary="true" />
+   <layout position="AB" />
+  </activity>
+  <activity class="@associations.ComplexAssociation" name="asso animal alimentació 2" code="">
+   <description>
+    <p>Relaciona cada animal amb la seva alimentació</p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Què mengen?</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Fantàstic</p>
+    </cell>
+   </messages>
+   <settings margin="2" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="3" cellWidth="146.0" cellHeight="151.0" border="false" id="primary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="26" bold="true" />
+     <color foreground="0x000066" background="0xFFFFFF" alternative="0xFFFFFF" />
+     <gradient source="0x66FFFF" dest="0xFFFFFF" angle="246" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell id="1" image="Copia de _mantaray o.jpg" />
+    <cell id="1" image="Copia de peix lluna O.jpg" />
+    <cell id="0" image="Copia de rap  o.jpg" />
+    <cell id="0" image="Copia de tonyina o.jpg" />
+    <cell id="2" image="Copia de tortugues o.jpg" />
+    <cell id="3" image="Copia de tauró o.jpg" />
+   </cells>
+   <cells rows="4" cols="1" cellWidth="211.0" cellHeight="77.0" border="false" id="secondary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="18" bold="true" />
+     <color foreground="0x000066" background="0xCCFFFF" inactive="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="1" rows="4" />
+    <cell txtAlign="left,middle" imgAlign="right,middle" avoidOverlapping="true" image="banc peces140.jpg">
+     <p>PEIXOS i CALAMARS</p>
+    </cell>
+    <cell txtAlign="left,middle" imgAlign="right,middle" image="plancton140.jpg">
+     <p>PLÀNCTON</p>
+    </cell>
+    <cell txtAlign="left,middle" imgAlign="right,middle" avoidOverlapping="true" image="medusa.jpg">
+     <p>MEDUSES,CRANCS i  </p>
+     <p>MOL·LUSCS</p>
+    </cell>
+    <cell txtAlign="left,middle" imgAlign="right,middle" avoidOverlapping="true" image="dolphins1 140.jpg">
+     <p>FOQUES, PEIXOS  i </p>
+     <p>DOFINS</p>
+    </cell>
+   </cells>
+   <cells rows="2" cols="3" cellWidth="50.0" cellHeight="30.0" border="true" id="solvedPrimary">
+    <style />
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell image="plancton140.jpg">
+     <p>MANTA </p>
+     <p>PLANCTÓN</p>
+    </cell>
+    <cell image="plancton140.jpg">
+     <p>PEIX LLUNA PLANCTÓN</p>
+    </cell>
+    <cell image="banc peces140.jpg">
+     <p>RAP</p>
+     <p> PEIXOS</p>
+    </cell>
+    <cell image="banc peces140.jpg">
+     <p>TONYINES </p>
+     <p>PEIXOS</p>
+    </cell>
+    <cell image="medusa.jpg">
+     <p>TORTUGA </p>
+     <p>MEDUSES</p>
+     <p>CRANCSI MOL.LUSC</p>
+    </cell>
+    <cell image="dolphins1 140.jpg">
+     <p>TAURÓ </p>
+     <p>FOQUES,PEIXOS I DOFINS</p>
+    </cell>
+   </cells>
+   <scramble times="31" primary="true" secondary="true" />
+   <layout position="AB" />
+  </activity>
+  <activity class="@associations.SimpleAssociation" name="associar nom  imatge 2" code="">
+   <description>
+    <p>relaciona nom amb la imatge</p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Relaciona el nom amb la imatge</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Molt bé</p>
+    </cell>
+   </messages>
+   <settings margin="2" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="3" cellWidth="106.0" cellHeight="107.0" border="true" id="primary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="28" bold="true" />
+     <color foreground="0x000066" background="0xFFFFFF" alternative="0xCCFFFF" />
+     <gradient source="0x66FFFF" dest="0xFFFFFF" angle="246" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell>
+     <p>MANTA</p>
+    </cell>
+    <cell>
+     <p>TAURÓ</p>
+    </cell>
+    <cell>
+     <p>PEIX LLUNA</p>
+    </cell>
+    <cell>
+     <p>RAP</p>
+    </cell>
+    <cell>
+     <p>TORTUGA</p>
+    </cell>
+    <cell>
+     <p>TONYINA</p>
+    </cell>
+   </cells>
+   <cells rows="2" cols="3" cellWidth="106.0" cellHeight="107.0" border="true" id="secondary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <color background="0xCCFFFF" inactive="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell image="Copia de _mantaray o.jpg" />
+    <cell image="Copia de tauró o.jpg" />
+    <cell image="Copia de peix lluna O.jpg" />
+    <cell image="Copia de rap  o.jpg" />
+    <cell image="Copia de tortugues o.jpg" />
+    <cell image="Copia de tonyina o.jpg" />
+   </cells>
+   <scramble times="31" primary="true" secondary="true" />
+   <layout position="AB" />
+  </activity>
+  <activity class="@associations.SimpleAssociation" name="associar nom imatge" code="">
+   <description>
+    <p>relaciona nom  imatge</p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Relaciona el nom amb la imatge</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Molt bé</p>
+    </cell>
+   </messages>
+   <settings margin="2" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="3" cellWidth="106.0" cellHeight="107.0" border="true" id="primary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="28" bold="true" />
+     <color foreground="0x000066" background="0xFFFFFF" alternative="0xCCFFFF" />
+     <gradient source="0x66FFFF" dest="0xFFFFFF" angle="246" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell>
+     <p>BALENA</p>
+    </cell>
+    <cell>
+     <p>MANATÍ</p>
+    </cell>
+    <cell>
+     <p>MORSA</p>
+    </cell>
+    <cell>
+     <p>LLEÓ MARÍ</p>
+    </cell>
+    <cell>
+     <p>DOFÍ</p>
+    </cell>
+    <cell>
+     <p>ORCA</p>
+    </cell>
+   </cells>
+   <cells rows="2" cols="3" cellWidth="106.0" cellHeight="107.0" border="true" id="secondary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <color background="0xCCFFFF" inactive="0xCCFFFF" alternative="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell id="0" image="bal1140.jpg">
+     <style>
+      <font family="Arial Black" size="24" />
+      <color foreground="0xFFFFFF" background="0xCCFFFF" inactive="0xCCFFFF" />
+     </style>
+    </cell>
+    <cell id="1" image="manati140.jpg">
+     <style>
+      <font family="Arial Black" size="24" />
+      <color foreground="0xFFFFFF" background="0xCCFFFF" inactive="0xCCFFFF" />
+     </style>
+    </cell>
+    <cell id="2" image="morse2140.jpg">
+     <style>
+      <font family="Arial Black" size="24" bold="true" />
+      <color foreground="0xFFFFFF" background="0xCCFFFF" inactive="0xCCFFFF" />
+     </style>
+    </cell>
+    <cell id="3" image="lleons marin 2 140.jpg">
+     <style>
+      <font family="Arial Black" size="24" bold="true" />
+      <color foreground="0xFFFFFF" background="0xCCFFFF" inactive="0xCCFFFF" />
+     </style>
+    </cell>
+    <cell id="4" image="delfin9 140.jpg">
+     <style>
+      <font family="Massallera" size="22" />
+      <color foreground="0x000066" background="0xCCFFFF" inactive="0xCCFFFF" />
+     </style>
+    </cell>
+    <cell id="5" image="orca.jpg">
+     <style>
+      <font family="Arial Black" size="24" bold="true" />
+      <color foreground="0xFFFFFF" background="0xCCFFFF" inactive="0xCCFFFF" />
+     </style>
+    </cell>
+   </cells>
+   <scramble times="31" primary="true" secondary="true" />
+   <layout position="AB" />
+  </activity>
+  <activity class="@text.FillInBlanks" name="completa" code="">
+   <description>
+    <p>Escriu el nom de l´animal</p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Tria la paraula adequada</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Perfecte</p>
+    </cell>
+   </messages>
+   <settings margin="2" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true">
+     <size width="531" height="381" />
+    </window>
+   </settings>
+   <document>
+    <style name="default" bold="false" background="0xFFFFFF" family="Massallera" foreground="0x000066" italic="false" tabWidth="12" size="24" />
+    <style name="target" base="default" foreground="0x0000FF" target="true" />
+    <style name="targetError" base="target" foreground="0xFF0000" />
+    <section>
+     <p background="0xFFFFFF" family="Arial">
+      <text family="Massallera" size="24">Balena  </text>
+     </p>
+     <p background="0xFFFFFF" family="Arial" />
+     <p background="0xFFFFFF" family="Arial">
+      <text family="Massallera" size="24">Si se't menja una </text>
+      <target>
+       <answer>balena,</answer>
+       <optionList>
+        <option>espelma</option>
+        <option>balena,</option>
+        <option>pamel.la</option>
+       </optionList>
+       <text>balena,</text>
+      </target>
+     </p>
+     <p background="0xFFFFFF" family="Arial" />
+     <p background="0xFFFFFF" family="Arial">
+      <text family="Massallera" size="24">no et morissis pas de por:</text>
+     </p>
+     <p background="0xFFFFFF" family="Arial" />
+     <p background="0xFFFFFF" family="Arial">
+      <text family="Massallera" size="24">quan tindrà la </text>
+      <target>
+       <answer>panxa</answer>
+       <optionList>
+        <option>enganxa</option>
+        <option>panxa</option>
+        <option>xanxa</option>
+       </optionList>
+       <text>panxa</text>
+      </target>
+      <text family="Massallera" size="24"> plena,</text>
+     </p>
+     <p background="0xFFFFFF" family="Arial" />
+     <p background="0xFFFFFF" family="Arial">
+      <text family="Massallera" size="24">sortiràs pel </text>
+      <target>
+       <answer>sortidor</answer>
+       <optionList>
+        <option>corredor</option>
+        <option>sortidor</option>
+        <option>penjador</option>
+       </optionList>
+       <text>sortidor</text>
+      </target>
+      <text family="Massallera" size="24">!</text>
+     </p>
+     <p background="0xFFFFFF" family="Arial" />
+     <p background="0xFFFFFF" family="Arial">
+      <text family="Massallera" size="24"> </text>
+     </p>
+     <p background="0xFFFFFF" family="Arial">
+      <text family="Massallera" size="24"> </text>
+     </p>
+     <p background="0xFFFFFF" family="Arial" />
+    </section>
+   </document>
+   <evaluator class="@ComplexEvaluator" />
+  </activity>
+  <activity class="@panels.InformationScreen" name="credits" code="">
+   <description />
+   <messages>
+    <cell type="initial">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <color background="0xCCFFFF" />
+     </style>
+    </cell>
+    <cell type="final">
+     <style>
+      <color background="0xCCFFFF" />
+     </style>
+    </cell>
+    <cell type="finalError">
+     <style>
+      <color background="0xCCFFFF" />
+     </style>
+    </cell>
+   </messages>
+   <settings margin="0" report="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xC0C0C0" transparent="true" border="false" />
+   </settings>
+   <cells rows="1" cols="1" border="true" image="credits.gif">
+    <style>
+     <font family="Arial" size="17" bold="true" />
+     <color inactive="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="1" rows="1" />
+   </cells>
+  </activity>
+  <activity class="@text.FillInBlanks" name="endevinalla" code="">
+   <description />
+   <messages>
+    <cell type="initial">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Endevinalla</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Molt bé</p>
+    </cell>
+   </messages>
+   <settings margin="2" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true">
+     <size width="665" height="463" />
+    </window>
+   </settings>
+   <document>
+    <style name="default" bold="false" background="0xFFFFFF" family="Massallera" foreground="0x000066" italic="false" tabWidth="12" size="24" />
+    <style name="target" base="default" foreground="0x0000FF" target="true" />
+    <style name="targetError" base="target" foreground="0xFF0000" />
+    <section>
+     <p Alignment="1" family="Massallera" background="0xFFFFFF" foreground="0x000066" size="24" />
+     <p Alignment="1" family="Massallera" background="0xFFFFFF" foreground="0x000066" size="24">
+      <text family="Massallera" size="24">Tinc ales i no sóc avió</text>
+     </p>
+     <p Alignment="1" family="Massallera" background="0xFFFFFF" foreground="0x000066" size="24">
+      <text family="Massallera" size="24">navego per l'aigua i no sóc vaixell</text>
+     </p>
+     <p Alignment="1" family="Massallera" background="0xFFFFFF" foreground="0x000066" size="24">
+      <text family="Massallera" size="24">faig bombolles i no de sabó</text>
+     </p>
+     <p Alignment="1" family="Massallera" background="0xFFFFFF" foreground="0x000066" size="24">
+      <text family="Massallera" size="24">encara no saps qui sóc?</text>
+     </p>
+     <p Alignment="1" family="Massallera" background="0xFFFFFF" foreground="0x000066" size="24">
+      <text family="Massallera" size="24">          </text>
+     </p>
+     <p Alignment="1" family="Massallera" background="0xFFFFFF" foreground="0x000066" size="24">
+      <text family="Massallera" size="24">Sóc</text>
+      <target>
+       <answer> </answer>
+       <answer>el peix</answer>
+       <optionList>
+        <option>el peix</option>
+        <option>la gavina</option>
+        <option>el pop</option>
+       </optionList>
+       <text> </text>
+      </target>
+     </p>
+    </section>
+   </document>
+   <evaluator class="@ComplexEvaluator" />
+  </activity>
+  <activity class="@panels.Explore" name="escoltar sons" code="">
+   <description>
+    <p>escolta els sons dels animals </p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <font family="Massallera" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Clica  i escolta el seu so</p>
+    </cell>
+   </messages>
+   <settings margin="2" report="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="2" cellWidth="155.0" cellHeight="120.0" border="true" id="primary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="22" bold="true" />
+     <color foreground="0x000066" background="0xFFFFFF" alternative="0xCCFFFF" />
+     <gradient source="0x66FFFF" dest="0xFFFFFF" angle="246" />
+    </style>
+    <shaper class="@Rectangular" cols="2" rows="2" />
+    <cell id="0">
+     <p>ONADES DEL MAR</p>
+    </cell>
+    <cell id="1">
+     <p>ORCA</p>
+    </cell>
+    <cell id="2">
+     <p>FOCA</p>
+    </cell>
+    <cell id="3">
+     <p>BALENES</p>
+    </cell>
+   </cells>
+   <cells rows="4" cols="1" cellWidth="133.0" cellHeight="128.0" border="true" id="secondary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <color background="0xCCFFFF" inactive="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="1" rows="4" />
+    <cell image="PLATJA 140.png">
+     <media type="PLAY_AUDIO" level="1" file="onades.mp3" />
+    </cell>
+    <cell image="orca.jpg">
+     <media type="PLAY_AUDIO" level="1" file="orca.mp3" />
+    </cell>
+    <cell image="lleó mari foca140.jpg">
+     <media type="PLAY_AUDIO" level="1" file="foca.mp3" />
+    </cell>
+    <cell image="balenes 140.jpg">
+     <media type="PLAY_AUDIO" level="1" file="so balenes.mp3" />
+    </cell>
+   </cells>
+   <scramble times="31" primary="false" />
+   <layout position="AB" />
+  </activity>
+  <activity class="@panels.Explore" name="escoltar sons 2" code="">
+   <description />
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Arial" size="17" bold="true" />
+      <color background="0xCCFFFF" />
+     </style>
+    </cell>
+   </messages>
+   <settings margin="2" report="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="1" cols="1" cellWidth="184.0" cellHeight="196.0" border="true" id="primary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="22" bold="true" />
+     <color foreground="0x000066" background="0xFFFFFF" alternative="0xCCFFFF" />
+     <gradient source="0x66FFFF" dest="0xFFFFFF" angle="246" />
+    </style>
+    <shaper class="@Rectangular" cols="1" rows="1" />
+    <cell id="0">
+     <p>CLICA AQUÍ  I ESCOLTA</p>
+    </cell>
+   </cells>
+   <cells rows="1" cols="1" cellWidth="188.0" cellHeight="192.0" border="true" id="secondary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <color background="0xCCFFFF" inactive="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="1" rows="1" />
+    <cell image="ppeix.jpg">
+     <style>
+      <color background="0xCCFFFF" />
+     </style>
+     <media type="PLAY_AUDIO" level="1" file="peix peixet.mp3" />
+    </cell>
+   </cells>
+   <scramble times="31" primary="false" />
+   <layout position="AB" />
+  </activity>
+  <activity class="@text.WrittenAnswer" name="escriu el nom animal marí" code="">
+   <description />
+   <messages>
+    <cell type="initial">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Escriu el nom del animal, després clica enter</p>
+    </cell>
+    <cell type="final">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Molt bé</p>
+    </cell>
+   </messages>
+   <settings margin="2" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="3" cellWidth="186.0" cellHeight="189.0" border="true" id="primary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="22" bold="true" />
+     <color foreground="0x000066" background="0xFFFFFF" inactive="0xCCCCFF" alternative="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell id="0" image="Copia de _mantaray o.jpg" />
+    <cell id="1" image="Copia de peix lluna O.jpg" />
+    <cell id="2" image="Copia de rap  o.jpg" />
+    <cell id="3" image="Copia de tauró o.jpg" />
+    <cell id="4" image="Copia de tonyina o.jpg" />
+    <cell id="5" image="Copia de tortugues o.jpg" />
+   </cells>
+   <cells rows="2" cols="3" cellWidth="123.0" cellHeight="76.0" border="true" id="answers">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <color background="0xCCFFFF" inactive="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell>
+     <p>MANTA</p>
+    </cell>
+    <cell>
+     <p>PEIX LLUNA</p>
+    </cell>
+    <cell>
+     <p>RAP</p>
+    </cell>
+    <cell>
+     <p>TAURÓ</p>
+    </cell>
+    <cell>
+     <p>TONYINA</p>
+    </cell>
+    <cell>
+     <p>TORTUGA</p>
+    </cell>
+   </cells>
+   <scramble times="31" primary="false" />
+   <layout position="AUB" />
+  </activity>
+  <activity class="@memory.MemoryGame" name="memoria" code="">
+   <description />
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Busca la seva parella</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Fantàstic les has trobat</p>
+    </cell>
+   </messages>
+   <settings margin="2" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xC0C0C0" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="3" cellWidth="112.0" cellHeight="110.0" border="true" id="primary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="20" bold="true" />
+     <color foreground="0x000066" background="0xCCFFFF" inactive="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell image="manati140.jpg" />
+    <cell image="morse2140.jpg" />
+    <cell image="fotos-focas140.jpg" />
+    <cell image="bal1140.jpg" />
+    <cell image="cries orca140.jpg" />
+    <cell image="dolphins 140.jpg" />
+   </cells>
+   <cells rows="2" cols="4" cellWidth="50.0" cellHeight="30.0" border="true" id="secondary">
+    <style />
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell image="manati140.jpg" />
+    <cell image="morse2140.jpg" />
+    <cell image="fotos-focas140.jpg" />
+    <cell image="bal1140.jpg" />
+    <cell image="cries orca140.jpg" />
+    <cell image="dolphins 140.jpg" />
+   </cells>
+   <scramble times="31" />
+   <layout position="AB" />
+  </activity>
+  <activity class="@memory.MemoryGame" name="memoria 2" code="">
+   <description />
+   <messages>
+    <cell type="initial">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Busca la parella</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Fantàstic, les has trobat</p>
+    </cell>
+   </messages>
+   <settings margin="2" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xC0C0C0" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="3" cellWidth="112.0" cellHeight="110.0" border="true" id="primary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="20" bold="true" />
+     <color foreground="0x000066" background="0xCCFFFF" inactive="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell image="Copia de _mantaray o.jpg" />
+    <cell image="Copia de peix lluna O.jpg" />
+    <cell image="Copia de rap  o.jpg" />
+    <cell image="Copia de tauró o.jpg" />
+    <cell image="Copia de tonyina o.jpg" />
+    <cell image="Copia de tortugues o.jpg" />
+   </cells>
+   <scramble times="31" />
+   <layout position="AB" />
+  </activity>
+  <activity class="@panels.InformationScreen" name="menú" code="">
+   <description>
+    <p>Tria l´activitat que  vols fer  mamífers aquatics o animals marins</p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <font family="Arial" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>TRIA UNA ACTIVITAT</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Arial" size="17" bold="true" />
+      <color background="0xCCFFFF" />
+     </style>
+    </cell>
+   </messages>
+   <settings margin="0" report="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="1" cols="2" border="true" image="CORALL.jpg">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial Black" size="22" bold="true" />
+     <color foreground="0xFFFFFF" background="0xFFFFFF" alternative="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="2" rows="1" />
+    <cell txtAlign="middle,bottom" imgAlign="middle,bottom">
+     <style>
+      <font family="Arial Black" size="24" bold="true" />
+      <color foreground="0xFFFFFF" background="0xCCFFFF" />
+     </style>
+     <media type="RUN_CLIC_PACKAGE" level="1" file="mamífers aquàtics" />
+     <p>MAMÍFERS AQUÀTICS</p>
+    </cell>
+    <cell txtAlign="middle,bottom">
+     <style>
+      <font family="Arial Black" size="24" bold="true" />
+      <color foreground="0xFFFFFF" background="0xCCFFFF" />
+     </style>
+     <media type="RUN_CLIC_PACKAGE" level="1" file="animals marins" />
+     <p>ANIMALS MARINS</p>
+    </cell>
+   </cells>
+  </activity>
+  <activity class="@associations.ComplexAssociation" name="on viuen" code="">
+   <description>
+    <p>Relacionarcada animal amb el lloc on viuen</p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>On viuen?</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Molt bé</p>
+    </cell>
+   </messages>
+   <settings margin="2" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="3" cellWidth="103.0" cellHeight="103.0" border="true" id="primary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="28" bold="true" />
+     <color foreground="0x000066" background="0xFFFFFF" alternative="0xCCFFFF" />
+     <gradient source="0x66FFFF" dest="0xFFFFFF" angle="246" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell id="0" image="dolphins 140.jpg" />
+    <cell id="2" image="1balena40.jpg" />
+    <cell id="2" image="lleons marin 2 140.jpg" />
+    <cell id="2" image="fotos-focas140.jpg" />
+    <cell id="1" image="manati 3 140.jpg" />
+    <cell id="2" image="morses 140 Morses-1.jpg" />
+   </cells>
+   <cells rows="3" cols="1" cellWidth="263.0" cellHeight="69.0" border="true" id="secondary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial Black" size="18" />
+     <color foreground="0x000066" background="0xCCFFFF" inactive="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="1" rows="3" />
+    <cell imgAlign="right,middle" avoidOverlapping="true" image="Tres-rios140.jpg">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <font family="Arial" size="16" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>MARS,</p>
+     <p>OCEANS I  </p>
+     <p>ALGÚN RIU</p>
+    </cell>
+    <cell imgAlign="right,middle" avoidOverlapping="true" image="PLATJA 140.png">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <font family="Arial" size="18" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>RIUS I A LA COSTA</p>
+    </cell>
+    <cell imgAlign="right,middle" avoidOverlapping="true" image="mar 140.jpg">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <font family="Arial" size="18" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>MARS I OCEANS</p>
+    </cell>
+   </cells>
+   <scramble times="31" primary="true" secondary="true" />
+   <layout position="AB" />
+  </activity>
+  <activity class="@panels.InformationScreen" name="presentació" code="">
+   <description>
+    <p>portada del treball</p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <color background="0xCCFFFF" />
+     </style>
+     <media type="PLAY_AUDIO" level="1" file="TÍTOL.mp3" />
+    </cell>
+    <cell type="final">
+     <style>
+      <color background="0xCCFFFF" />
+     </style>
+    </cell>
+    <cell type="finalError">
+     <style />
+    </cell>
+   </messages>
+   <settings margin="3" report="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="false" actions="false" score="false" />
+    </container>
+    <window bgColor="0xC0C0C0" transparent="true" border="false" />
+    <skin file="@blue.xml" />
+   </settings>
+   <cells rows="1" cols="1" border="true" image="porta xcf.gif">
+    <style />
+    <shaper class="@Rectangular" cols="1" rows="1" />
+    <cell border="false">
+     <style margin="10" borderStroke="0.7" markerStroke="5.0">
+      <font family="Comic Sans MS" size="18" bold="true" />
+      <color foreground="0x000066" background="0x99FFFF" />
+     </style>
+     <p>		</p>
+    </cell>
+   </cells>
+  </activity>
+  <activity class="@puzzles.HolePuzzle" name="puzle  lleons marins" code="">
+   <description>
+    <p>Desplaça les peces  de manera contigüa  a la casella buida per tal de confegir el  trencaclosques </p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="18" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Quin animal és?</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="18" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Molt bé, lleons marins o foques</p>
+    </cell>
+    <cell type="finalError">
+     <style>
+      <font family="Massallera" size="18" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+    </cell>
+   </messages>
+   <settings margin="0" maxTime="50" countDownTime="false" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+    <skin file="@blue.xml" />
+   </settings>
+   <cells rows="2" cols="3" border="true" image="lleons marin 2.jpg">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Massallera" size="18" bold="true" />
+     <color background="0xFFFFFF" alternative="0xCCFFFF" />
+     <gradient source="0x0066FF" dest="0xFFFFFF" angle="120" cycles="2" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+   </cells>
+   <scramble times="31" />
+   <layout position="AB" />
+  </activity>
+  <activity class="@puzzles.DoublePuzzle" name="puzle balena" code="">
+   <description>
+    <p>Ordena les peces del trencaclosques  a l´altra graella</p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="18" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Quin animal  marí és?</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="18" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Molt bé, és un balena</p>
+    </cell>
+    <cell type="finalError">
+     <style>
+      <font family="Massallera" size="18" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+    </cell>
+   </messages>
+   <settings margin="2" dragCells="true" maxTime="40" countDownTime="false" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+    <skin file="@blue.xml" />
+   </settings>
+   <cells rows="3" cols="3" border="true" image="bal1.jpg">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Massallera" size="18" bold="true" />
+     <color background="0xCCFFFF" inactive="0xCCFFFF" alternative="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="3" />
+   </cells>
+   <scramble times="31" />
+   <layout position="BA" />
+  </activity>
+  <activity class="@puzzles.ExchangePuzzle" name="puzle contingut contextual" code="">
+   <description>
+    <p>ordenar la frase </p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="18" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Ordena  aquesta frase i llegeix</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="18" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Correcte!</p>
+    </cell>
+    <cell type="finalError">
+     <style>
+      <font family="Massallera" size="18" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Torna-ho ha provar </p>
+    </cell>
+   </messages>
+   <settings margin="2" dragCells="true" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <image name="delfin9.jpg" tiled="true" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="4" cellWidth="210.0" cellHeight="151.0" border="true">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="26" bold="true" />
+     <color foreground="0x000066" background="0xFFFFFF" alternative="0xCCFFFF" />
+     <gradient source="0x66FFFF" dest="0xFFFFFF" angle="246" />
+    </style>
+    <shaper class="@Rectangular" cols="6" rows="1" />
+    <cell>
+     <p>ELS</p>
+    </cell>
+    <cell>
+     <p>MAMÍFERS AQUÀTICS</p>
+    </cell>
+    <cell>
+     <p>VIUEN I</p>
+    </cell>
+    <cell>
+     <p>ES REPRODUEIXEN</p>
+    </cell>
+    <cell>
+     <p>ALS</p>
+    </cell>
+    <cell>
+     <p>MARS I OCEANS.</p>
+    </cell>
+    <cell/>
+    <cell/>
+   </cells>
+   <scramble times="31" />
+  </activity>
+  <activity class="@puzzles.ExchangePuzzle" name="puzle dofins" code="">
+   <description>
+    <p>Reconstruir el trencaclosques </p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Quin animal marí és?</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Molt bé, són dofins.</p>
+    </cell>
+    <cell type="finalError">
+     <style>
+      <color background="0xCCFFFF" />
+     </style>
+    </cell>
+   </messages>
+   <settings margin="2" dragCells="true" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xC0C0C0" transparent="true" border="true" />
+    <skin file="@blue.xml" />
+   </settings>
+   <cells rows="2" cols="3" border="true" image="dolphins1.jpg">
+    <style>
+     <font family="Arial" size="17" bold="true" />
+     <color inactive="0x3399FF" />
+    </style>
+    <shaper class="@ClassicJigSaw" cols="3" rows="2" />
+   </cells>
+   <scramble times="31" />
+  </activity>
+  <activity class="@puzzles.DoublePuzzle" name="puzle manati" code="">
+   <description>
+    <p>Ordena les peces del trencaclosques a l´altra graella</p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Quin animal marí és?</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p> Molt bé, és un manatí</p>
+    </cell>
+   </messages>
+   <settings margin="2" dragCells="true" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="3" border="true" image="manati.jpg">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <color background="0xCCCCCC" inactive="0xCCFFFF" alternative="0xCCFFFF" />
+    </style>
+    <shaper class="@ClassicJigSaw" cols="3" rows="2" />
+   </cells>
+   <scramble times="31" />
+   <layout position="AB" />
+  </activity>
+  <activity class="@puzzles.HolePuzzle" name="puzle manta" code="">
+   <description>
+    <p>Resol el trencaclosques</p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x330066" background="0xCCFFFF" />
+     </style>
+     <p>Quin animal és?</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x330066" background="0xCCFFFF" />
+     </style>
+     <p>Molt bé, és una manta</p>
+    </cell>
+   </messages>
+   <settings margin="2" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="3" border="true" image="mantaray o.jpg">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <color background="0xCCCCCC" inactive="0xCCFFFF" alternative="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+   </cells>
+   <scramble times="31" />
+   <layout position="AB" />
+  </activity>
+  <activity class="@puzzles.DoublePuzzle" name="puzle morsa" code="">
+   <description>
+    <p>Ordena les peces  del trencaclosques a l áltre graella</p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Quin animal marí és?</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Molt bé, és una morsa</p>
+    </cell>
+    <cell type="finalError">
+     <style>
+      <color background="0xCCFFFF" />
+     </style>
+    </cell>
+   </messages>
+   <settings margin="2" dragCells="true" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+    <skin file="@blue.xml" />
+   </settings>
+   <cells rows="2" cols="3" border="true" image="morse2.jpg">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <color background="0xCCCCCC" inactive="0xCCFFFF" alternative="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+   </cells>
+   <scramble times="31" />
+   <layout position="AUB" />
+  </activity>
+  <activity class="@puzzles.ExchangePuzzle" name="puzle rap" code="">
+   <description>
+    <p>Resol el trencaclosques </p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x330066" background="0xCCFFFF" />
+     </style>
+     <p>Quin animal és?</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x330066" background="0xCCFFFF" />
+     </style>
+     <p>Molt bé, és un rap</p>
+    </cell>
+   </messages>
+   <settings margin="2" dragCells="true" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="3" border="true" image="rap  o.jpg">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <color background="0xCCCCCC" inactive="0xCCFFFF" alternative="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+   </cells>
+   <scramble times="31" />
+  </activity>
+  <activity class="@puzzles.DoublePuzzle" name="puzle tauró" code="">
+   <description>
+    <p>Resol el trencaclosques</p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x330066" background="0xCCFFFF" />
+     </style>
+     <p>Quin animal és?</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x330066" background="0xCCFFFF" />
+     </style>
+     <p>Molt bé, un tauró</p>
+    </cell>
+   </messages>
+   <settings margin="2" dragCells="true" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="3" border="true" image="tauro.jpg">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <color background="0xCCCCCC" inactive="0xCCFFFF" alternative="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+   </cells>
+   <scramble times="31" />
+   <layout position="AB" />
+  </activity>
+  <activity class="@panels.Identify" name="quin animal no mamifer" code="">
+   <description>
+    <p>Identificar quinn animal no és un mamífer</p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Quins animals  són mamífers?</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Molt bé, tots menys el peix</p>
+    </cell>
+   </messages>
+   <settings margin="2" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="3" cellWidth="219.0" cellHeight="191.0" border="true" id="primary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="18" bold="true" />
+     <color foreground="0x000066" background="0x000099" alternative="0x000099" />
+     <gradient source="0x66FFFF" dest="0xFFFFFF" angle="246" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell id="1" image="famili manatí 140.gif" />
+    <cell id="1" image="dolphins1 140.jpg" />
+    <cell id="1" image="140.jpg" />
+    <cell id="1" image="fotos-focas140.jpg" />
+    <cell id="1" image="balenes 140.jpg" />
+    <cell id="0" image="-payaso140.jpg" />
+   </cells>
+   <cells rows="2" cols="3" cellWidth="50.0" cellHeight="30.0" border="true" id="solvedPrimary">
+    <style />
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell txtAlign="middle,top" imgAlign="middle,bottom" avoidOverlapping="true" image="famili manatí 140.gif">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <font family="Arial" size="18" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>EL MANATÍ ÉS MAMÍFER</p>
+    </cell>
+    <cell txtAlign="middle,top" imgAlign="middle,bottom" avoidOverlapping="true" image="delfin9 140.jpg">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <font family="Arial" size="18" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>ELS DOFINS SÓN MAMÍFERS</p>
+    </cell>
+    <cell txtAlign="middle,top" imgAlign="middle,bottom" avoidOverlapping="true" image="140.jpg">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <font family="Arial" size="18" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>LES MORSES SÓN MAMÍFERS</p>
+    </cell>
+    <cell txtAlign="middle,top" imgAlign="middle,bottom" avoidOverlapping="true" image="fotos-focas140.jpg">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <font family="Arial" size="16" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>LES FOQUES O LLEONS MARINS  SÓN MAMÍFERS</p>
+    </cell>
+    <cell txtAlign="middle,top" imgAlign="middle,bottom" image="balenes 140.jpg">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <font family="Arial" size="18" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>LES BALENES SÓN MAMÍFERS</p>
+    </cell>
+    <cell />
+   </cells>
+   <scramble times="31" primary="true" />
+  </activity>
+  <activity class="@panels.Identify" name="quins són d´aigua salada" code="">
+   <description />
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Quins animals són d´aigua salada?</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="22" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Molt bé, tots menys la truita</p>
+    </cell>
+   </messages>
+   <settings margin="2" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <cells rows="2" cols="3" cellWidth="219.0" cellHeight="191.0" border="true" id="primary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="18" bold="true" />
+     <color foreground="0x000066" background="0x000099" alternative="0x000099" />
+     <gradient source="0x66FFFF" dest="0xFFFFFF" angle="246" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell id="1" txtAlign="middle,bottom" image="Copia de tonyina o.jpg" />
+    <cell id="0" image="truita.jpg" />
+    <cell id="1" txtAlign="middle,bottom" image="Copia de rap  o.jpg" />
+    <cell id="1" txtAlign="middle,bottom" image="Copia de tauró o.jpg" />
+    <cell id="1" txtAlign="middle,bottom" image="Copia de _mantaray o.jpg" />
+    <cell id="1" txtAlign="middle,bottom" image="Copia de peix lluna O.jpg" />
+   </cells>
+   <cells rows="2" cols="3" cellWidth="50.0" cellHeight="30.0" border="true" id="solvedPrimary">
+    <style />
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell txtAlign="middle,bottom" image="Copia de tonyina o.jpg">
+     <p>LA TONYINA</p>
+    </cell>
+    <cell image="truita.jpg" />
+    <cell txtAlign="middle,bottom" image="Copia de rap  o.jpg">
+     <p>EL RAP</p>
+    </cell>
+    <cell txtAlign="middle,bottom" image="Copia de tauró o.jpg">
+     <p>EL TAURÓ</p>
+    </cell>
+    <cell txtAlign="middle,bottom" image="Copia de _mantaray o.jpg">
+     <p>LA MANTA</p>
+    </cell>
+    <cell txtAlign="middle,bottom" image="Copia de peix lluna O.jpg">
+     <p>PEIX LLUNA</p>
+    </cell>
+   </cells>
+   <scramble times="31" primary="true" />
+  </activity>
+  <activity class="@textGrid.WordSearch" name="sopa lletres animals marins" code="">
+   <description>
+    <p>Troba el nom de set animals marins </p>
+   </description>
+   <messages>
+    <cell type="initial">
+     <style>
+      <font family="Arial" size="16" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>TROBA ELS ANIMALS : MANTA-TONYINA-RAP-TAURÓ-PEIX LLUNA -TORTUGA</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Fantàstic</p>
+    </cell>
+    <cell type="finalError">
+     <style>
+      <font family="Massallera" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Has tritat massa, torna-ho ha intentar</p>
+    </cell>
+   </messages>
+   <settings margin="2" maxTime="40" countDownTime="false" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <textGrid rows="9" columns="8" cellWidth="54.0" cellHeight="44.0" border="false">
+    <style>
+     <font family="Arial" size="17" bold="true" />
+     <color foreground="0x000066" background="0xFFFFFF" />
+    </style>
+    <text>
+     <row>TORTUGA**</row>
+     <row>O**A****M</row>
+     <row>N**U****A</row>
+     <row>Y**R**R*N</row>
+     <row>I**O**A*T</row>
+     <row>N*****P*A</row>
+     <row>A********</row>
+     <row>PEIXLLUNA</row>
+    </text>
+   </textGrid>
+   <clues>
+    <clue id="0">MANTA</clue>
+    <clue id="1">TORTUGA</clue>
+    <clue id="2">RAP</clue>
+    <clue id="3">TONYINA</clue>
+    <clue id="4">TAURO</clue>
+    <clue id="5">PEIXLLUNA</clue>
+   </clues>
+   <cells rows="3" cols="2" cellWidth="117.0" cellHeight="117.0" border="false" id="secondary">
+    <style />
+    <shaper class="@Rectangular" cols="2" rows="3" />
+    <cell image="Copia de _mantaray o.jpg" />
+    <cell image="Copia de tortugues o.jpg" />
+    <cell image="Copia de rap  o.jpg" />
+    <cell image="Copia de tonyina o.jpg" />
+    <cell image="Copia de tauró o.jpg" />
+    <cell image="Copia de peix lluna O.jpg" />
+   </cells>
+   <layout position="AB" />
+  </activity>
+  <activity class="@textGrid.WordSearch" name="sopa lletres mamífers aquatics" code="">
+   <description />
+   <messages>
+    <cell type="initial">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <font family="Arial" size="16" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>BUSCA:BALENA ,MORSA,FOCA,ORCA,DOFÍ MANATÍ</p>
+    </cell>
+    <cell type="final">
+     <style>
+      <font family="Massallera" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Fantàstic</p>
+    </cell>
+    <cell type="finalError">
+     <style>
+      <font family="Massallera" size="20" bold="true" />
+      <color foreground="0x000066" background="0xCCFFFF" />
+     </style>
+     <p>Has tritat massa, torna-ho ha intentar</p>
+    </cell>
+   </messages>
+   <settings margin="2" maxTime="30" countDownTime="false" report="true" reportActions="false">
+    <container bgColor="0xCCFFFF">
+     <gradient source="0xCCFFFF" dest="0x99CCFF" angle="116" cycles="3" />
+     <counters time="true" actions="true" score="true" />
+    </container>
+    <window bgColor="0xCCCCCC" transparent="true" border="true" />
+   </settings>
+   <textGrid rows="9" columns="8" cellWidth="43.0" cellHeight="36.0" border="false">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="17" bold="true" />
+     <color foreground="0x000066" background="0xFFFFFF" inactive="0xCCCCFF" alternative="0xCCCCFF" />
+    </style>
+    <text>
+     <row>*M******B</row>
+     <row>DOFÍ****A</row>
+     <row>*R*FOCA*L</row>
+     <row>*S******E</row>
+     <row>MANATÍ**N</row>
+     <row>********A</row>
+     <row>*********</row>
+     <row>**ORCA***</row>
+    </text>
+   </textGrid>
+   <clues>
+    <clue id="0">DOFÍ</clue>
+    <clue id="1">MORSA</clue>
+    <clue id="2">FOCA</clue>
+    <clue id="3">MANATÍ</clue>
+    <clue id="4">ORCA</clue>
+    <clue id="5">BALENA</clue>
+   </clues>
+   <cells rows="2" cols="3" cellWidth="90.0" cellHeight="85.0" border="false" id="secondary">
+    <style borderStroke="0.7" markerStroke="5.0">
+     <font family="Arial" size="17" bold="true" />
+     <color background="0xCCFFFF" alternative="0xCCFFFF" />
+    </style>
+    <shaper class="@Rectangular" cols="3" rows="2" />
+    <cell image="delfin9 140.jpg">
+     <style>
+      <font family="Massallera" size="20" />
+      <color foreground="0x000066" background="0xCCFFFF" inactive="0xCCFFFF" />
+     </style>
+    </cell>
+    <cell image="morse2140.jpg">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <color background="0xCCFFFF" />
+     </style>
+    </cell>
+    <cell image="lleó mari foca140.jpg">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <color background="0xCCFFFF" />
+     </style>
+    </cell>
+    <cell image="manati140.jpg" />
+    <cell image="orca.jpg" />
+    <cell image="bal1140.jpg">
+     <style borderStroke="0.7" markerStroke="5.0">
+      <color background="0xCCFFFF" />
+     </style>
+    </cell>
+   </cells>
+   <layout position="AB" />
+  </activity>
+ </activities>
+ <mediaBag>
+  <media name="credits.gif" file="credits.gif" />
+  <media name="famili manatí 140.gif" file="famili manatí 140.gif" />
+  <media name="porta xcf.gif" file="porta xcf.gif" />
+  <media name="-payaso140.jpg" file="-payaso140.jpg" />
+  <media name="140.jpg" file="140.jpg" />
+  <media name="1balena40.jpg" file="1balena40.jpg" />
+  <media name="mantaray o.jpg" file="mantaray o.jpg" />
+  <media name="bal1.jpg" file="bal1.jpg" />
+  <media name="bal1140.jpg" file="bal1140.jpg" />
+  <media name="balenes 140.jpg" file="balenes 140.jpg" />
+  <media name="banc peces140.jpg" file="banc peces140.jpg" />
+  <media name="Copia de _mantaray o.jpg" file="Copia de _mantaray o.jpg" />
+  <media name="Copia de peix lluna O.jpg" file="Copia de peix lluna O.jpg" />
+  <media name="Copia de rap  o.jpg" file="Copia de rap  o.jpg" />
+  <media name="Copia de tauró o.jpg" file="Copia de tauró o.jpg" />
+  <media name="Copia de tonyina o.jpg" file="Copia de tonyina o.jpg" />
+  <media name="Copia de tortugues o.jpg" file="Copia de tortugues o.jpg" />
+  <media name="CORALL.jpg" file="CORALL.jpg" />
+  <media name="cries orca140.jpg" file="cries orca140.jpg" />
+  <media name="delfin9 140.jpg" file="delfin9 140.jpg" />
+  <media name="delfin9.jpg" file="delfin9.jpg" />
+  <media name="dolphins 140.jpg" file="dolphins 140.jpg" />
+  <media name="dolphins1 140.jpg" file="dolphins1 140.jpg" />
+  <media name="dolphins1.jpg" file="dolphins1.jpg" />
+  <media name="fotos-focas140.jpg" file="fotos-focas140.jpg" />
+  <media name="lilialiopsis plant140.jpg" file="lilialiopsis plant140.jpg" />
+  <media name="lleons marin 2 140.jpg" file="lleons marin 2 140.jpg" />
+  <media name="lleons marin 2.jpg" file="lleons marin 2.jpg" />
+  <media name="lleó mari foca140.jpg" file="lleó mari foca140.jpg" />
+  <media name="manati 3 140.jpg" file="manati 3 140.jpg" />
+  <media name="manati140.jpg" file="manati140.jpg" />
+  <media name="mantí menjant.jpg" file="mantí menjant.jpg" />
+  <media name="mar 140.jpg" file="mar 140.jpg" />
+  <media name="medusa.jpg" file="medusa.jpg" />
+  <media name="morse2.jpg" file="morse2.jpg" />
+  <media name="morse2140.jpg" file="morse2140.jpg" />
+  <media name="morses 140 Morses-1.jpg" file="morses 140 Morses-1.jpg" />
+  <media name="orca.jpg" file="orca.jpg" />
+  <media name="manati.jpg" file="manati.jpg" />
+  <media name="plancton140.jpg" file="plancton140.jpg" />
+  <media name="ppeix.jpg" file="ppeix.jpg" />
+  <media name="rap  o.jpg" file="rap  o.jpg" />
+  <media name="tauro.jpg" file="tauro.jpg" />
+  <media name="Tres-rios140.jpg" file="Tres-rios140.jpg" />
+  <media name="truita.jpg" file="truita.jpg" />
+  <media name="balena.mp3" file="balena.mp3" />
+  <media name="dofí.mp3" file="dofí.mp3" />
+  <media name="foca.mp3" file="foca.mp3" />
+  <media name="manatí.mp3" file="manatí.mp3" />
+  <media name="morsa.mp3" file="morsa.mp3" />
+  <media name="onades.mp3" file="onades.mp3" />
+  <media name="orca.mp3" file="orca.mp3" />
+  <media name="peix peixet.mp3" file="peix peixet.mp3" />
+  <media name="so balenes.mp3" file="so balenes.mp3" />
+  <media name="TÍTOL.mp3" file="TÍTOL.mp3" />
+  <media name="veu foca.mp3" file="veu foca.mp3" />
+  <media name="veu orca.mp3" file="veu orca.mp3" />
+  <media name="PLATJA 140.png" file="PLATJA 140.png" />
+ </mediaBag>
+</JClicProject>
+
