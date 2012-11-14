@@ -6,6 +6,7 @@
 
 package pfc.Parser;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class Dades {
@@ -29,6 +30,7 @@ public class Dades {
 	private boolean timeCutdown=false;
 	private boolean intentCutdown= false;
 	private int intentMax= 0;
+	private ArrayList<String> images;
 	
 	public void Dades(){
 	}
@@ -176,5 +178,15 @@ public class Dades {
 	public int getIntentMax() {
 		return this.intentMax;
 	}
-	//*****************************
+	//*******************************************
+
+	public ArrayList<String> getImages() {
+		return images;
+	}
+
+	public void setImages(ArrayList<String> images) {
+		this.images = images;
+	}
+	
+	//********************************************
 }

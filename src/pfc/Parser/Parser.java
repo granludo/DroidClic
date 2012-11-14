@@ -9,6 +9,7 @@ package pfc.Parser;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -71,12 +72,12 @@ public class Parser {
 				//recorrem les activitats del projecte jclic
 				Element activity = (Element)itr.next();
 				if(activity.getAttributeValue(XMLConstants.CLASS) != null &&
-						(activity.getAttributeValue(XMLConstants.CLASS).
-						equalsIgnoreCase(XMLConstants.EXCHANGEPUZZ) || 
-						activity.getAttributeValue(XMLConstants.CLASS).
-						equalsIgnoreCase(XMLConstants.HOLEPUZZ) ||
-						activity.getAttributeValue(XMLConstants.CLASS).
-						equalsIgnoreCase(XMLConstants.DOUBLEPUZZ))){
+						(activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.EXCHANGEPUZZ)
+								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.HOLEPUZZ)
+								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.DOUBLEPUZZ)
+								//|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.MEMORYGAME) //descomentar per provar
+								//|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.SIMPLEASSOC) 
+								)) {
 					
 					Dades dades = new Dades();
 					dades.setClas(activity.getAttributeValue(XMLConstants.CLASS));
@@ -85,7 +86,11 @@ public class Parser {
 					//booleans per assegurar-me de que els atributs hi son al xml
 					boolean desc = false, mess = false, sett = false, cells = false;
 					List actMessages = null, actSettings = null;
-					Element actDescription = null, actCells = null;
+					Element actDescription = null/*, actCells = null*/;
+					
+					//afegit per si l'activitat te diversos camps <cells> blablabla </cells>,
+					//ha implicat l'eliminacio de actCells
+					Iterator iterCells = null;
 					
 					if(activity.getChild(XMLConstants.DESCRIPTION) != null){
 						actDescription = activity.getChild(XMLConstants.DESCRIPTION);
@@ -100,7 +105,8 @@ public class Parser {
 						sett = true;
 					}
 					if(activity.getChild(XMLConstants.CELLS) != null){
-						actCells = activity.getChild(XMLConstants.CELLS);
+						//actCells = activity.getChild(XMLConstants.CELLS);
+						iterCells = activity.getChildren(XMLConstants.CELLS).iterator();
 						cells = true;
 					}
 					
@@ -153,41 +159,68 @@ public class Parser {
 					}
 					
 					/* Activities - Activity - Cells */
-					if(cells){
+					if (cells) {
 						Vector<String> celes = new Vector<String>();
-						
-						if(actCells.getAttributeValue(XMLConstants.ROWS) != null)
-							dades.setCellRows(Integer.valueOf(actCells.getAttributeValue(XMLConstants.ROWS)));
-						
-						if(actCells.getAttributeValue(XMLConstants.COLUMNS) != null)
-							dades.setCellCols(Integer.valueOf(actCells.getAttributeValue(XMLConstants.COLUMNS)));
-						
-						if(actCells.getAttributeValue(XMLConstants.BORDER) != null)
-							dades.setCellBorder(Boolean.valueOf(actCells.getAttributeValue(XMLConstants.BORDER)));
-						
-						if(actCells.getAttributeValue(XMLConstants.IMAGE) != null)
-							dades.setImage(actCells.getAttributeValue(XMLConstants.IMAGE));
-						
-						if(actCells.getChild(XMLConstants.STYLE).getChild(XMLConstants.COLOR) != null){
-							Element color = actCells.getChild(XMLConstants.STYLE).getChild(XMLConstants.COLOR);
+						while (iterCells.hasNext()) {
+
+							Element elemCells = (Element) iterCells.next();
+
+							if (elemCells.getAttributeValue(XMLConstants.ROWS) != null)
+								dades.setCellRows(Integer.valueOf(elemCells
+										.getAttributeValue(XMLConstants.ROWS)));
+
+							if (elemCells
+									.getAttributeValue(XMLConstants.COLUMNS) != null)
+								dades.setCellCols(Integer.valueOf(elemCells
+										.getAttributeValue(XMLConstants.COLUMNS)));
+
+							if (elemCells
+									.getAttributeValue(XMLConstants.BORDER) != null)
+								dades.setCellBorder(Boolean.valueOf(elemCells
+										.getAttributeValue(XMLConstants.BORDER)));
+
+							if (elemCells.getAttributeValue(XMLConstants.IMAGE) != null)
+								dades.setImage(elemCells
+										.getAttributeValue(XMLConstants.IMAGE));
+
+							if (elemCells.getChild(XMLConstants.STYLE)
+									.getChild(XMLConstants.COLOR) != null) {
+
+								Element color = elemCells.getChild(
+										XMLConstants.STYLE).getChild(
+										XMLConstants.COLOR);
+
+								if (color.getAttributeValue(XMLConstants.FOREGROUND) != null)
+									dades.setColorFG(color
+											.getAttributeValue(XMLConstants.FOREGROUND));
+
+								if (color
+										.getAttributeValue(XMLConstants.BACKGROUND) != null)
+									dades.setColorBG(color
+											.getAttributeValue(XMLConstants.BACKGROUND));
+							}
+
+							Iterator itCell = elemCells.getChildren(
+									XMLConstants.CELL).iterator();
 							
-							if(color.getAttributeValue(XMLConstants.FOREGROUND) != null)
-								dades.setColorFG(color.getAttributeValue(XMLConstants.FOREGROUND));
+							ArrayList<String> images = new ArrayList<String>();
 							
-							if(color.getAttributeValue(XMLConstants.BACKGROUND) != null)
-								dades.setColorBG(color.getAttributeValue(XMLConstants.BACKGROUND));
+							while (itCell.hasNext()) {
+								Element cell = (Element) itCell.next();
+								if (cell.getChildText(XMLConstants.P) != null)
+									celes.add(cell.getChildText(XMLConstants.P));
+								else
+									celes.add("");
+								
+								if (cell.getChildText(XMLConstants.IMAGE) != null) //imatges
+									images.add(cell.getChildText(XMLConstants.IMAGE));
+							}
+
+							dades.setCeles(celes);
+							dades.setImages(images);
+
 						}
-						
-						Iterator itCell = actCells.getChildren(XMLConstants.CELL).iterator();
-						
-						while(itCell.hasNext()){
-							Element descripcio = (Element)itCell.next();
-							if(descripcio.getChildText(XMLConstants.P) != null)
-								celes.add(descripcio.getChildText(XMLConstants.P));
-							else celes.add("");
-						}
-						
-						dades.setCeles(celes);
+
 					}
 					
 					if(!(dades.getCellCols() > 4 || dades.getCellRows() > 5)){
