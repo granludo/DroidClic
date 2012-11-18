@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginBottom="1dp"
+    android:layout_marginLeft="1dp"
+    android:layout_marginRight="1dp"
+    android:layout_marginTop="1dp"
+    android:scrollbars="vertical" >
+
+    <Button
+        android:id="@+id/home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/linearLayout1"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="Home"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/seguent"
+        android:layout_alignParentRight="true"
+        android:text="Help" />
+
+    <Button
+        android:id="@+id/statistics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/help"
+        android:text="Statistics" />
+
+    <Button
+        android:id="@+id/sound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/statistics"
+        android:text="Sound" />
+
+    <Button
+        android:id="@+id/reintentar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Reintentar" />
+
+    <Button
+        android:id="@+id/anterior"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:text="Anterior" />
+
+    <Button
+        android:id="@+id/seguent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/anterior"
+        android:layout_alignBottom="@+id/anterior"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="Seguent" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/reintentar"
+        android:layout_below="@id/sound"
+        android:layout_toLeftOf="@id/seguent"
+        android:layout_toRightOf="@id/anterior"
+        android:orientation="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbars="vertical" >
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tempsRestantMarcador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/reintentar"
+        android:gravity="center_vertical|center_horizontal"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:text="18" />
+
+    <TextView
+        android:id="@+id/intentsRestantsMarcador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/reintentar"
+        android:layout_alignTop="@+id/tempsRestantTitol"
+        android:layout_toLeftOf="@+id/tempsRestantTitol"
+        android:gravity="center_vertical|center_horizontal"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:text="1" />
+
+    <TextView
+        android:id="@+id/tempsRestantTitol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/tempsRestantMarcador"
+        android:layout_toLeftOf="@+id/tempsRestantMarcador"
+        android:gravity="center_vertical|center_horizontal"
+        android:paddingLeft="2dp"
+        android:paddingRight="1dp"
+        android:text="Temps" />
+
+    <TextView
+        android:id="@+id/intentsRestantsTitol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/intentsRestantsMarcador"
+        android:layout_toLeftOf="@+id/intentsRestantsMarcador"
+        android:gravity="center_vertical|center_horizontal"
+        android:paddingLeft="2dp"
+        android:paddingRight="1dp"
+        android:text="Intents" />
+
+    <TextView
+        android:id="@+id/encertsRestantsMarcador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/reintentar"
+        android:layout_alignTop="@+id/intentsRestantsTitol"
+        android:layout_toLeftOf="@+id/intentsRestantsTitol"
+        android:gravity="center_vertical|center_horizontal"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:text="1" />
+
+    <TextView
+        android:id="@+id/encertsRestantsTitol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/reintentar"
+        android:layout_alignTop="@+id/encertsRestantsMarcador"
+        android:layout_toLeftOf="@+id/encertsRestantsMarcador"
+        android:layout_toRightOf="@+id/reintentar"
+        android:gravity="center_vertical|center_horizontal"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:text="Encerts" />
+
+</RelativeLayout>
