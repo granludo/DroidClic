@@ -698,12 +698,12 @@ public class ExchangePuzzle extends Activity{
 			CO.p1 = "<buit>";
 			CO.p2 = "<buit>";
 		} else {
-			if((maxIntents != 0 && maxIntents == contador && CO.correcte!=CO.casIni)||contadorT == maxTime){
+			if((maxIntents != 0 && maxIntents == contador && CO.correcte!=CO.casIni)||contadorT == maxTime && maxTime!=0){
 				sounds.playFinished_error();
 				if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi() != null)
 					CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
 				else CO.miss.setText("Superat els intents màxims");
-				timer.cancel();
+				if(maxTime!=0)timer.cancel();
 				CO.missCorrectes.setText("Prem aquí per continuar.");
 				CO.missCorrectes.setBackgroundColor(Color.WHITE);
 				CO.missCorrectes.setTextColor(Color.BLACK);
@@ -713,13 +713,13 @@ public class ExchangePuzzle extends Activity{
 			}
 			else if(CO.correcte == CO.casIni){
 				//Hem acabat el joc
-				timer.cancel();
+				if(maxTime!=0)timer.cancel();
 				sounds.playFinished_ok();
 				if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi() != null)
 					CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
 				else CO.miss.setText("Joc finalitzat!");
 				
-				CO.missCorrectes.setText("Prem aquÃ­ per continuar.");
+				CO.missCorrectes.setText("Prem aquí per continuar.");
 				CO.missCorrectes.setBackgroundColor(Color.WHITE);
 				CO.missCorrectes.setTextColor(Color.BLACK);
 				

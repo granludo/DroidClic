@@ -779,7 +779,7 @@ public class DoublePuzzle extends Activity{
 		
 		CO.missCorrectes.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-            	if(CO.casIni == CO.correcte){
+            	if(CO.casIni == CO.correcte || contador==maxIntents || contadorTemps==maxTime){
             		Intent iSeg = new Intent(DoublePuzzle.this, Puzzle.class);
                 	startActivity(iSeg);
                 	finish();
@@ -789,7 +789,7 @@ public class DoublePuzzle extends Activity{
 		
 		CO.missCorrectes2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-            	if(CO.casIni == CO.correcte){
+            	if(CO.casIni == CO.correcte ||contador==maxIntents || contadorTemps==maxTime){
             		Intent iSeg = new Intent(DoublePuzzle.this, Puzzle.class);
                 	startActivity(iSeg);
                 	finish();
@@ -799,7 +799,7 @@ public class DoublePuzzle extends Activity{
 		
 		CO.miss.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-            	if(CO.casIni == CO.correcte){
+            	if(CO.casIni == CO.correcte ||contador==maxIntents || contadorTemps==maxTime){
             		Intent iSeg = new Intent(DoublePuzzle.this, Puzzle.class);
                 	startActivity(iSeg);
                 	finish();
@@ -982,7 +982,7 @@ public class DoublePuzzle extends Activity{
 			if (CO.correcte == CO.casIni) {
 				//Hem acabat el joc
 				sound.playFinished_ok();
-				timer.cancel();
+				if(maxTime!=0)timer.cancel();
 				if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi() != null){
 					CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
 					CO.miss2.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
@@ -1003,9 +1003,9 @@ public class DoublePuzzle extends Activity{
 				if(CO.menu != null) CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
 				
 			} 
-			else if ((CO.correcte != CO.casIni && maxIntents != 0 && maxIntents == contador) || contadorTemps == maxTime) {
+			else if ((CO.correcte != CO.casIni && maxIntents != 0 && maxIntents == contador) || contadorTemps == maxTime && maxTime!=0) {
 				sound.playFinished_error();
-				timer.cancel();
+				if(maxTime!=0)timer.cancel();
 				/*if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi() != null) {
 					CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
 					CO.miss2.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
