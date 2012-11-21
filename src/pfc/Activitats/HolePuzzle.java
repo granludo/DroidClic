@@ -113,8 +113,8 @@ public class HolePuzzle extends Activity {
 	}
 	
 	protected void onDestroy() {        
-	    super.onDestroy();
-	    sounds.unloadAll();
+		sounds.unloadAll();
+		super.onDestroy();
 	}
 	
 	final Handler mHandler = new Handler();
