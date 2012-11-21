@@ -544,7 +544,7 @@ public class ExchangePuzzle extends Activity{
 	private void setOnClickListener(){
 		CO.missCorrectes.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-            	if(CO.casIni == CO.correcte){
+            	if(CO.casIni == CO.correcte || contador==maxIntents || contadorT==maxTime){
             		Intent iSeg = new Intent(ExchangePuzzle.this, Puzzle.class);
                 	startActivity(iSeg);
                 	finish();
@@ -554,7 +554,7 @@ public class ExchangePuzzle extends Activity{
 		
 		CO.miss.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-            	if(CO.casIni == CO.correcte){
+            	if(CO.casIni == CO.correcte || contador==maxIntents || contadorT==maxTime){
             		Intent iSeg = new Intent(ExchangePuzzle.this, Puzzle.class);
                 	startActivity(iSeg);
                 	finish();
