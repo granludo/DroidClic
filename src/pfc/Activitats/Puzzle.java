@@ -74,6 +74,12 @@ public class Puzzle extends Activity{
 		    	Intent i = new Intent(this, DoublePuzzle.class);
 		    	finish();
 		    	startActivity(i);
+		    } else if(Parser.getActivitats().elementAt(CO.activitatActual+1).
+		    		getClas().equals(XMLConstants.SIMPLEASSOC)) { // Simple assoc
+		    	
+		    	Intent i = new Intent(this, SimpleAssociation.class);
+		    	startActivity(i);
+		    	finish();
 		    }
 		}
 	}

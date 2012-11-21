@@ -9,6 +9,7 @@ package pfc.Activitats;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import android.view.Menu;
@@ -118,6 +119,7 @@ public class Constants {
 	public boolean exemple;
 	
 	public String imatge;
+	public ArrayList<String> imatges;
 	public String fitxer;
 	
 	public InputStream is;

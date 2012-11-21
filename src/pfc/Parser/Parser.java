@@ -212,8 +212,8 @@ public class Parser {
 								else
 									celes.add("");
 								
-								if (cell.getChildText(XMLConstants.IMAGE) != null) //imatges
-									images.add(cell.getChildText(XMLConstants.IMAGE));
+								if (cell.getAttributeValue(XMLConstants.IMAGE) != null) //imatges
+									images.add(cell.getAttributeValue(XMLConstants.IMAGE));
 							}
 
 							dades.setCeles(celes);
