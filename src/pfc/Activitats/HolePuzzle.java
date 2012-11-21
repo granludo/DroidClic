@@ -114,6 +114,7 @@ public class HolePuzzle extends Activity {
 	
 	protected void onDestroy() {        
 		sounds.unloadAll();
+		//cambiado el orden a ver si funciona
 		super.onDestroy();
 	}
 	
