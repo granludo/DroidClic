@@ -26,6 +26,7 @@ import pfc.Descompressor.Descompressor;
 import pfc.Jclic.Jclic;
 import pfc.Jclic.R;
 import pfc.Parser.Parser;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -37,6 +38,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -48,6 +50,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+@TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class LlistatProjectes extends ListActivity {    
 	private Drawable arrow;
     private Object resultRequestSOAP = null;
