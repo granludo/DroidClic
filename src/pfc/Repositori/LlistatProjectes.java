@@ -15,10 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
+import javax.crypto.SealedObject;
+
 
 import pfc.Activitats.Constants;
 import pfc.Activitats.Puzzle;
@@ -52,7 +50,7 @@ import android.widget.Toast;
 
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class LlistatProjectes extends ListActivity {    
-	private Drawable arrow;
+	/*private Drawable arrow;
     private Object resultRequestSOAP = null;
     private List<ContingutFila> lista;
     private AdaptadorLlistaIconos ad;
@@ -85,10 +83,10 @@ public class LlistatProjectes extends ListActivity {
         
         
         Resources res = getResources();
-        SoapObject request;
+        SealedObject request;
         
         if(DadesServidor.all)
-        	request = new SoapObject(DadesServidor.NAMESPACE, DadesServidor.SOAP_ACTION_ALL);
+        	request = new SealedObject(DadesServidor.NAMESPACE, DadesServidor.SOAP_ACTION_ALL);
         else {
         	request = new SoapObject(DadesServidor.NAMESPACE, DadesServidor.SOAP_ACTION_SEARCH);
         	request.addProperty("keyword", DadesServidor.keyword);
@@ -354,5 +352,5 @@ public class LlistatProjectes extends ListActivity {
             	return true;
         }
         return false;
-    }
+    }*/
 }
