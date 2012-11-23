@@ -76,7 +76,7 @@ public class Parser {
 								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.HOLEPUZZ)
 								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.DOUBLEPUZZ)
 								//|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.MEMORYGAME) //descomentar per provar
-								//|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.SIMPLEASSOC) 
+								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.SIMPLEASSOC) 
 								)) {
 					
 					Dades dades = new Dades();
@@ -161,6 +161,8 @@ public class Parser {
 					/* Activities - Activity - Cells */
 					if (cells) {
 						Vector<String> celes = new Vector<String>();
+						ArrayList<String> images = new ArrayList<String>();
+
 						while (iterCells.hasNext()) {
 
 							Element elemCells = (Element) iterCells.next();
@@ -203,7 +205,6 @@ public class Parser {
 							Iterator itCell = elemCells.getChildren(
 									XMLConstants.CELL).iterator();
 							
-							ArrayList<String> images = new ArrayList<String>();
 							
 							while (itCell.hasNext()) {
 								Element cell = (Element) itCell.next();

@@ -6,6 +6,7 @@
 
 package pfc.Activitats;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Vector;
 
@@ -21,6 +22,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,7 +78,8 @@ public class Puzzle extends Activity{
 		    	startActivity(i);
 		    } else if(Parser.getActivitats().elementAt(CO.activitatActual+1).
 		    		getClas().equals(XMLConstants.SIMPLEASSOC)) { // Simple assoc
-		    	
+		    	agafarDadesParser();
+				posarNegrePantalla();
 		    	Intent i = new Intent(this, SimpleAssociation.class);
 		    	startActivity(i);
 		    	finish();
@@ -96,6 +99,12 @@ public class Puzzle extends Activity{
 			CO.colorFG = Parser.getActivitats().elementAt(CO.activitatActual).getColorFG();
 			CO.mostrarSolucio = Parser.getActivitats().elementAt(CO.activitatActual).getMostrarSolucio();
 			CO.imatge = Parser.getActivitats().elementAt(CO.activitatActual).getImage();
+
+
+			CO.imatges = Parser.getActivitats().elementAt(CO.activitatActual).getImages();
+			CO.celes = Parser.getActivitats().elementAt(CO.activitatActual).getCeles();
+			CO.poss = new ArrayList<TextView>();
+			
 			
 			if(CO.imatge != null){
 				//hi ha una imatge, pel que numero les caselles de 0 a N

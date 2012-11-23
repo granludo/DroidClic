@@ -65,7 +65,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:text="Seguent" />
-
+        
     <LinearLayout
         android:id="@+id/LinearLayout1"
         android:layout_width="wrap_content"
@@ -77,7 +77,9 @@
         android:orientation="horizontal"
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbars="vertical" >
-
+
+
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -92,7 +94,8 @@
 
                     <TextView
                         android:id="@+id/pos1"
-                        android:layout_margin="2dip" />
+                        android:layout_margin="2dip" 
+                        android:text="proba"/>
 
                     <TextView
                         android:id="@+id/pos2"
@@ -204,7 +207,9 @@
                 </TableRow>
             </TableLayout>
         </LinearLayout>
-
+
+
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

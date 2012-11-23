@@ -62,6 +62,8 @@ public class Constants {
     public TextView pos39;
     public TextView pos40;
     
+    public ArrayList<TextView> poss;
+    
     public TextView miss;
     public TextView miss2;
     public TextView missCorrectes;
@@ -119,7 +121,10 @@ public class Constants {
 	public boolean exemple;
 	
 	public String imatge;
+	
 	public ArrayList<String> imatges;
+	public Vector<String> celes;
+	
 	public String fitxer;
 	
 	public InputStream is;
