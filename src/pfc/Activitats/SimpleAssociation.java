@@ -1,20 +1,21 @@
 package pfc.Activitats;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
+import pfc.Descompressor.Descompressor;
 import pfc.Jclic.R;
 import pfc.Parser.Parser;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 @TargetApi(3) 
@@ -22,12 +23,17 @@ public class SimpleAssociation extends Activity{
 	private Constants CO = Constants.getInstance();
 	private String path = "/sdcard/tmp/jclic/";
 	
+	private int newWidth;
+	private int newHeight;
+	private int width;
+	private int height;
+	
 	Sounds sound;
 	private int maxTime = Parser.getActivitats().get(CO.activitatActual).getTempsMax();
 	private int maxIntents =  Parser.getActivitats().get(CO.activitatActual).getIntentMax();
 	private boolean TimeCountDown =  Parser.getActivitats().get(CO.activitatActual).getTimeCutDown();
 	private boolean IntentCountDown =  Parser.getActivitats().get(CO.activitatActual).getIntentCutdown();
-	private ArrayList<Integer> idPos = new ArrayList<Integer>();
+	private ArrayList<ArrayList<Integer>> idPos = new ArrayList<ArrayList<Integer>>();
 	
 	int contador = 0; //Comptador per als intents.
 	int contadorTemps = 0; //Comptador per al temps.
@@ -43,27 +49,36 @@ public class SimpleAssociation extends Activity{
 	    
 	    try{	
 	    	//agafarDadesParser();		
-
-		    idPos.add(R.id.pos1);
-		    idPos.add(R.id.pos2);
-		    idPos.add(R.id.pos3);
-		    idPos.add(R.id.pos4);
-		    idPos.add(R.id.pos5);
-		    idPos.add(R.id.pos6);
-		    idPos.add(R.id.pos7);
-		    idPos.add(R.id.pos8);
-		    idPos.add(R.id.pos9);
-		    idPos.add(R.id.pos10);
-		    idPos.add(R.id.pos11);
-		    idPos.add(R.id.pos12);
-		    idPos.add(R.id.pos13);
-		    idPos.add(R.id.pos14);
-		    idPos.add(R.id.pos15);
-		    idPos.add(R.id.pos16);
-		    idPos.add(R.id.pos17);
-		    idPos.add(R.id.pos18);
-		    idPos.add(R.id.pos19);
-		    idPos.add(R.id.pos20);
+	    	ArrayList<Integer> row = new ArrayList<Integer>();
+		    row.add(R.id.pos1);
+		    row.add(R.id.pos2);
+		    row.add(R.id.pos3);
+		    row.add(R.id.pos4);
+		    idPos.add(row);
+		    row = new ArrayList<Integer>();
+		    row.add(R.id.pos5);
+		    row.add(R.id.pos6);
+		    row.add(R.id.pos7);
+		    row.add(R.id.pos8);
+		    idPos.add(row);
+		    row = new ArrayList<Integer>();
+		    row.add(R.id.pos9);
+		    row.add(R.id.pos10);
+		    row.add(R.id.pos11);
+		    row.add(R.id.pos12);
+		    idPos.add(row);
+		    row = new ArrayList<Integer>();
+		    row.add(R.id.pos13);
+		    row.add(R.id.pos14);
+		    row.add(R.id.pos15);
+		    row.add(R.id.pos16);
+		    idPos.add(row);
+		    row = new ArrayList<Integer>();
+		    row.add(R.id.pos17);
+		    row.add(R.id.pos18);
+		    row.add(R.id.pos19);
+		    row.add(R.id.pos20);
+		    idPos.add(row);
 		    
 		    sound.playStart();
 		    
@@ -96,58 +111,86 @@ public class SimpleAssociation extends Activity{
 		// TODO Auto-generated method stub
 
 
-		for (int i = 0; i < CO.cols*CO.rows; ++i) {
-			BitmapDrawable img = new BitmapDrawable("/mnt"+path+CO.imatges.get(i));
-			
-			TextView tmp = (TextView) findViewById(idPos.get(i));
-			CO.poss.add(tmp);
-			CO.poss.get(i).setBackgroundDrawable(img);
+		for (int i = 0; i < CO.rows; ++i) 
+			for (int j = 0; j < CO.cols; ++j) {
+			if (CO.imatges.get(i*CO.cols+j) != null) {
+				
+	    		if(Descompressor.descompressor(CO.imatges.get(i*CO.cols+j), CO.path)){
+	    			BitmapDrawable img = new BitmapDrawable(path+CO.imatges.get(i*CO.cols+j));
+
+	    			//	height = img.getGravity();
+	    			//img.createFromPath("/mnt"+path+CO.imatges.get(i));
+	    			TextView tmp = (TextView) findViewById(idPos.get(i).get(j));
+	    			CO.poss.add(tmp);
+	    			resizeCaselles(CO.poss.get(i*CO.cols+j));
+	    			img = resizeImg(img);
+	    			CO.poss.get(i*CO.cols+j).setBackgroundDrawable(img);
+				}
+				
+
+			}
 		}
 
 	}
 
-	private void agafarDadesParser() {
-		if(CO.activitatActual < Parser.getActivitats().size()-1){
-			//podem agafar l'activitat
-			CO.activitatActual++;
-			CO.solucioVisible = false;
-			
-			CO.rows = Parser.getActivitats().elementAt(CO.activitatActual).getCellRows();
-			CO.cols = Parser.getActivitats().elementAt(CO.activitatActual).getCellCols();
-			CO.colorBG = Parser.getActivitats().elementAt(CO.activitatActual).getColorBG();
-			CO.colorFG = Parser.getActivitats().elementAt(CO.activitatActual).getColorFG();
-			CO.mostrarSolucio = Parser.getActivitats().elementAt(CO.activitatActual).getMostrarSolucio();
-			CO.imatge = Parser.getActivitats().elementAt(CO.activitatActual).getImage();
-			CO.imatges = Parser.getActivitats().elementAt(CO.activitatActual).getImages();
+	private BitmapDrawable resizeImg(BitmapDrawable bitmapd){
+    	
+		Bitmap bitmapOrg = bitmapd.getBitmap();
+        int widthImage = bitmapOrg.getWidth();
+        int heightImage = bitmapOrg.getHeight();
+        
+        newWidth = width*CO.cols;
+        newHeight = height*CO.rows;
+        
+        float scaleWidth = ((float) newWidth) / widthImage;
+        float scaleHeight = ((float) newHeight) / heightImage;
+        
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        
+        Bitmap resizedBitmap = Bitmap.createBitmap(bitmapOrg, 0, 0,widthImage, heightImage, matrix, true);
+        
+        return new BitmapDrawable(resizedBitmap);
+	}	
+	
+	private void resizeCaselles(TextView pos) {
+		
+		if(CO.cols == 1){
+    		pos.setWidth(250);
+    		width = 250;
+    	} else if(CO.cols == 2){
+    		pos.setWidth(120);
+    		width = 120;
+    	} else if(CO.cols == 3){
+    		pos.setWidth(80);
+    		width = 80;
+    	} else {
+    		//cols == 4
+    		pos.setWidth(60);
+    		width = 60;
+    	}
+    	
+		if(CO.rows == 1 || CO.rows == 2){
+    		pos.setHeight(100);
+    		pos.setMaxLines(4);
+    		height = 100;
+    	} else if(CO.rows == 3){
+    		pos.setHeight(85);
+    		pos.setMaxLines(3);
+    		height = 85;
+    	} else if(CO.rows == 4){
+    		pos.setHeight(70);
+    		pos.setMaxLines(2);
+    		height = 70;
+    	} else {
+    		//CO.rows == 5
+    		pos.setHeight(60);
+    		pos.setMaxLines(2);
+    		height = 60;
+    	}
+		width /= 10;
+		height /= 10;
 
-			
-			if(CO.imatges != null){
-				//hi ha una imatge, pel que numero les caselles de 0 a N
-				CO.sortida = new Vector<String>();
-				
-				for(int i = 0; i < CO.rows * CO.cols; i++)
-					CO.sortida.add(String.valueOf(i));
-				
-			} else CO.sortida = new Vector<String>(Parser.getActivitats().elementAt(CO.activitatActual).getCeles());
-			
-			CO.casIni = CO.sortida.size();
-			if(CO.casIni > 20) CO.casIni = 20;
-			CO.correcte = 0;
-			CO.incorrecte = 0;
-			CO.entrada = new Vector<String>();
-			CO.vecBool = new Vector<Boolean>();
-			CO.vecCaselles = new Vector<TextView>();
-			CO.vecCasellesSort = new Vector<TextView>();
-
-		} else{
-			Dialog finalitzat = new AlertDialog.Builder(SimpleAssociation.this)
-	        .setIcon(R.drawable.jclic_aqua)
-	        .setTitle("Atenció!")
-	        .setPositiveButton("D'acord", null)
-	        .setMessage("Ja no queden més activitats.")
-	        .create();
-			finalitzat.show();
-		}
 	}
 	
 	//@Override
