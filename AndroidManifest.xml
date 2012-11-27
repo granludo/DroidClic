@@ -11,7 +11,7 @@
         </activity>
     <activity android:name="pfc.Activitats.ExchangePuzzle" android:screenOrientation="portrait"></activity>
 
-
+<!-- Cambiar todo a landscape -->
 <activity android:name="pfc.Activitats.DoublePuzzle" android:screenOrientation="portrait"></activity>
 <activity android:name="pfc.Activitats.HolePuzzle" android:screenOrientation="portrait"></activity>
 <activity android:screenOrientation="landscape" android:name="pfc.Activitats.Puzzle"></activity>
