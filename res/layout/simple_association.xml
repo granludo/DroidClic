@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/linearLayout1"
+       
         android:gravity="center_vertical|center_horizontal"
         android:text="Home"
         android:textColor="@android:color/black" />
