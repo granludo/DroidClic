@@ -14,7 +14,7 @@
 
 <activity android:name="pfc.Activitats.DoublePuzzle" android:screenOrientation="portrait"></activity>
 <activity android:name="pfc.Activitats.HolePuzzle" android:screenOrientation="portrait"></activity>
-<activity android:screenOrientation="portrait" android:name="pfc.Activitats.Puzzle"></activity>
+<activity android:screenOrientation="landscape" android:name="pfc.Activitats.Puzzle"></activity>
 <activity android:name="pfc.NavegadorArxius.NavegadorArxius" android:screenOrientation="portrait"></activity>
 <activity android:name="pfc.Repositori.LlistatProjectes" android:screenOrientation="portrait"></activity>
 <activity android:name="pfc.Activitats.SimpleAssociation" android:screenOrientation="landscape"></activity>
