@@ -84,6 +84,14 @@ public class Puzzle extends Activity{
 		    	startActivity(i);
 		    	finish();
 		    }
+			else if(Parser.getActivitats().elementAt(CO.activitatActual+1).
+				    getClas().equals(XMLConstants.MEMORYGAME)) { // Memory
+				agafarDadesParser();
+				posarNegrePantalla();
+				Intent i = new Intent(this, Memory.class);
+				startActivity(i);
+				finish();
+			}	
 		}
 	}
 	
