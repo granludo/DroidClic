@@ -9,6 +9,7 @@ package pfc.Activitats;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import android.view.Menu;
@@ -60,6 +61,8 @@ public class Constants {
     public TextView pos38;
     public TextView pos39;
     public TextView pos40;
+    
+    public ArrayList<TextView> poss;
     
     public TextView miss;
     public TextView miss2;
@@ -118,6 +121,10 @@ public class Constants {
 	public boolean exemple;
 	
 	public String imatge;
+	
+	public ArrayList<String> imatges;
+	public Vector<String> celes;
+	
 	public String fitxer;
 	
 	public InputStream is;
