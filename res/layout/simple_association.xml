@@ -65,11 +65,11 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:text="Seguent" />
-        
+        
     <LinearLayout
         android:id="@+id/LinearLayout1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_above="@id/reintentar"
         android:layout_below="@id/sound"
         android:layout_toLeftOf="@id/seguent"
@@ -78,9 +78,8 @@
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbars="vertical" >
 
-
-
         <LinearLayout
+            android:id="@+id/linearLayoutCentral"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
@@ -95,7 +94,7 @@
                     <TextView
                         android:id="@+id/pos1"
                         android:layout_margin="2dip" 
-                        android:text="proba"/>
+                        android:text=""/>
 
                     <TextView
                         android:id="@+id/pos2"

@@ -161,9 +161,9 @@ public class Parser {
 					/* Activities - Activity - Cells */
 					if (cells) {
 						Vector<String> celes = new Vector<String>();
-						ArrayList<String> images = new ArrayList<String>();
 
 						while (iterCells.hasNext()) {
+							ArrayList<String> images = new ArrayList<String>();
 
 							Element elemCells = (Element) iterCells.next();
 
@@ -210,8 +210,8 @@ public class Parser {
 								Element cell = (Element) itCell.next();
 								if (cell.getChildText(XMLConstants.P) != null)
 									celes.add(cell.getChildText(XMLConstants.P));
-								else
-									celes.add("");
+						//		else
+							//		celes.add("");
 								
 								if (cell.getAttributeValue(XMLConstants.IMAGE) != null) //imatges
 									images.add(cell.getAttributeValue(XMLConstants.IMAGE));
