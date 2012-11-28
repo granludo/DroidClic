@@ -56,7 +56,7 @@ public class SimpleAssociation extends Activity{
 	    //aquí s'inicialitza el so
 	    sound = new Sounds(getApplicationContext());
 	    
-	    try{	
+	   // try{	
 	    	//agafarDadesParser();
 	    	// agafem les imatges
 	    	ArrayList<Integer> row = new ArrayList<Integer>();
@@ -146,9 +146,9 @@ public class SimpleAssociation extends Activity{
 		   // setOnClickListener();
 		    
 		    //listeners de menus
-	    } catch(Exception e){
-	    	Log.d("Error", "catch SimpleAssociation: "+e);
-	    }
+	   // } catch(Exception e){
+	    //	Log.d("Error", "catch SimpleAssociation: "+e);
+	    //}
 	}	
 	
 	/*private void setOnClickListener() {
@@ -348,25 +348,32 @@ public class SimpleAssociation extends Activity{
 
 		
 		makeRandomImgs();
-		for (int i = 0; i < CO.rows; ++i) 
+		for (int i = 0; i < CO.rows; ++i) {
 			for (int j = 0; j < CO.cols; ++j) {
-			if (CO.imatges.get(i*CO.cols+j) != null) {
-				
-	    		if(Descompressor.descompressor(CO.imatges.get(i*CO.cols+j), CO.path)){
-	    			BitmapDrawable img = new BitmapDrawable(path+CO.imatges.get(i*CO.cols+j));
-
-	    			//	height = img.getGravity();
-	    			//img.createFromPath("/mnt"+path+CO.imatges.get(i));
-	    			TextView tmp = (TextView) findViewById(idPos.get(i).get(j));
-	    			CO.poss.add(tmp);
-	    			resizeCaselles(CO.poss.get(i*CO.cols+j));
-	    			img = resizeImg(img);
-	    			//CO.poss.get(i*CO.cols+j).setBackgroundDrawable(img);
-	    			CO.poss.get(correspondencies.get(i)*CO.cols+j).setBackgroundDrawable(img);
-	    			CO.poss.get(i*CO.cols+j).setClickable(true);
+				if (CO.imatges.get(i*CO.cols+j) != null) {
+					if(Descompressor.descompressor(CO.imatges.get(i*CO.cols+j), CO.path)) {
+						TextView tmp = (TextView) findViewById(idPos.get(i).get(j));
+		    			CO.poss.add(tmp);
+					}
 				}
-				
+			}
+		}
+					
 
+		for (int i = 0; i < CO.rows; ++i) {
+			for (int j = 0; j < CO.cols; ++j) {
+				if (CO.imatges.get(i*CO.cols+j) != null) {
+		    		if(Descompressor.descompressor(CO.imatges.get(i*CO.cols+j), CO.path)) {
+		    			BitmapDrawable img = new BitmapDrawable(path+CO.imatges.get(i*CO.cols+j));
+	
+		    			
+		    			resizeCaselles(CO.poss.get(correspondencies.get(i*CO.cols+j)));
+		    			img = resizeImg(img);
+		    			CO.poss.get(correspondencies.get(i*CO.cols+j)).setBackgroundDrawable(img);
+		    			//CO.poss.get(i*CO.cols+j).setBackgroundDrawable(img);
+		    			CO.poss.get(correspondencies.get(i*CO.cols+j)).setClickable(true);
+					}
+				}
 			}
 		}
 		
@@ -384,12 +391,9 @@ public class SimpleAssociation extends Activity{
 	    			CO.poss.get(i*CO.cols+j).setClickable(true);
 	    			
 	    			makeRandomText();
-				}
-				
-
+				}	
 			}
 		}
-
 	}
 
 	private void makeRandomText() {
@@ -400,17 +404,17 @@ public class SimpleAssociation extends Activity{
 	private void makeRandomImgs() {
 		// TODO Auto-generated method stub
 		ArrayList<Boolean> agafats = new ArrayList<Boolean>();
-		for(int i = 0; i < CO.sortida.size(); i++){
+		for(int i = 0; i < CO.imatges.size(); i++){
 			agafats.add(false);
 		}
 		Random r = new Random();
 		
 		this.correspondencies = new ArrayList<Integer>(CO.imatges.size());
 		for(int i=0; i < CO.imatges.size(); ++i) {
-			Integer rand = Integer.valueOf(r.nextInt(agafats.size()));
+			int rand =  r.nextInt(agafats.size());
 			if(agafats.get(rand)!= true) {
-				this.correspondencies.set(i, rand);
-				agafats.set(rand,true);
+				this.correspondencies.add(Integer.valueOf(rand));
+				agafats.set(rand,true);  
 			}
 			else --i;
 		}
@@ -445,12 +449,12 @@ public class SimpleAssociation extends Activity{
     		pos.setWidth(120);
     		width = 120;
     	} else if(CO.cols == 3){
-    		pos.setWidth(80);
-    		width = 80;
+    		pos.setWidth(50);
+    		width = 50;
     	} else {
     		//cols == 4
-    		pos.setWidth(60);
-    		width = 60;
+    		pos.setWidth(40);
+    		width = 40;
     	}
     	
 		if(CO.rows == 1 || CO.rows == 2){
@@ -462,14 +466,14 @@ public class SimpleAssociation extends Activity{
     		pos.setMaxLines(3);
     		height = 85;
     	} else if(CO.rows == 4){
-    		pos.setHeight(70);
+    		pos.setHeight(50);
     		pos.setMaxLines(2);
-    		height = 70;
+    		height = 50;
     	} else {
     		//CO.rows == 5
-    		pos.setHeight(60);
+    		pos.setHeight(40);
     		pos.setMaxLines(2);
-    		height = 60;
+    		height = 40;
     	}
 		width /= 10;
 		height /= 10;
