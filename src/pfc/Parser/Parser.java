@@ -161,9 +161,9 @@ public class Parser {
 					/* Activities - Activity - Cells */
 					if (cells) {
 						Vector<String> celes = new Vector<String>();
+						ArrayList<String> images = new ArrayList<String>();
 
 						while (iterCells.hasNext()) {
-							ArrayList<String> images = new ArrayList<String>();
 
 							Element elemCells = (Element) iterCells.next();
 
