@@ -63,7 +63,7 @@ public class DoublePuzzle extends Activity{
 	private boolean TimeCountDown =  Parser.getActivitats().get(CO.activitatActual).getTimeCutDown();
 	private boolean IntentCountDown =  Parser.getActivitats().get(CO.activitatActual).getIntentCutdown();
 	//per fer proves.
-	//private int maxIntents = 3;
+	//private int maxIntents = 10;
 	//private boolean IntentCountDown = true;
 	//private int maxTime = 30;
 	//private boolean TimeCountDown = true;
@@ -905,10 +905,13 @@ public class DoublePuzzle extends Activity{
 			if(CO.vecCasellesSort.elementAt(i) != null){
 				final TextView pos = CO.vecCasellesSort.elementAt(i);
 				
+				
 				pos.setOnClickListener(new View.OnClickListener() {
 		            public void onClick(View view) {		            	
 		               	if(!CO.p1.equalsIgnoreCase("<buit>")){
 		            		//tinc un valor agafat, miro si va aqui
+		    				if (contador <  maxIntents) contador++;
+
 		            		if(CO.p1.equalsIgnoreCase((String)pos.getText())){
 		            			//el valor es el correcte
 		            			//intercanvio les posicions	            	            			
@@ -938,8 +941,7 @@ public class DoublePuzzle extends Activity{
 		            			posAgafada.setBackgroundColor(CO.bg);
 		            			posAgafada.setTextColor(CO.fg);
 			                	sound.playActionError();
-		            			if (contador < maxIntents) contador++;
-		            			
+			                	
 		            			if(CO.imatge != null){
 		            				//faig que tingui la imatge i no el text
 		            				posAgafada.setTextColor(Color.TRANSPARENT);
