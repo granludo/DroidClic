@@ -48,7 +48,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-@TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class LlistatProjectes extends ListActivity {    
 	/*private Drawable arrow;
     private Object resultRequestSOAP = null;
