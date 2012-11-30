@@ -218,7 +218,7 @@ public class Memory extends Activity {
     	if(CO.colorBG != null){
     		CO.bg = Puzzle.agafarColor(CO.colorBG);
     	} 
-    	else CO.bg = Color.BLACK;
+    	else CO.bg = Color.GRAY;
     	
     	if(CO.colorFG != null){
     		CO.fg = Puzzle.agafarColor(CO.colorFG);

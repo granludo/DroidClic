@@ -162,18 +162,20 @@ public class Parser {
 					/* Activities - Activity - Cells */
 					if (cells) {
 						Vector<String> celes = new Vector<String>();
+						ArrayList<String> images = new ArrayList<String>();
 
 						while (iterCells.hasNext()) {
-							ArrayList<String> images = new ArrayList<String>();
-
+							
 							Element elemCells = (Element) iterCells.next();
 
 							if (elemCells.getAttributeValue(XMLConstants.ROWS) != null)
+								if(dades.getCellRows()== 0)
 								dades.setCellRows(Integer.valueOf(elemCells
 										.getAttributeValue(XMLConstants.ROWS)));
 
 							if (elemCells
 									.getAttributeValue(XMLConstants.COLUMNS) != null)
+								if(dades.getCellCols()== 0)
 								dades.setCellCols(Integer.valueOf(elemCells
 										.getAttributeValue(XMLConstants.COLUMNS)));
 
@@ -209,20 +211,20 @@ public class Parser {
 							
 							while (itCell.hasNext()) {
 								Element cell = (Element) itCell.next();
-								if (cell.getChildText(XMLConstants.P) != null)
-									celes.add(cell.getChildText(XMLConstants.P));
-						//		else
-							//		celes.add("");
-								
 								if (cell.getAttributeValue(XMLConstants.IMAGE) != null) //imatges
 									images.add(cell.getAttributeValue(XMLConstants.IMAGE));
+								else
+									images.add("");
+								if (cell.getChildText(XMLConstants.P) != null)
+									celes.add(cell.getChildText(XMLConstants.P));
+								else
+											celes.add("");
+								
+							
 							}
-
-							dades.setCeles(celes);
-							dades.setImages(images);
-
 						}
-
+						dades.setCeles(celes);
+						dades.setImages(images);
 					}
 					
 					if(!(dades.getCellCols() > 4 || dades.getCellRows() > 5)){
