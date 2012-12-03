@@ -2,28 +2,25 @@ package pfc.Activitats;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Vector;
 
 import pfc.Descompressor.Descompressor;
 import pfc.Jclic.R;
 import pfc.Parser.Parser;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-@TargetApi(11) 
-public class SimpleAssociation extends Activity{
+@TargetApi(8) 
+public class SimpleAssociation extends Activity {
 	private Constants CO = Constants.getInstance();
 	private String path = "/sdcard/tmp/jclic/";
 	
@@ -31,6 +28,9 @@ public class SimpleAssociation extends Activity{
 	private int newHeight;
 	private int width;
 	private int height;
+	
+	private Vector<TextView> plafoA = new Vector<TextView>(CO.cols*CO.rows);
+	private Vector<TextView> plafoB = new Vector<TextView>(CO.cols*CO.rows);
 	
 	private TextView posAgafada;
 	
@@ -142,6 +142,7 @@ public class SimpleAssociation extends Activity{
 		    //fer les dos quadricules
 		    initQuadricules();
 		    
+		    sound.playFinished_ok();
 		    //inicialitzar onClickslisteners
 		    
 		    //listeners de menus
@@ -155,90 +156,176 @@ public class SimpleAssociation extends Activity{
 	private void initQuadricules() {
 
 		
-		makeRandomImgs();
-		for (int i = 0; i < CO.rows; ++i) {
+		makeRandomPlafoA(); //es la mateixa que el makeRandomImgs d'abans
+		
+		for (int i = 0; i < CO.rows; ++i) { //posar elems plafo A
 			for (int j = 0; j < CO.cols; ++j) {
-				if (CO.imatges.get(i*CO.cols+j) != null) {
-					if(Descompressor.descompressor(CO.imatges.get(i*CO.cols+j), CO.path)) {
-						TextView tmp = (TextView) findViewById(idPos.get(i).get(j));
-		    			CO.poss.add(tmp);
-					}
-				}
-			}
-		}
-					
-
-		for (int i = 0; i < CO.rows; ++i) {
-			for (int j = 0; j < CO.cols; ++j) {
-				if (CO.imatges.get(i*CO.cols+j) != null) {
-		    		if(Descompressor.descompressor(CO.imatges.get(i*CO.cols+j), CO.path)) {
-		    			BitmapDrawable img = new BitmapDrawable(path+CO.imatges.get(i*CO.cols+j));
-	
-		    			
-		    			resizeCaselles(CO.poss.get(correspondencies.get(i*CO.cols+j)));
-		    			img = resizeImg(img);
-		    			CO.poss.get(correspondencies.get(i*CO.cols+j)).setBackgroundDrawable(img);
-		    			//CO.poss.get(i*CO.cols+j).setBackgroundDrawable(img);
-		    			CO.poss.get(correspondencies.get(i*CO.cols+j)).setClickable(true);
-		    			CO.poss.get(correspondencies.get(i*CO.cols+j)).setOnClickListener(new View.OnClickListener() {
-							
-							public void onClick(View v) {
-								click(v);
-							}
-						});
-					}
-				}
+				TextView tmp = (TextView) findViewById(idPos.get(i).get(j));
+		    	
+		    	plafoA.add(tmp);	
 			}
 		}
 		
-		for (int i = 0; i < CO.rows; ++i) 
+		int offB = CO.cols*CO.rows; //offset a partir del que comença la info del plafó B
+		
+		for (int i = 0; i < CO.rows; ++i) { //posar elems plafo B
 			for (int j = 0; j < CO.cols; ++j) {
-			if (CO.celes.get(i*CO.cols+j) != null) {
+				TextView tmp = (TextView) findViewById(idPos.get(5+i).get(j));
 				
-	    		if(Descompressor.descompressor(CO.celes.get(i*CO.cols+j), CO.path)){
-	    			
-	    			//	height = img.getGravity();
-	    			TextView tmp = (TextView) findViewById(idPos.get(5+i).get(j)); //al loro! 5 son maxrows
-	    			CO.poss.add(tmp);
-	    			resizeCaselles(CO.poss.get(CO.rows*CO.cols+i*CO.cols+j));
-	    			CO.poss.get(CO.rows*CO.cols+i*CO.cols+j).setText(CO.celes.get(i*CO.cols+j));
-	    			CO.poss.get(i*CO.cols+j).setClickable(true);
-	    			
-				}	
+		    	plafoB.add(tmp);	
+				
 			}
 		}
+		
+		
+		for (int i = 0; i < CO.rows; ++i) { //inicialització plafo A
+			for (int j = 0; j < CO.cols; ++j) {
+		    	Integer corresp = correspondencies.get(i*CO.cols+j);
+
+				TextView tmp = plafoA.get(corresp);
+		    	//plafoA.add(correspondencies.get(i*CO.cols+j), tmp);
+				resizeCaselles(tmp);
+		    	if ("".equals(CO.imatges.get(i*CO.cols+j))) { //no hi ha imatges -> posar text
+		    		String text = CO.celes.get(i*CO.cols+j);
+		    		tmp.setText(text);
+		    	}
+		    	else { //hi ha imatges -> posar imatge
+		    		if(Descompressor.descompressor(CO.imatges.get(i*CO.cols+j), CO.path)) {
+		    			BitmapDrawable img = new BitmapDrawable(path+CO.imatges.get(i*CO.cols+j));
+		    			img = resizeImg(img);
+		    			tmp.setBackgroundDrawable(img);
+		    		}
+		    	}
+		    	
+		    	tmp.setClickable(true);
+		    	tmp.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						click(v);						
+					}
+				});
+		    	plafoA.set(corresp, tmp);	
+			}
+		}
+		
+		//int offB = CO.cols*CO.rows; //offset a partir del que comença la info del plafó B
+		
+		for (int i = 0; i < CO.rows; ++i) { //inicialització plafo B
+			for (int j = 0; j < CO.cols; ++j) {
+				TextView tmp = plafoB.get(i*CO.cols+j);
+				resizeCaselles(tmp);
+				if ("".equals(CO.imatges.get(offB+i*CO.cols+j))) { //no hi ha imatges -> posar text
+		    		String text = CO.celes.get(offB+i*CO.cols+j);
+		    		tmp.setText(text);
+		    	}
+		    	else { //hi ha imatges -> posar imatge
+		    		if(Descompressor.descompressor(CO.imatges.get(i*CO.cols+j), CO.path)) {
+		    			BitmapDrawable img = new BitmapDrawable(path+CO.imatges.get(offB+i*CO.cols+j));
+		    			img = resizeImg(img);
+		    			tmp.setBackgroundDrawable(img);
+		    		}
+		    	}
+		    	
+		    	
+		    	tmp.setClickable(true);
+		    	tmp.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						click(v);						
+					}
+				});
+		    	//al plafoB no fem random :/ Integer corresp = correspondencies.get(i*CO.cols+j);
+		    	plafoB.set(i*CO.cols+j, tmp);	
+				
+			}
+		}
+
+//		for (int i = 0; i < CO.rows; ++i) {
+//			for (int j = 0; j < CO.cols; ++j) {
+//				if (CO.imatges.get(i*CO.cols+j) != null) {
+//		    		if(Descompressor.descompressor(CO.imatges.get(i*CO.cols+j), CO.path)) {
+//		    			BitmapDrawable img = new BitmapDrawable(path+CO.imatges.get(i*CO.cols+j));
+//	
+//		    			
+//		    			resizeCaselles(CO.poss.get(correspondencies.get(i*CO.cols+j)));
+//		    			img = resizeImg(img);
+//		    			CO.poss.get(correspondencies.get(i*CO.cols+j)).setBackgroundDrawable(img);
+//		    			//CO.poss.get(i*CO.cols+j).setBackgroundDrawable(img);
+//		    			CO.poss.get(correspondencies.get(i*CO.cols+j)).setClickable(true);
+//		    			CO.poss.get(correspondencies.get(i*CO.cols+j)).setOnClickListener(new View.OnClickListener() {
+//							
+//							public void onClick(View v) {
+//								click(v);
+//							}
+//						});
+//					}
+//				}
+//			}
+//		}
+//		
+//		for (int i = 0; i < CO.rows; ++i) 
+//			for (int j = 0; j < CO.cols; ++j) {
+//			if (CO.celes.get(i*CO.cols+j) != null) {
+//				
+//	    		if(Descompressor.descompressor(CO.celes.get(i*CO.cols+j), CO.path)){
+//	    			
+//	    			//	height = img.getGravity();
+//	    			TextView tmp = (TextView) findViewById(idPos.get(5+i).get(j)); //al loro! 5 son maxrows
+//	    			CO.poss.add(tmp);
+//	    			resizeCaselles(CO.poss.get(CO.rows*CO.cols+i*CO.cols+j));
+//	    			CO.poss.get(CO.rows*CO.cols+i*CO.cols+j).setText(CO.celes.get(CO.rows*CO.cols+i*CO.cols+j));
+//	    			CO.poss.get(i*CO.cols+j).setClickable(true);
+//	    			CO.poss.get(i*CO.cols+j).setOnClickListener(new View.OnClickListener() {  //les caselles amb paraules no les desordenem...
+//						
+//						public void onClick(View v) {
+//							click(v);
+//						}
+//					});
+//				}	
+//			}
+//		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private void click(View v) {
 		if (seleccionat == null) {
 			seleccionat = (TextView) v;
-			int pos = CO.poss.indexOf(seleccionat);
-			
-			Drawable draw = CO.poss.get(pos).getBackground();
+						
+			Drawable draw = seleccionat.getBackground();
 			draw.setAlpha(0);
-			CO.poss.get(pos).setBackgroundDrawable(draw);
+			seleccionat.setBackgroundDrawable(draw);
+//			seleccionat.setClickable(false);
+//			int pos = CO.poss.indexOf(seleccionat);
+//			
+//			Drawable draw = CO.poss.get(pos).getBackground();
+//			draw.setAlpha(100);
+//			CO.poss.get(pos).setBackgroundDrawable(draw);
 			
 			
 		}
 		
 		else if (seleccionat != null) {
-			if (seleccionat.equals(v)) {
-				//(TextView) v.setBackgroundColor(Color.)
+			if (seleccionat.equals(v)) { //si selecciona el mateix que ja tenia, aqui en principi no hi hauria d'arribar, nomes esta per debug
+				//Desmarco l'anterior
+				Drawable draw = seleccionat.getBackground();
+				draw.setAlpha(255);
+				seleccionat.setBackgroundDrawable(draw);
+				seleccionat = (TextView) v;
+				
 			}
 		}
 	}
 
-	private void makeRandomImgs() {
-		// TODO Auto-generated method stub
+	private void makeRandomPlafoA() {
 		ArrayList<Boolean> agafats = new ArrayList<Boolean>();
-		for(int i = 0; i < CO.imatges.size(); i++){
+		for(int i = 0; i < (CO.cols*CO.rows); i++){
 			agafats.add(false);
 		}
 		Random r = new Random();
 		
-		this.correspondencies = new ArrayList<Integer>(CO.imatges.size());
-		for(int i=0; i < CO.imatges.size(); ++i) {
+		this.correspondencies = new ArrayList<Integer>(CO.cols*CO.rows);
+		for(int i=0; i < (CO.cols*CO.rows); ++i) {
 			int rand =  r.nextInt(agafats.size());
 			if(agafats.get(rand)!= true) {
 				this.correspondencies.add(Integer.valueOf(rand));

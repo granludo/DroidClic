@@ -110,9 +110,7 @@ public class Puzzle extends Activity{
 
 
 			CO.imatges = Parser.getActivitats().elementAt(CO.activitatActual).getImages();
-			CO.celes = Parser.getActivitats().elementAt(CO.activitatActual).getCeles();
-			CO.poss = new ArrayList<TextView>();
-			
+			CO.celes = Parser.getActivitats().elementAt(CO.activitatActual).getCeles();			
 			
 			if(CO.imatge != null){
 				//hi ha una imatge, pel que numero les caselles de 0 a N

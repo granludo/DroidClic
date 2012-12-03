@@ -62,7 +62,6 @@ public class Constants {
     public TextView pos39;
     public TextView pos40;
     
-    public ArrayList<TextView> poss;
     
     public TextView miss;
     public TextView miss2;
