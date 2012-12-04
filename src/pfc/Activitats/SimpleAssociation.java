@@ -9,7 +9,10 @@ import pfc.Jclic.R;
 import pfc.Parser.Parser;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -18,6 +21,7 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 @TargetApi(8) 
 public class SimpleAssociation extends Activity {
@@ -31,6 +35,22 @@ public class SimpleAssociation extends Activity {
 	
 	private Vector<TextView> plafoA = new Vector<TextView>(CO.cols*CO.rows);
 	private Vector<TextView> plafoB = new Vector<TextView>(CO.cols*CO.rows);
+	private Vector<TV_ContAlternatiu> contAlternatiu = new Vector<TV_ContAlternatiu>(CO.cols*CO.rows);
+	
+	public class TV_ContAlternatiu extends TextView {
+		boolean esImatge;
+		
+		public TV_ContAlternatiu(Context context) {
+			super(context);
+		}
+		
+		boolean getEsImatge() {
+			return esImatge;
+		}
+		void setEsImatge(boolean b) {
+			esImatge = b;
+		}
+	}
 	
 	private TextView posAgafada;
 	
@@ -50,9 +70,11 @@ public class SimpleAssociation extends Activity {
 	
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.simple_association); 
-	    //TODO: posar SetRequestedOrientation(asdfsdfdf);
+	    setContentView(R.layout.double_puzzle); 
 
+	    //TODO: orientació vertical "provisional"
+	    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	    
 	    //aquí s'inicialitza el so
 	    sound = new Sounds(getApplicationContext());
 	    
@@ -171,8 +193,17 @@ public class SimpleAssociation extends Activity {
 		for (int i = 0; i < CO.rows; ++i) { //posar elems plafo B
 			for (int j = 0; j < CO.cols; ++j) {
 				TextView tmp = (TextView) findViewById(idPos.get(5+i).get(j));
+
+		    	plafoB.add(tmp);
 				
-		    	plafoB.add(tmp);	
+			}
+		}
+		
+		
+		for (int i = 0; i < CO.rows; ++i) { //posar elems conAlternatiu
+			for (int j = 0; j < CO.cols; ++j) {
+				TV_ContAlternatiu tmp = new TV_ContAlternatiu(getApplicationContext());
+		    	contAlternatiu.add(tmp);
 				
 			}
 		}
@@ -181,13 +212,16 @@ public class SimpleAssociation extends Activity {
 		for (int i = 0; i < CO.rows; ++i) { //inicialització plafo A
 			for (int j = 0; j < CO.cols; ++j) {
 		    	Integer corresp = correspondencies.get(i*CO.cols+j);
-
 				TextView tmp = plafoA.get(corresp);
+	    		tmp.setBackgroundColor(Color.DKGRAY);
+
+				
 		    	//plafoA.add(correspondencies.get(i*CO.cols+j), tmp);
 				resizeCaselles(tmp);
 		    	if ("".equals(CO.imatges.get(i*CO.cols+j))) { //no hi ha imatges -> posar text
 		    		String text = CO.celes.get(i*CO.cols+j);
 		    		tmp.setText(text);
+		    		tmp.setTextColor(Color.WHITE);
 		    	}
 		    	else { //hi ha imatges -> posar imatge
 		    		if(Descompressor.descompressor(CO.imatges.get(i*CO.cols+j), CO.path)) {
@@ -215,9 +249,12 @@ public class SimpleAssociation extends Activity {
 			for (int j = 0; j < CO.cols; ++j) {
 				TextView tmp = plafoB.get(i*CO.cols+j);
 				resizeCaselles(tmp);
+	    		tmp.setBackgroundColor(Color.DKGRAY);
+
 				if ("".equals(CO.imatges.get(offB+i*CO.cols+j))) { //no hi ha imatges -> posar text
 		    		String text = CO.celes.get(offB+i*CO.cols+j);
 		    		tmp.setText(text);
+		    		tmp.setTextColor(Color.WHITE);
 		    	}
 		    	else { //hi ha imatges -> posar imatge
 		    		if(Descompressor.descompressor(CO.imatges.get(i*CO.cols+j), CO.path)) {
@@ -241,79 +278,122 @@ public class SimpleAssociation extends Activity {
 				
 			}
 		}
+		
+		for (int i = 0; i < CO.rows; ++i) { //inicialització plafo alternatiu
+			for (int j = 0; j < CO.cols; ++j) {
+		    	Integer corresp = correspondencies.get(i*CO.cols+j);
+				TV_ContAlternatiu tmp = contAlternatiu.get(corresp);
+	    		tmp.setBackgroundColor(Color.DKGRAY);
 
-//		for (int i = 0; i < CO.rows; ++i) {
-//			for (int j = 0; j < CO.cols; ++j) {
-//				if (CO.imatges.get(i*CO.cols+j) != null) {
-//		    		if(Descompressor.descompressor(CO.imatges.get(i*CO.cols+j), CO.path)) {
-//		    			BitmapDrawable img = new BitmapDrawable(path+CO.imatges.get(i*CO.cols+j));
-//	
-//		    			
-//		    			resizeCaselles(CO.poss.get(correspondencies.get(i*CO.cols+j)));
-//		    			img = resizeImg(img);
-//		    			CO.poss.get(correspondencies.get(i*CO.cols+j)).setBackgroundDrawable(img);
-//		    			//CO.poss.get(i*CO.cols+j).setBackgroundDrawable(img);
-//		    			CO.poss.get(correspondencies.get(i*CO.cols+j)).setClickable(true);
-//		    			CO.poss.get(correspondencies.get(i*CO.cols+j)).setOnClickListener(new View.OnClickListener() {
-//							
-//							public void onClick(View v) {
-//								click(v);
-//							}
-//						});
-//					}
-//				}
-//			}
-//		}
-//		
-//		for (int i = 0; i < CO.rows; ++i) 
-//			for (int j = 0; j < CO.cols; ++j) {
-//			if (CO.celes.get(i*CO.cols+j) != null) {
-//				
-//	    		if(Descompressor.descompressor(CO.celes.get(i*CO.cols+j), CO.path)){
-//	    			
-//	    			//	height = img.getGravity();
-//	    			TextView tmp = (TextView) findViewById(idPos.get(5+i).get(j)); //al loro! 5 son maxrows
-//	    			CO.poss.add(tmp);
-//	    			resizeCaselles(CO.poss.get(CO.rows*CO.cols+i*CO.cols+j));
-//	    			CO.poss.get(CO.rows*CO.cols+i*CO.cols+j).setText(CO.celes.get(CO.rows*CO.cols+i*CO.cols+j));
-//	    			CO.poss.get(i*CO.cols+j).setClickable(true);
-//	    			CO.poss.get(i*CO.cols+j).setOnClickListener(new View.OnClickListener() {  //les caselles amb paraules no les desordenem...
-//						
-//						public void onClick(View v) {
-//							click(v);
-//						}
-//					});
-//				}	
-//			}
-//		}
+				resizeCaselles(tmp);
+		    	if (CO.imatges.size() > offB*2 && "".equals(CO.imatges.get(offB*2+i*CO.cols+j))) { //no hi ha imatge -> posar text
+		    		String text = CO.celes.get(offB*2+i*CO.cols+j);
+		    		tmp.setText(text);
+		    		tmp.setTextColor(Color.WHITE);
+		    		tmp.setEsImatge(false);
+		    	}
+		    	else if (CO.imatges.size() > offB*2) { //hi ha imatge -> posar imatge
+		    		if(Descompressor.descompressor(CO.imatges.get(i*CO.cols+j), CO.path)) {
+		    			BitmapDrawable img = new BitmapDrawable(path+CO.imatges.get(i*CO.cols+j));
+		    			img = resizeImg(img);
+		    			tmp.setBackgroundDrawable(img);
+		    			tmp.setEsImatge(true);
+		    		}
+		    	}
+		    	
+			}
+		}
+		
+
 	}
 
 	private void click(View v) {
-		if (seleccionat == null) {
+		
+		if (seleccionat == null) { //no n'hi ha cap de seleccionat anteriorment
 			seleccionat = (TextView) v;
 						
 			Drawable draw = seleccionat.getBackground();
-			draw.setAlpha(0);
-			seleccionat.setBackgroundDrawable(draw);
-//			seleccionat.setClickable(false);
-//			int pos = CO.poss.indexOf(seleccionat);
-//			
-//			Drawable draw = CO.poss.get(pos).getBackground();
-//			draw.setAlpha(100);
-//			CO.poss.get(pos).setBackgroundDrawable(draw);
-			
-			
+			draw.setAlpha(100);
+			seleccionat.setBackgroundDrawable(draw);		
 		}
 		
-		else if (seleccionat != null) {
-			if (seleccionat.equals(v)) { //si selecciona el mateix que ja tenia, aqui en principi no hi hauria d'arribar, nomes esta per debug
-				//Desmarco l'anterior
-				Drawable draw = seleccionat.getBackground();
-				draw.setAlpha(255);
-				seleccionat.setBackgroundDrawable(draw);
-				seleccionat = (TextView) v;
-				
+		else if (seleccionat != null) { // ja en té un de seleccionat
+			if ((plafoA.contains(v) && plafoA.contains(seleccionat)) || (plafoB.contains(v) && plafoB.contains(seleccionat))) { //si selecciona un del mateix plafo
+				if (v.equals(seleccionat)) { // torna a seleccionar el mateix
+					seleccionat.getBackground().setAlpha(255);
+					seleccionat = null;
+				}
+				else { // en selecciona un altre
+					seleccionat.getBackground().setAlpha(255);
+					seleccionat = (TextView) v;
+					seleccionat.getBackground().setAlpha(100);
+				}				
 			}
+			
+			else { // en selecciona un d'un plafo diferent
+				String plafoS, plafoV;
+				Integer posS, posV;
+				if (plafoA.contains(v)) {
+					plafoV = "A";
+					posV = plafoA.indexOf(v);
+					plafoS = "B";
+					posS = plafoB.indexOf(seleccionat);					
+				}
+				else  {
+					plafoV = "B";
+					posV = plafoB.indexOf(v);
+					plafoS = "A";
+					posS = plafoA.indexOf(seleccionat);
+				}
+				
+				if ("A".equals(plafoS)) { // && "B".equals(plafoV)
+					Integer posCorrectaB = correspondencies.indexOf(posS);
+					if (posCorrectaB.equals(posV)) { //correcte
+						Log.v("ASSOC", "associacio correcta");
+						
+						seleccionat.getBackground().setAlpha(255);
+						if (CO.imatges.size() > (CO.cols*CO.rows)*2) { // hi ha contingut alternatiu
+							TextView tmp = (TextView) contAlternatiu.get(posCorrectaB);
+							plafoA.set(posS, tmp);
+						}
+						else { //es posen transparents
+							seleccionat.setVisibility(View.INVISIBLE);
+						}
+						v.setVisibility(View.INVISIBLE);
+						v.setClickable(false);
+						seleccionat.setClickable(false);
+					}
+					else { // es desselecciona el seleccionat abans
+						Log.v("ASSOC", "associacio incorrecta");
+						seleccionat.getBackground().setAlpha(255);
+						seleccionat = null;
+					}
+				}
+				else { //"B".equals(plafoS) && "A".equals(plafoV)
+					Integer posCorrectaB = correspondencies.indexOf(posV);
+					if (posCorrectaB.equals(posS)) { //correcte
+						//TODO: 
+						Log.v("ASSOC", "associacio correcta");
+						seleccionat.getBackground().setAlpha(255);
+						if (CO.imatges.size() > (CO.cols*CO.rows)*2) { // hi ha contingut alternatiu
+							TextView tmp = (TextView) contAlternatiu.get(posCorrectaB);
+							plafoA.set(posS, tmp);
+						}
+						else { //es posen transparents
+							v.setVisibility(View.INVISIBLE);
+						}
+						seleccionat.setVisibility(View.INVISIBLE);
+						v.setClickable(false);
+						seleccionat.setClickable(false);
+						
+					}
+					else {
+						Log.v("ASSOC", "associacio incorrecta");
+						seleccionat.getBackground().setAlpha(255);
+						seleccionat = null;
+					}
+				}				
+			}	//TODO: posar contingut alternatiu amb alpha = 50?		
 		}
 	}
 
@@ -397,8 +477,6 @@ public class SimpleAssociation extends Activity {
 	
 	//@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
-	
 		super.onDestroy();
 		sound.unloadAll();	
 	}
