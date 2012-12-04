@@ -34,6 +34,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -51,6 +53,10 @@ public class ExchangePuzzle extends Activity{
 	private int height;
 	private TextView posAgafada1 = null;
 	private TextView posAgafada2 = null;
+	private TextView aciertos=null;
+	private TextView intentos=null;
+	//private TextView tiempo=null;
+	private ProgressBar tiempo = null;
 	private Vector<BitmapDrawable> vecDraw;
 	private Sounds sounds;
 	private Constants CO = Constants.getInstance();
@@ -68,6 +74,14 @@ public class ExchangePuzzle extends Activity{
 	   
 	    setContentView(R.layout.exchange_hole_puzzle);
 	    sounds = new Sounds(this.getApplicationContext());
+	    aciertos = (EditText)findViewById(R.id.editAciertos);
+	    intentos = (EditText)findViewById(R.id.editIntentos);
+	    //tiempo.setText(Integer.toString(maxTime));
+	    tiempo = (ProgressBar) findViewById(R.id.progressTime);
+	    maxTime = 30;  // ELIMINAR
+	    tiempo.setMax(maxTime);
+	    tiempo.setProgress(0);
+	    
 	    try{
 	    	reiniciarMenu();
 			agafarDades();
@@ -100,7 +114,6 @@ public class ExchangePuzzle extends Activity{
 					}
 		    	}
 		    }
-		    
 		    sounds.playStart();
 		    setOnClickListener();
 		    if(maxTime != 0){
@@ -109,6 +122,8 @@ public class ExchangePuzzle extends Activity{
 				@Override
 				public void onFinish() {
 					++contadorT;
+					//tiempo.setText(Integer.toString(maxTime-contadorT)); // contador enrere
+					tiempo.setProgress(contadorT);
 					setMissatges();
 					
 				}
@@ -116,6 +131,8 @@ public class ExchangePuzzle extends Activity{
 				@Override
 				public void onTick(long arg0) {
 					contadorT++;
+					//tiempo.setText(Integer.toString(maxTime-contadorT)); // contador enrere
+					tiempo.setProgress(contadorT);
 					setMissatges();
 					
 				}
@@ -665,16 +682,21 @@ public class ExchangePuzzle extends Activity{
 		for(int i = 0; i < CO.vecCaselles.size(); i++){
 			if(CO.vecCaselles.elementAt(i) != null){
 				if(((String)CO.vecCaselles.elementAt(i).getText()).
-						equalsIgnoreCase(CO.sortida.elementAt(i))) CO.correcte++;
+						equalsIgnoreCase(CO.sortida.elementAt(i))) {
+							CO.correcte++; 
+							aciertos.setText(Integer.toString(CO.correcte)); //actualitza numero caselles correctes
+				}
 				else CO.incorrecte++;
 			}
 		}
 		++cont;
+
 		
 		if(CO.correcte>correcte && cont == 2){
 			if(maxIntents!=0){
 				contador++;
 			}
+			contador++;
 			sounds.playAction_ok();
 			cont =0;
 		}
@@ -682,10 +704,11 @@ public class ExchangePuzzle extends Activity{
 			if(maxIntents!=0){
 				contador++;
 			}
+			contador++;
 			sounds.playActionError();
 			cont =0;
 		}
-		
+		intentos.setText(Integer.toString(contador)); // actualitza numero intents
 		setMissatges();
 	}
 	
@@ -742,7 +765,6 @@ public class ExchangePuzzle extends Activity{
 				}
 				else displayedTime=contadorT;
 				CO.missCorrectes.setText("C = " + CO.correcte + ", I = " + CO.incorrecte +"  In ="+displayedIntents + "T ="+displayedTime);
-				
 			}
 		}
 	}

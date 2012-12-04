@@ -1,44 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
     android:id="@+id/ll"
 	android:gravity="center_horizontal|center_vertical">
     
-	<LinearLayout 
-		android:orientation="horizontal"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content" >
-        <TextView 
-        	android:padding="15dip"
-			android:maxLines="1"
-        	android:layout_width="wrap_content"
+	<LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:id="@+id/titulo"/>
+            android:background="#7777"
+            android:gravity="top" >
+
+            <Button
+                android:id="@+id/menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Menu" />
+
+            <RelativeLayout
+                android:layout_width="162dp"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/titulo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="Small Text"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/aciertos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="aciertos"
+                android:maxLines="1"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                android:id="@+id/editAciertos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:editable="false"
+                android:ems="10"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:height="@android:dimen/thumbnail_height"
+                android:minWidth="80sp"
+                android:maxWidth="80sp"
+                android:inputType="number"
+                android:linksClickable="false">
+
+                <requestFocus />
+            </EditText>
+
+            <TextView
+                android:id="@+id/intentos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="intentos"
+                android:maxLines="1"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                android:id="@+id/editIntentos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:editable="false"
+                android:ems="10"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="number" 
+                android:minWidth="80sp"
+                android:maxWidth="80sp"/>
+
+            <TextView
+                android:id="@+id/tiempo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="tiempo"
+                android:maxLines="1"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                android:id="@+id/editTiempo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:editable="false"
+                android:ems="10"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="number" 
+                android:minWidth="80sp"
+                android:maxWidth="80sp"/>
+
+        </LinearLayout>
+
     </LinearLayout>
-    
-    <ScrollView
-		android:id="@+id/sv"
-	    android:layout_width="wrap_content"
-	   	android:layout_height="wrap_content"
-	   	android:minWidth="400dip"
-	   	android:minHeight="20dip">
-	   	
-<!-- Taula entrada -->	
+  
+<!-- Taula entrada -->
+	<LinearLayout
+		    android:orientation="horizontal"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content">	
 		<LinearLayout
 		    android:orientation="vertical"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content">
-		    
+
 			<TableLayout
 				android:id="@+id/tl"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content">
-			    
+
 			    <TableRow android:id="@+id/tr1">
-		            
+
 			        <TextView
 			            android:id="@+id/pos1"
 			            android:layout_margin="2dip"/>
@@ -53,11 +144,11 @@
 			            android:layout_margin="2dip"/>
 			    </TableRow>
 			</TableLayout>
-			
+
 			<TableLayout
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content">
-			    
+
 			    <TableRow  android:id="@+id/tr2">
 					<TextView
 			            android:id="@+id/pos5"
@@ -73,11 +164,11 @@
 			            android:layout_margin="2dip"/>
 			    </TableRow>
 			</TableLayout>
-			
+
 			<TableLayout
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content">  
-			    
+
 			    <TableRow android:id="@+id/tr3">	    
 					<TextView
 			            android:id="@+id/pos9"
@@ -93,11 +184,11 @@
 			            android:layout_margin="2dip"/>
 			    </TableRow>
 			</TableLayout>
-			
+
 			<TableLayout
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"> 
-			      
+
 			    <TableRow android:id="@+id/tr4">		    
 					<TextView
 			            android:id="@+id/pos13"
@@ -113,11 +204,11 @@
 			            android:layout_margin="2dip"/>
 			    </TableRow>
 			</TableLayout>
-			
+
 			<TableLayout
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content">
-			     
+
 			    <TableRow android:id="@+id/tr5">		    
 					<TextView
 			            android:id="@+id/pos17"
@@ -133,16 +224,16 @@
 			            android:layout_margin="2dip"/>
 			    </TableRow>	            
 			</TableLayout>
-			
+
 			<TableLayout
 				android:orientation="horizontal"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content">
-			    
+
 			    <TableRow
 			    	android:layout_width="wrap_content"
 					android:layout_height="wrap_content">
-					
+
 			    	<ImageView 
 						android:id="@+id/bdown"
 						android:src="@drawable/icon_down"
@@ -151,11 +242,11 @@
 						android:layout_marginLeft="15dip"  
 						android:layout_marginTop="10dip"
 						android:layout_marginRight="10dip"/>
-			    
+
 			    	<LinearLayout android:orientation="vertical"
 					    android:layout_width="wrap_content"
 					    android:layout_height="wrap_content">
-					    
+
 				        <TextView android:layout_width="wrap_content"
 				            android:layout_height="wrap_content"
 				            android:maxLength="32"
@@ -164,7 +255,7 @@
 				            android:gravity="center_horizontal"
 				            android:id="@+id/missatge"
 				            android:textStyle="bold"/>
-					    
+
 						<TextView android:layout_width="wrap_content"
 				            android:layout_height="wrap_content"
 				            android:maxLength="32"
@@ -173,7 +264,7 @@
 				            android:gravity="center_horizontal"
 				            android:id="@+id/correcte"
 				            android:textStyle="bold"/>
-				            
+
 						<TextView android:layout_width="wrap_content"
 				            android:layout_height="wrap_content"
 				            android:maxLength="32"
@@ -185,15 +276,20 @@
 				    </LinearLayout>
 			    </TableRow>
 			</TableLayout>
-			
+		</LinearLayout>
+
 <!-- Taula resultat -->
+		<LinearLayout
+		    android:orientation="vertical"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content">
 			<TableLayout
 				android:id="@+id/tl2"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content">
-			    
+
 			    <TableRow android:id="@+id/tr6">
-		            
+
 			        <TextView
 			            android:id="@+id/pos21"
 			            android:layout_margin="2dip"/>
@@ -208,11 +304,11 @@
 			            android:layout_margin="2dip"/>
 			    </TableRow>
 			</TableLayout>
-			
+
 			<TableLayout
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content">
-			    
+
 			    <TableRow  android:id="@+id/tr7">
 					<TextView
 			            android:id="@+id/pos25"
@@ -228,11 +324,11 @@
 			            android:layout_margin="2dip"/>
 			    </TableRow>
 			</TableLayout>
-			
+
 			<TableLayout
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content">  
-			    
+
 			    <TableRow android:id="@+id/tr8">	    
 					<TextView
 			            android:id="@+id/pos29"
@@ -248,11 +344,11 @@
 			            android:layout_margin="2dip"/>
 			    </TableRow>
 			</TableLayout>
-			
+
 			<TableLayout
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"> 
-			      
+
 			    <TableRow android:id="@+id/tr9">		    
 					<TextView
 			            android:id="@+id/pos33"
@@ -268,11 +364,11 @@
 			            android:layout_margin="2dip"/>
 			    </TableRow>
 			</TableLayout>
-			
+
 			<TableLayout
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content">
-			     
+
 			    <TableRow android:id="@+id/tr10">		    
 					<TextView
 			            android:id="@+id/pos37"
@@ -288,16 +384,16 @@
 			            android:layout_margin="2dip"/>
 			    </TableRow>	            
 			</TableLayout>
-			
+
 			<TableLayout
 				android:orientation="horizontal"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content">
-			    
+
 			    <TableRow
 			    	android:layout_width="wrap_content"
 					android:layout_height="wrap_content">
-					
+
 			    	<ImageView 
 						android:id="@+id/bup"
 						android:src="@drawable/icon_up"
@@ -306,11 +402,11 @@
 						android:layout_marginLeft="15dip"  
 						android:layout_marginTop="10dip"
 						android:layout_marginRight="10dip"/>
-			    
+
 			    	<LinearLayout android:orientation="vertical"
 					    android:layout_width="wrap_content"
 					    android:layout_height="wrap_content">
-					    
+
 				        <TextView android:layout_width="wrap_content"
 				            android:layout_height="wrap_content"
 				            android:maxLength="32"
@@ -319,7 +415,7 @@
 				            android:gravity="center_horizontal"
 				            android:id="@+id/missatge2"
 				            android:textStyle="bold"/>
-					    
+
 						<TextView android:layout_width="wrap_content"
 				            android:layout_height="wrap_content"
 				            android:maxLength="32"
@@ -328,7 +424,7 @@
 				            android:gravity="center_horizontal"
 				            android:id="@+id/correcte2"
 				            android:textStyle="bold"/>
-				            
+
 						<TextView android:layout_width="wrap_content"
 				            android:layout_height="wrap_content"
 				            android:maxLength="32"
@@ -341,5 +437,10 @@
 			    </TableRow>
 			</TableLayout>
 		</LinearLayout>
+	</LinearLayout>
+    <ScrollView
+		android:id="@+id/sv"
+	    android:layout_width="wrap_content"
+	   	android:layout_height="wrap_content" >
 	</ScrollView>
 </LinearLayout>

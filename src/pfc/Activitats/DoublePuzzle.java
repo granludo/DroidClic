@@ -35,6 +35,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -50,6 +51,9 @@ public class DoublePuzzle extends Activity{
 	private static final int MENU_INICI = 4;
 	private static final int MENU_SORTIR = 5;
 	private TextView posAgafada = null;
+	private TextView aciertos=null;
+	private TextView intentos=null;
+	private TextView tiempo=null;
 	private int newWidth;
 	private int newHeight;
 	private int width;
@@ -78,6 +82,13 @@ public class DoublePuzzle extends Activity{
 	    
 	    //aquí s'inicialitza el so
 	    sound = new Sounds(getApplicationContext());
+	    aciertos = (EditText)findViewById(R.id.editAciertos);
+	    intentos = (EditText)findViewById(R.id.editIntentos);
+	    tiempo = (EditText)findViewById(R.id.editTiempo);
+	    tiempo.setText(Integer.toString(maxTime));
+	    
+	    maxIntents = 10; // eliminar
+	    maxTime = 30; // eliminar
 	    
 	    try{	
 	    	reiniciarMenu();
@@ -118,11 +129,13 @@ public class DoublePuzzle extends Activity{
 		    		@Override
 					public void onFinish() {
 						contadorTemps++;
+						tiempo.setText(Integer.toString(maxTime - contadorTemps));
 						setMissatges();						
 					}
 					@Override
 					public void onTick(long arg0) {
 						contadorTemps++;
+						tiempo.setText(Integer.toString(maxTime - contadorTemps));
 						setMissatges();							
 					}				    
 			    }.start();
@@ -910,7 +923,10 @@ public class DoublePuzzle extends Activity{
 		            public void onClick(View view) {		            	
 		               	if(!CO.p1.equalsIgnoreCase("<buit>")){
 		            		//tinc un valor agafat, miro si va aqui
-		    				if (contador <  maxIntents) contador++;
+		    				if (contador <  maxIntents) {
+		    					contador++;
+		    					intentos.setText(Integer.toString(contador));
+		    				}
 
 		            		if(CO.p1.equalsIgnoreCase((String)pos.getText())){
 		            			//el valor es el correcte
@@ -923,6 +939,7 @@ public class DoublePuzzle extends Activity{
 		            			posAgafada.setBackgroundColor(Color.GRAY);
 		            			posAgafada.setTextColor(Color.TRANSPARENT);
 		            			CO.correcte++;
+		            			aciertos.setText(Integer.toString(CO.correcte));
 		            			CO.incorrecte--;
 		            			sound.playAction_ok();
 		            			
