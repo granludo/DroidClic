@@ -28,7 +28,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 @TargetApi(8) 
 public class SimpleAssociation extends Activity {
@@ -66,7 +65,6 @@ public class SimpleAssociation extends Activity {
 		}
 	}
 	
-	private TextView posAgafada;
 	
 	Sounds sound;
 	private int maxTime = Parser.getActivitats().get(CO.activitatActual).getTempsMax();

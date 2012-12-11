@@ -19,6 +19,7 @@
 <activity android:name="pfc.Repositori.LlistatProjectes" android:screenOrientation="portrait"></activity>
 <activity android:name="pfc.Activitats.SimpleAssociation" android:screenOrientation="landscape"></activity>
 <activity android:name="pfc.Activitats.Memory" android:screenOrientation="portrait"></activity>
+<activity android:name="pfc.Activitats.ComplexAssociation"></activity>
 </application>
 <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
