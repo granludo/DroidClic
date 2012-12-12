@@ -104,6 +104,14 @@ public class Constants {
     public int maxRows = 5;
     public int cols;
     public int rows;
+    
+    /////////////////////
+    public int cols2;
+    public int rows2;
+    public boolean inverse;
+    public ArrayList<Integer> ids;
+    /////////////////////
+    
     public int casIni;
     public int activitatActual;
     

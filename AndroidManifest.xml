@@ -11,6 +11,7 @@
         </activity>
     <activity android:name="pfc.Activitats.ExchangePuzzle" android:screenOrientation="portrait"></activity>
 
+
 <!-- Cambiar todo a landscape -->
 <activity android:name="pfc.Activitats.DoublePuzzle" android:screenOrientation="portrait"></activity>
 <activity android:name="pfc.Activitats.HolePuzzle" android:screenOrientation="portrait"></activity>
@@ -20,6 +21,8 @@
 <activity android:name="pfc.Activitats.SimpleAssociation" android:screenOrientation="landscape"></activity>
 <activity android:name="pfc.Activitats.Memory" android:screenOrientation="portrait"></activity>
 <activity android:name="pfc.Activitats.PanelsIdentify" android:screenOrientation="landscape"></activity>
+<activity android:name="pfc.Activitats.ComplexAssociation"></activity>
+<activity android:name="pfc.Activitats.WrittenAnswer"></activity>s
 </application>
 <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

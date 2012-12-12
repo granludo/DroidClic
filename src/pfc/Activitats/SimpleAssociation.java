@@ -19,16 +19,17 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 @TargetApi(8) 
 public class SimpleAssociation extends Activity {
@@ -66,7 +67,6 @@ public class SimpleAssociation extends Activity {
 		}
 	}
 	
-	private TextView posAgafada;
 	
 	Sounds sound;
 	private int maxTime = Parser.getActivitats().get(CO.activitatActual).getTempsMax();
@@ -358,6 +358,9 @@ public class SimpleAssociation extends Activity {
 			
 			
 			else { // en selecciona un d'un plafo diferent
+				contador++;//S'incrementa el contador d'intents
+				
+				
 				String plafoS, plafoV;
 				Integer posS, posV;
 				if (plafoA.contains(v)) {
@@ -500,8 +503,10 @@ public class SimpleAssociation extends Activity {
         int widthImage = bitmapOrg.getWidth();
         int heightImage = bitmapOrg.getHeight();
         
-        newWidth = width*CO.cols;
-        newHeight = height*CO.rows;
+//        newWidth = width*CO.cols;
+//        newHeight = height*CO.rows;
+      newWidth = width;
+      newHeight = height;
         
         float scaleWidth = ((float) newWidth) / widthImage;
         float scaleHeight = ((float) newHeight) / heightImage;
@@ -516,41 +521,55 @@ public class SimpleAssociation extends Activity {
 	
 	private void resizeCaselles(TextView pos) {
 		
-		if(CO.cols == 1){
-    		pos.setWidth(250);
-    		width = 250;
-    	} else if(CO.cols == 2){
-    		pos.setWidth(120);
-    		width = 120;
-    	} else if(CO.cols == 3){
-    		pos.setWidth(50);
-    		width = 50;
-    	} else {
-    		//cols == 4
-    		pos.setWidth(40);
-    		width = 40;
-    	}
-    	
-		if(CO.rows == 1 || CO.rows == 2){
-    		pos.setHeight(100);
-    		pos.setMaxLines(4);
-    		height = 100;
-    	} else if(CO.rows == 3){
-    		pos.setHeight(85);
-    		pos.setMaxLines(3);
-    		height = 85;
-    	} else if(CO.rows == 4){
-    		pos.setHeight(50);
-    		pos.setMaxLines(2);
-    		height = 50;
-    	} else {
-    		//CO.rows == 5
-    		pos.setHeight(40);
-    		pos.setMaxLines(2);
-    		height = 40;
-    	}
-		width /= 10;
-		height /= 10;
+		Display display = getWindowManager().getDefaultDisplay();
+		int screenWidth = display.getWidth();
+		int screenHeigh = display.getHeight();
+		
+		
+
+			width = screenWidth/(CO.cols*2);
+
+		pos.setWidth(width);
+
+			height = screenHeigh/(CO.rows*4);
+
+		pos.setHeight(height);
+		
+//		if(CO.cols == 1){
+//    		pos.setWidth(250);
+//    		width = 250;
+//    	} else if(CO.cols == 2){
+//    		pos.setWidth(120);
+//    		width = 120;
+//    	} else if(CO.cols == 3){
+//    		pos.setWidth(50);
+//    		width = 50;
+//    	} else {
+//    		//cols == 4
+//    		pos.setWidth(40);
+//    		width = 40;
+//    	}
+//    	
+//		if(CO.rows == 1 || CO.rows == 2){
+//    		pos.setHeight(100);
+//    		pos.setMaxLines(4);
+//    		height = 100;
+//    	} else if(CO.rows == 3){
+//    		pos.setHeight(85);
+//    		pos.setMaxLines(3);
+//    		height = 85;
+//    	} else if(CO.rows == 4){
+//    		pos.setHeight(50);
+//    		pos.setMaxLines(2);
+//    		height = 50;
+//    	} else {
+//    		//CO.rows == 5
+//    		pos.setHeight(40);
+//    		pos.setMaxLines(2);
+//    		height = 40;
+//    	}
+//		width /= 10;
+//		height /= 10;
 
 	}
 	

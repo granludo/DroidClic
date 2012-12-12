@@ -75,11 +75,15 @@ public class Parser {
 				if(activity.getAttributeValue(XMLConstants.CLASS) != null &&
 						(activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.EXCHANGEPUZZ)
 								//|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.HOLEPUZZ)
+
 								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.DOUBLEPUZZ)
 								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.MEMORYGAME) //descomentar per provar
 								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.SIMPLEASSOC) 
 								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.PANIDENTIFY)
-								//|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.COMPLEXASSOC)
+								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.COMPLEXASSOC)
+								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.TXTWRITEANSWER)
+
+
 								)) {
 					
 					Dades dades = new Dades();
