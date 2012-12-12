@@ -19,11 +19,13 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -693,8 +695,10 @@ public class ComplexAssociation extends Activity {
         int widthImage = bitmapOrg.getWidth();
         int heightImage = bitmapOrg.getHeight();
         
-        newWidth = width*CO.cols;
-        newHeight = height*CO.rows;
+//        newWidth = width*CO.cols;
+//        newHeight = height*CO.rows;
+        newWidth = width;
+        newHeight = height;
         
         float scaleWidth = ((float) newWidth) / widthImage;
         float scaleHeight = ((float) newHeight) / heightImage;
@@ -709,41 +713,55 @@ public class ComplexAssociation extends Activity {
 	
 	private void resizeCaselles(TextView pos) {
 		
-		if(CO.cols == 1){
-    		pos.setWidth(250);
-    		width = 250;
-    	} else if(CO.cols == 2){
-    		pos.setWidth(120);
-    		width = 120;
-    	} else if(CO.cols == 3){
-    		pos.setWidth(50);
-    		width = 50;
-    	} else {
-    		//cols == 4
-    		pos.setWidth(40);
-    		width = 40;
-    	}
-    	
-		if(CO.rows == 1 || CO.rows == 2){
-    		pos.setHeight(100);
-    		pos.setMaxLines(4);
-    		height = 100;
-    	} else if(CO.rows == 3){
-    		pos.setHeight(85);
-    		pos.setMaxLines(3);
-    		height = 85;
-    	} else if(CO.rows == 4){
-    		pos.setHeight(50);
-    		pos.setMaxLines(2);
-    		height = 50;
-    	} else {
-    		//CO.rows == 5
-    		pos.setHeight(40);
-    		pos.setMaxLines(2);
-    		height = 40;
-    	}
-		width /= 10;
-		height /= 10;
+		Display display = getWindowManager().getDefaultDisplay();
+		int screenWidth = display.getWidth();
+		int screenHeigh = display.getHeight();
+		
+		
+		if (CO.cols > CO.cols2)
+			width = screenWidth/(CO.cols*2);
+		else 
+			width = screenWidth/(CO.cols2*2);
+		pos.setWidth(width);
+		if (CO.rows > CO.rows2)
+			height = screenHeigh/(CO.rows*4);
+		else
+			height = screenHeigh/(CO.rows2*4);
+		pos.setHeight(height);
+//		
+//		if(CO.cols == 1){
+//    		pos.setWidth(250);
+//    		width = 250;
+//    	} else if(CO.cols == 2){
+//    		pos.setWidth(120);
+//    		width = 120;
+//    	} else if(CO.cols == 3){
+//    		pos.setWidth(80);
+//    		width = 80;
+//    	} else {
+//    		//cols == 4
+//    		pos.setWidth(60);
+//    		width = 60;
+//    	}
+//    	
+//		if(CO.rows == 1 || CO.rows == 2){
+//    		pos.setHeight(100);
+//    		pos.setMaxLines(4);
+//    		height = 100;
+//    	} else if(CO.rows == 3){
+//    		pos.setHeight(85);
+//    		pos.setMaxLines(3);
+//    		height = 85;
+//    	} else if(CO.rows == 4){
+//    		pos.setHeight(70);
+//    		pos.setMaxLines(2);
+//    		height = 70;
+//    	} else {
+//    		//CO.rows == 5
+//    		pos.setHeight(60);
+//    		pos.setMaxLines(2);
+//    		height = 60;
+//    	}
 
 	}
 	
