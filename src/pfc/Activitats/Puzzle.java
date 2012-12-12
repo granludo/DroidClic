@@ -84,6 +84,14 @@ public class Puzzle extends Activity{
 		    	startActivity(i);
 		    	finish();
 		    }
+		    else if(Parser.getActivitats().elementAt(CO.activitatActual+1).
+	    		getClas().equals(XMLConstants.COMPLEXASSOC)) { // Complex assoc
+		    	agafarDadesParser();
+	    		posarNegrePantalla();
+	    		Intent i = new Intent(this, ComplexAssociation.class);
+	    		startActivity(i);
+	    		finish();
+		    }
 			else if(Parser.getActivitats().elementAt(CO.activitatActual+1).
 				    getClas().equals(XMLConstants.MEMORYGAME)) { // Memory
 				agafarDadesParser();
@@ -118,9 +126,12 @@ public class Puzzle extends Activity{
 
 
 			CO.imatges = Parser.getActivitats().elementAt(CO.activitatActual).getImages();
-			CO.celes = Parser.getActivitats().elementAt(CO.activitatActual).getCeles();
-			CO.poss = new ArrayList<TextView>();
+			CO.celes = Parser.getActivitats().elementAt(CO.activitatActual).getCeles();		
 			
+			CO.cols2 = Parser.getActivitats().elementAt(CO.activitatActual).getCellCols2();
+			CO.rows2 = Parser.getActivitats().elementAt(CO.activitatActual).getCellRows2();
+			CO.ids = Parser.getActivitats().elementAt(CO.activitatActual).getRelacions();
+			CO.inverse = Parser.getActivitats().elementAt(CO.activitatActual).isInverse();
 			
 			if(CO.imatge != null){
 				//hi ha una imatge, pel que numero les caselles de 0 a N

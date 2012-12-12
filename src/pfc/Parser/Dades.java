@@ -16,6 +16,12 @@ public class Dades {
 	private Vector<String> celes;
 	private int cellRows;
 	private int cellCols;
+	
+	private int cellRows2;
+	private int cellCols2;
+	private boolean inverse;
+	private ArrayList<Integer> relacions;
+	
 	private boolean cellBorder;
 	private String colorFG;
 	private String colorBG;
@@ -186,6 +192,38 @@ public class Dades {
 
 	public void setImages(ArrayList<String> images) {
 		this.images = images;
+	}
+
+	public int getCellRows2() {
+		return cellRows2;
+	}
+
+	public void setCellRows2(int cellRows2) {
+		this.cellRows2 = cellRows2;
+	}
+
+	public int getCellCols2() {
+		return cellCols2;
+	}
+
+	public void setCellCols2(int cellCols2) {
+		this.cellCols2 = cellCols2;
+	}
+
+	public boolean isInverse() {
+		return inverse;
+	}
+
+	public void setInverse(boolean inverse) {
+		this.inverse = inverse;
+	}
+
+	public ArrayList<Integer> getRelacions() {
+		return relacions;
+	}
+
+	public void setRelacions(ArrayList<Integer> relacions) {
+		this.relacions = relacions;
 	}
 	
 	//********************************************

@@ -62,7 +62,6 @@ public class Constants {
     public TextView pos39;
     public TextView pos40;
     
-    public ArrayList<TextView> poss;
     
     public TextView miss;
     public TextView miss2;
@@ -105,6 +104,14 @@ public class Constants {
     public int maxRows = 5;
     public int cols;
     public int rows;
+    
+    /////////////////////
+    public int cols2;
+    public int rows2;
+    public boolean inverse;
+    public ArrayList<Integer> ids;
+    /////////////////////
+    
     public int casIni;
     public int activitatActual;
     
