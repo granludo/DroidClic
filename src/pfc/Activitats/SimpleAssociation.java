@@ -356,6 +356,9 @@ public class SimpleAssociation extends Activity {
 			
 			
 			else { // en selecciona un d'un plafo diferent
+				contador++;//S'incrementa el contador d'intents
+				
+				
 				String plafoS, plafoV;
 				Integer posS, posV;
 				if (plafoA.contains(v)) {
