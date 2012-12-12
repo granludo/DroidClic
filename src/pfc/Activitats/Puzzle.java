@@ -92,6 +92,15 @@ public class Puzzle extends Activity{
 				startActivity(i);
 				finish();
 			}	
+			else if(Parser.getActivitats().elementAt(CO.activitatActual+1).getClas()
+					.equals(XMLConstants.PANIDENTIFY)) {
+				agafarDadesParser();
+				posarNegrePantalla();
+				Intent i = new Intent(this, PanelsIdentify.class);
+				startActivity(i);
+				finish();
+			}
+			
 		}
 	}
 	

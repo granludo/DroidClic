@@ -78,6 +78,7 @@ public class Parser {
 								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.DOUBLEPUZZ)
 								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.MEMORYGAME) //descomentar per provar
 								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.SIMPLEASSOC) 
+								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.PANIDENTIFY)
 								//|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.COMPLEXASSOC)
 								)) {
 					
@@ -260,6 +261,7 @@ public class Parser {
 						}
 						dades.setCeles(celes);
 						dades.setImages(images);
+						dades.setRelacions(relacions);
 					}
 					
 					if(!(dades.getCellCols() > 4 || dades.getCellRows() > 5)){
