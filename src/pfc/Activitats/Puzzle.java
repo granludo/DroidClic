@@ -92,6 +92,14 @@ public class Puzzle extends Activity{
 				startActivity(i);
 				finish();
 			}	
+			else if(Parser.getActivitats().elementAt(CO.activitatActual+1).
+				    getClas().equals(XMLConstants.TXTWRITEANSWER)) { // Written Answer
+				agafarDadesParser();
+				posarNegrePantalla();
+				Intent i = new Intent(this, WrittenAnswer.class);
+				startActivity(i);
+				finish();
+			}	
 		}
 	}
 	
