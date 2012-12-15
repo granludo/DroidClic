@@ -78,6 +78,7 @@ public class SimpleAssociation extends Activity {
 	private ArrayList<ArrayList<Integer>> idPos = new ArrayList<ArrayList<Integer>>();
 	private TextView seleccionat;
 	private ArrayList<Integer> correspondencies;
+	private ArrayList<Integer> correspondenciesB;
 	
 	
 	int contador = 0; //Comptador per als intents.
@@ -194,7 +195,8 @@ public class SimpleAssociation extends Activity {
 	private void initQuadricules() {
 
 		
-		makeRandomPlafoA(); //es la mateixa que el makeRandomImgs d'abans
+		makeRandomPlafoA();
+		makeRandomPlafoB();
 		
 		for (int i = 0; i < CO.rows; ++i) { //posar elems plafo A
 			for (int j = 0; j < CO.cols; ++j) {
@@ -255,7 +257,7 @@ public class SimpleAssociation extends Activity {
 						click(v);						
 					}
 				});
-		    	plafoA.set(corresp, tmp);	
+		    	//plafoA.set(corresp, tmp);	
 			}
 		}
 		
@@ -263,7 +265,8 @@ public class SimpleAssociation extends Activity {
 		
 		for (int i = 0; i < CO.rows; ++i) { //inicialització plafo B
 			for (int j = 0; j < CO.cols; ++j) {
-				TextView tmp = plafoB.get(i*CO.cols+j);
+				Integer corresp = correspondenciesB.get(i*CO.cols+j);
+				TextView tmp = plafoB.get(corresp);
 				resizeCaselles(tmp);
 	    		tmp.setBackgroundColor(Color.DKGRAY);
 
@@ -290,7 +293,7 @@ public class SimpleAssociation extends Activity {
 					}
 				});
 		    	//al plafoB no fem random :/ Integer corresp = correspondencies.get(i*CO.cols+j);
-		    	plafoB.set(i*CO.cols+j, tmp);	
+		    	//plafoB.set(i*CO.cols+j, tmp);	
 				
 			}
 		}
@@ -336,13 +339,7 @@ public class SimpleAssociation extends Activity {
 		}
 		
 		else if (seleccionat != null) { // ja en té un de seleccionat
-			
-			Log.v("plafoA.contains(v) ", String.valueOf(plafoA.contains(v)));
-			Log.v("plafoA.contains(seleccionat) ", String.valueOf(plafoA.contains(seleccionat)));
-			Log.v("plafoB.contains(v) ", String.valueOf(plafoB.contains(v)));
-			Log.v("plafoB.contains(seleccionat) ", String.valueOf(plafoA.contains(seleccionat)));
-			Log.v("seleccionat = null?", String.valueOf(seleccionat==null));
-			Log.v("v = null?", String.valueOf(v==null));
+
 			
 			if ((plafoA.contains(v) && plafoA.contains(seleccionat)) || (plafoB.contains(v) && plafoB.contains(seleccionat))) { //si selecciona un del mateix plafo
 				if (v.equals(seleccionat)) { // torna a seleccionar el mateix
@@ -377,9 +374,9 @@ public class SimpleAssociation extends Activity {
 				}
 				
 				if ("A".equals(plafoS)) { // && "B".equals(plafoV)
-					Integer posCorrectaB = correspondencies.indexOf(posS);
+					Integer posInicial = correspondencies.indexOf(posS);
+					Integer posCorrectaB = correspondenciesB.get(posInicial);
 					if (posCorrectaB.equals(posV)) { //correcte
-						Log.v("ASSOC", "associacio correcta");
 						
 						
 						
@@ -413,7 +410,6 @@ public class SimpleAssociation extends Activity {
 						
 					}
 					else { // es desselecciona el seleccionat abans
-						Log.v("ASSOC", "associacio incorrecta");
 						
 						sound.playActionError();
 						
@@ -422,9 +418,10 @@ public class SimpleAssociation extends Activity {
 					}
 				}
 				else { //"B".equals(plafoS) && "A".equals(plafoV)
-					Integer posCorrectaB = correspondencies.indexOf(posV);
+					Integer posInicial = correspondencies.indexOf(posV);
+					Integer posCorrectaB = correspondenciesB.get(posInicial);
+					
 					if (posCorrectaB.equals(posS)) { //correcte
-						Log.v("ASSOC", "associacio correcta");
 												
 						seleccionat.getBackground().setAlpha(255);
 						if (CO.imatges.size() > (CO.cols*CO.rows)*2) { // hi ha contingut alternatiu
@@ -455,7 +452,6 @@ public class SimpleAssociation extends Activity {
 						
 					}
 					else {
-						Log.v("ASSOC", "associacio incorrecta");
 						
 						sound.playActionError();
 						
@@ -475,7 +471,6 @@ public class SimpleAssociation extends Activity {
 		}
 		if (cont == CO.cols*CO.rows) {
 			sound.playFinished_ok();
-			//TODO: iniciar seguent activitat
 		}
 	}
 
@@ -491,6 +486,25 @@ public class SimpleAssociation extends Activity {
 			int rand =  r.nextInt(agafats.size());
 			if(agafats.get(rand)!= true) {
 				this.correspondencies.add(Integer.valueOf(rand));
+				agafats.set(rand,true);  
+			}
+			else --i;
+		}
+	}
+	
+	
+	private void makeRandomPlafoB() {
+		ArrayList<Boolean> agafats = new ArrayList<Boolean>();
+		for(int i = 0; i < (CO.cols*CO.rows); i++){
+			agafats.add(false);
+		}
+		Random r = new Random();
+		
+		this.correspondenciesB = new ArrayList<Integer>(CO.cols*CO.rows);
+		for(int i=0; i < (CO.cols*CO.rows); ++i) {
+			int rand =  r.nextInt(agafats.size());
+			if(agafats.get(rand)!= true) {
+				this.correspondenciesB.add(Integer.valueOf(rand));
 				agafats.set(rand,true);  
 			}
 			else --i;
@@ -671,13 +685,12 @@ public class SimpleAssociation extends Activity {
     	        .setIcon(R.drawable.jclic_aqua)
     	        .setTitle("Ajuda")
     	        .setPositiveButton("D'acord", null)
-    	        .setMessage("ColÂ·loca les caselles al seu lloc corresponent del panell de sota.\n" +
-    	        		"Pots canviar de panell prement la fletxa, o bÃ© desplaÃ§an-te per la pantalla.")
+    	        .setMessage("Associa les caselles dels dos panells")
     	        .create();
             	ajuda.show();
             	return true;
             case MENU_SOLUCIO:
-            	/* AIXò no no fEEeEeEEEm :D
+            	/* Això no ho fem
             	 * 
             	 * 
             	 * if(!CO.solucioVisible){

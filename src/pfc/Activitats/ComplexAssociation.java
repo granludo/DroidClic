@@ -78,6 +78,8 @@ public class ComplexAssociation extends Activity {
 	private ArrayList<ArrayList<Integer>> idPos = new ArrayList<ArrayList<Integer>>();
 	private TextView seleccionat;
 	private ArrayList<Integer> correspondencies;
+	private ArrayList<Integer> correspondenciesB;
+
 	
 	
 	int contador = 0; //Comptador per als intents.
@@ -195,6 +197,7 @@ public class ComplexAssociation extends Activity {
 
 		
 		makeRandomPlafoA(); 
+		makeRandomPlafoB();
 		
 		for (int i = 0; i < CO.rows; ++i) { //posar elems plafo A
 			for (int j = 0; j < CO.cols; ++j) {
@@ -268,7 +271,9 @@ public class ComplexAssociation extends Activity {
 		
 		for (int i = 0; i < CO.rows2; ++i) { //inicialització plafo B
 			for (int j = 0; j < CO.cols2; ++j) {
-				TextView tmp = plafoB.get(i*CO.cols2+j);
+				Integer corresp = correspondenciesB.get(i*CO.cols2+j);
+				TextView tmp = plafoB.get(corresp);
+				
 				resizeCaselles(tmp);
 	    		tmp.setBackgroundColor(Color.DKGRAY);
 
@@ -348,13 +353,6 @@ public class ComplexAssociation extends Activity {
 		}
 		
 		else if (seleccionat != null) { // ja en té un de seleccionat
-//			
-//			Log.v("plafoA.contains(v) ", String.valueOf(plafoA.contains(v)));
-//			Log.v("plafoA.contains(seleccionat) ", String.valueOf(plafoA.contains(seleccionat)));
-//			Log.v("plafoB.contains(v) ", String.valueOf(plafoB.contains(v)));
-//			Log.v("plafoB.contains(seleccionat) ", String.valueOf(plafoA.contains(seleccionat)));
-//			Log.v("seleccionat = null?", String.valueOf(seleccionat==null));
-//			Log.v("v = null?", String.valueOf(v==null));
 			
 			if ((plafoA.contains(v) && plafoA.contains(seleccionat)) || (plafoB.contains(v) && plafoB.contains(seleccionat))) { //si selecciona un del mateix plafo
 				if (v.equals(seleccionat)) { // torna a seleccionar el mateix
@@ -389,12 +387,10 @@ public class ComplexAssociation extends Activity {
 					// seleccionat -> A  i v -> B
 					
 					Integer correspondencia = correspondencies.indexOf(posS); //posicio del vector de IDs que em diu la cel·la del B corresponent
-					Integer posCorrectaB = CO.ids.get(correspondencia);
+					Integer posInicial = CO.ids.get(correspondencia);  //posicio inicial de la correspondencia del plafo B
+					Integer posCorrectaB = correspondenciesB.get(posInicial); //pos correcta a B corresponent a seleccionat
 					
 					if (posCorrectaB.equals(posV)) { //correcte
-						Log.v("ASSOC", "associacio correcta");
-						
-						
 						
 						seleccionat.getBackground().setAlpha(255);
 						if (CO.imatges.size() > (CO.cols*CO.rows)*2) { // hi ha contingut alternatiu
@@ -426,7 +422,6 @@ public class ComplexAssociation extends Activity {
 						
 					}
 					else { // es desselecciona el seleccionat abans
-						Log.v("ASSOC", "associacio incorrecta");
 						
 						sound.playActionError();
 						
@@ -440,12 +435,11 @@ public class ComplexAssociation extends Activity {
 					
 					
 					Integer correspondencia = correspondencies.indexOf(posV);
-					
-					//Integer correspondencia = correspondencies.indexOf(posS); //posicio del vector de IDs que em diu la cel·la del B corresponent
-					Integer posCorrectaB = CO.ids.get(correspondencia);
+					Integer posInicial = CO.ids.get(correspondencia);  //posicio inicial de la correspondencia del plafo B
+					Integer posCorrectaB = correspondenciesB.get(posInicial); //pos correcta a B corresponent a seleccionat
+
 					
 					if (posCorrectaB.equals(posS)) { //correcte
-						Log.v("ASSOC", "associacio correcta");
 												
 						seleccionat.getBackground().setAlpha(255);
 						if (CO.imatges.size() > (CO.cols*CO.rows)*2) { // hi ha contingut alternatiu
@@ -476,7 +470,6 @@ public class ComplexAssociation extends Activity {
 						
 					}
 					else {
-						Log.v("ASSOC", "associacio incorrecta");
 						
 						sound.playActionError();
 						
@@ -516,13 +509,7 @@ public class ComplexAssociation extends Activity {
 		}
 		
 		else if (seleccionat != null) { // ja en té un de seleccionat
-//			
-//			Log.v("plafoA.contains(v) ", String.valueOf(plafoA.contains(v)));
-//			Log.v("plafoA.contains(seleccionat) ", String.valueOf(plafoA.contains(seleccionat)));
-//			Log.v("plafoB.contains(v) ", String.valueOf(plafoB.contains(v)));
-//			Log.v("plafoB.contains(seleccionat) ", String.valueOf(plafoA.contains(seleccionat)));
-//			Log.v("seleccionat = null?", String.valueOf(seleccionat==null));
-//			Log.v("v = null?", String.valueOf(v==null));
+
 			
 			if ((plafoA.contains(v) && plafoA.contains(seleccionat)) || (plafoB.contains(v) && plafoB.contains(seleccionat))) { //si selecciona un del mateix plafo
 				if (v.equals(seleccionat)) { // torna a seleccionar el mateix
@@ -557,10 +544,10 @@ public class ComplexAssociation extends Activity {
 					// seleccionat -> A  i v -> B
 					
 					Integer correspondencia = correspondencies.indexOf(posS); //posicio del vector de IDs que em diu la cel·la del B corresponent
-					Integer posCorrectaB = CO.ids.get(correspondencia);
+					Integer posInicial = CO.ids.get(correspondencia);  //posicio inicial de la correspondencia del plafo B
+					Integer posCorrectaB = correspondenciesB.get(posInicial); //pos correcta a B corresponent a seleccionat
 					
 					if (posCorrectaB.equals(posV)) { //correcte
-						Log.v("ASSOC", "associacio correcta");
 						
 						
 						
@@ -594,7 +581,6 @@ public class ComplexAssociation extends Activity {
 						
 					}
 					else { // es desselecciona el seleccionat abans
-						Log.v("ASSOC", "associacio incorrecta");
 						
 						sound.playActionError();
 						
@@ -608,12 +594,10 @@ public class ComplexAssociation extends Activity {
 					
 					
 					Integer correspondencia = correspondencies.indexOf(posV);
-					
-					//Integer correspondencia = correspondencies.indexOf(posS); //posicio del vector de IDs que em diu la cel·la del B corresponent
-					Integer posCorrectaB = CO.ids.get(correspondencia);
+					Integer posInicial = CO.ids.get(correspondencia);  //posicio inicial de la correspondencia del plafo B
+					Integer posCorrectaB = correspondenciesB.get(posInicial); //pos correcta a B corresponent a seleccionat
 					
 					if (posCorrectaB.equals(posS)) { //correcte
-						Log.v("ASSOC", "associacio correcta");
 												
 						seleccionat.getBackground().setAlpha(255);
 						if (CO.imatges.size() > (CO.cols*CO.rows)*2) { // hi ha contingut alternatiu
@@ -644,7 +628,6 @@ public class ComplexAssociation extends Activity {
 						
 					}
 					else {
-						Log.v("ASSOC", "associacio incorrecta");
 						
 						sound.playActionError();
 						
@@ -683,6 +666,24 @@ public class ComplexAssociation extends Activity {
 			int rand =  r.nextInt(agafats.size());
 			if(agafats.get(rand)!= true) {
 				this.correspondencies.add(Integer.valueOf(rand));
+				agafats.set(rand,true);  
+			}
+			else --i;
+		}
+	}
+	
+	private void makeRandomPlafoB() {
+		ArrayList<Boolean> agafats = new ArrayList<Boolean>();
+		for(int i = 0; i < (CO.cols2*CO.rows2); i++){
+			agafats.add(false);
+		}
+		Random r = new Random();
+		
+		this.correspondenciesB = new ArrayList<Integer>(CO.cols2*CO.rows2);
+		for(int i=0; i < (CO.cols2*CO.rows2); ++i) {
+			int rand =  r.nextInt(agafats.size());
+			if(agafats.get(rand)!= true) {
+				this.correspondenciesB.add(Integer.valueOf(rand));
 				agafats.set(rand,true);  
 			}
 			else --i;
@@ -869,7 +870,7 @@ public class ComplexAssociation extends Activity {
             	ajuda.show();
             	return true;
             case MENU_SOLUCIO:
-            	/* AIXò no no fEEeEeEEEm :D
+            	/* Això no ho fem
             	 * 
             	 * 
             	 * if(!CO.solucioVisible){
