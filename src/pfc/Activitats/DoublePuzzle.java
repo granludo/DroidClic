@@ -41,6 +41,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -57,7 +59,7 @@ public class DoublePuzzle extends Activity {
 	private TextView posAgafada = null;
 	private TextView aciertos = null;
 	private TextView intentos = null;
-	private TextView tiempo = null;
+	private ProgressBar tiempo = null;
 	private Button bMenu = null;
 	private Button bInici = null;
 	private int newWidth;
@@ -95,13 +97,10 @@ public class DoublePuzzle extends Activity {
 		sound = new Sounds(getApplicationContext());
 		aciertos = (TextView) findViewById(R.id.editAciertos);
 		intentos = (TextView) findViewById(R.id.editIntentos);
-		tiempo = (TextView) findViewById(R.id.editTiempo);
-		tiempo.setText(Integer.toString(maxTime));
+		tiempo = (ProgressBar) findViewById(R.id.progressTime);
+	    tiempo.setMax(maxTime);
+	    tiempo.setProgress(0);
 		bMenu = (Button) findViewById(R.id.menu);
-
-		maxIntents = 10; // eliminar
-		maxTime = 30; // eliminar
-
 		try {
 			//reiniciarMenu();
 			agafarDades();
@@ -140,16 +139,20 @@ public class DoublePuzzle extends Activity {
 					@Override
 					public void onFinish() {
 						contadorTemps++;
-						tiempo.setText(Integer
-								.toString(maxTime - contadorTemps));
+						/*tiempo.setText(Integer
+								.toString(maxTime - contadorTemps));*/
+						tiempo.setProgress(contadorTemps);
+
 						setMissatges();
 					}
 
 					@Override
 					public void onTick(long arg0) {
 						contadorTemps++;
-						tiempo.setText(Integer
-								.toString(maxTime - contadorTemps));
+						/*tiempo.setText(Integer
+								.toString(maxTime - contadorTemps));*/
+						tiempo.setProgress(contadorTemps);
+
 						setMissatges();
 					}
 				}.start();
@@ -977,7 +980,6 @@ public class DoublePuzzle extends Activity {
 							// tinc un valor agafat, miro si va aqui
 							if (contador < maxIntents) {
 								contador++;
-								intentos.setText(Integer.toString(contador));
 							}
 
 							if (CO.p1.equalsIgnoreCase((String) pos.getText())) {
@@ -991,7 +993,6 @@ public class DoublePuzzle extends Activity {
 								posAgafada.setBackgroundColor(Color.GRAY);
 								posAgafada.setTextColor(Color.TRANSPARENT);
 								CO.correcte++;
-								aciertos.setText(Integer.toString(CO.correcte));
 								CO.incorrecte--;
 								sound.playAction_ok();
 
@@ -1054,6 +1055,13 @@ public class DoublePuzzle extends Activity {
 			CO.cas2.setText("");
 			CO.p1 = "<buit>";
 		} else {
+			final Context aC = this;
+			Dialog dialog = new Dialog(aC, R.style.Dialog);
+			dialog.setContentView(R.layout.menu_clic);
+			dialog.setCanceledOnTouchOutside(true);
+			MenuActivitats ma = new MenuActivitats(timer);
+			ma.butsMenu(dialog, aC, vecDraw);
+			TextView textFinal = (TextView) dialog.findViewById(R.id.tMenuClic);
 			if (CO.correcte == CO.casIni) {
 				// Hem acabat el joc
 				sound.playFinished_ok();
@@ -1061,12 +1069,12 @@ public class DoublePuzzle extends Activity {
 					timer.cancel();
 				if (Parser.getActivitats().elementAt(CO.activitatActual)
 						.getMissatgeFi() != null) {
-					CO.miss.setText(Parser.getActivitats()
+					textFinal.setText(Parser.getActivitats()
 							.elementAt(CO.activitatActual).getMissatgeFi());
-					CO.miss2.setText(Parser.getActivitats()
-							.elementAt(CO.activitatActual).getMissatgeFi());
+					/*CO.miss2.setText(Parser.getActivitats()
+							.elementAt(CO.activitatActual).getMissatgeFi());*/
 				} else {
-					CO.miss.setText("Joc finalitzat!");
+					textFinal.setText("Joc finalitzat!");
 					CO.miss2.setText("Joc finalitzat!");
 				}
 
@@ -1077,7 +1085,7 @@ public class DoublePuzzle extends Activity {
 				// CO.missCorrectes2.setText("Prem aqui per continuar.");
 				CO.missCorrectes2.setBackgroundColor(Color.WHITE);
 				CO.missCorrectes2.setTextColor(Color.BLACK);
-
+				dialog.show();
 				bloquejarJoc(true);
 				if (CO.menu != null)
 					CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
@@ -1096,11 +1104,11 @@ public class DoublePuzzle extends Activity {
 				 * (Parser.getActivitats().elementAt(CO.activitatActual
 				 * ).getMissatgeFi()); } else {
 				 */
-				if (contadorTemps == maxTime) {
-					CO.miss.setText("S'ha acabat el temps!");
+				if (maxTime !=0 && contadorTemps == maxTime) {
+					textFinal.setText("S'ha acabat el temps!");
 					CO.miss2.setText("S'ha acabat el temps!");
 				} else {
-					CO.miss.setText("Has superat els intents maxims!");
+					textFinal.setText("Has superat els intents maxims!");
 					CO.miss2.setText("Has superat els intents maxims!");
 				}
 				CO.missCorrectes.setText("Prem aqui per continuar.");
@@ -1110,7 +1118,7 @@ public class DoublePuzzle extends Activity {
 				CO.missCorrectes2.setText("Prem aqui per continuar.");
 				CO.missCorrectes2.setBackgroundColor(Color.WHITE);
 				CO.missCorrectes2.setTextColor(Color.BLACK);
-
+				dialog.show();
 				bloquejarJoc(true);
 				if (CO.menu != null)
 					CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
@@ -1135,6 +1143,9 @@ public class DoublePuzzle extends Activity {
 					displayedTime = maxTime - contadorTemps;
 				} else
 					displayedTime = contadorTemps;
+				aciertos.setText(Integer.toString(CO.correcte));
+				intentos.setText(Integer.toString(contador));
+
 				// CO.missCorrectes.setText("Correctes = " + CO.correcte +
 				// ", Incorrectes = " + CO.incorrecte);
 				// CO.missCorrectes.setText("C = " + CO.correcte + ", Inc = " +

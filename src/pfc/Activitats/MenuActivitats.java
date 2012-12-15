@@ -64,6 +64,8 @@ public class MenuActivitats extends Activity {
 			.get(CO.activitatActual).getTimeCutDown();
 	private boolean IntentCountDown = Parser.getActivitats()
 			.get(CO.activitatActual).getIntentCutdown();
+	private int maxTime1 = Parser.getActivitats().get(CO.activitatActual).getTempsMax();
+
 
 	int contador = 0; // Comptador per als intents.
 	int contadorTemps = 0; // Comptador per al temps.
@@ -134,7 +136,8 @@ public class MenuActivitats extends Activity {
 
 		bOk.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				timer.cancel();
+				if (maxTime1 != 0) 
+					timer.cancel();
 				CO.activitatActual = activitatMenu-1;
 				Intent iSeg = new Intent(aC, Puzzle.class);
 				aC.startActivity(iSeg);
@@ -146,7 +149,8 @@ public class MenuActivitats extends Activity {
 			public void onClick(View v) {
 				d.dismiss();
 				if (!CO.solucioVisible) {
-					timer.cancel();
+					if (maxTime1 != 0)
+						timer.cancel();
 					// Vull mostrar la solucio
 					CO.vecActual = new Vector<CharSequence>();
 					for (int i = 0; i < CO.vecCaselles.size(); i++) {
@@ -233,6 +237,7 @@ public class MenuActivitats extends Activity {
 
 		bInici.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				if (maxTime1 != 0)
 				timer.cancel();
 				Intent i = new Intent(aC, Jclic.class);
 				aC.startActivity(i);
@@ -301,7 +306,7 @@ public class MenuActivitats extends Activity {
 				 * (Parser.getActivitats().elementAt(CO.activitatActual
 				 * ).getMissatgeFi()); } else {
 				 */
-				if (contadorTemps == maxTime) {
+				if (maxTime!= 0 && contadorTemps == maxTime) {
 					CO.miss.setText("S'ha acabat el temps!");
 					CO.miss2.setText("S'ha acabat el temps!");
 				} else {

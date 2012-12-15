@@ -111,7 +111,7 @@ public class ExchangePuzzle extends Activity{
 	    //tiempo.setText(Integer.toString(maxTime));
 	    tiempo = (ProgressBar) findViewById(R.id.progressTime);
 	    
-	    maxTime = 30;  // ELIMINAR
+	    //maxTime = 30; 
 	    tiempo.setMax(maxTime);
 	    tiempo.setProgress(0);
 	    bMenu = (Button) findViewById(R.id.menu);
@@ -781,7 +781,6 @@ public class ExchangePuzzle extends Activity{
 				if(((String)CO.vecCaselles.elementAt(i).getText()).
 						equalsIgnoreCase(CO.sortida.elementAt(i))) {
 							CO.correcte++; 
-							CO.missCorrectes.setText(Integer.toString(CO.correcte)); //actualitza numero caselles correctes
 				}
 				else CO.incorrecte++;
 			}
@@ -805,7 +804,6 @@ public class ExchangePuzzle extends Activity{
 			sounds.playActionError();
 			cont =0;
 		}
-		intentos.setText(Integer.toString(contador)); // actualitza numero intents
 		setMissatges();
 	}
 	
@@ -824,7 +822,7 @@ public class ExchangePuzzle extends Activity{
 			dialog.setCanceledOnTouchOutside(true);
 			MenuActivitats ma = new MenuActivitats(timer);
 			ma.butsMenu(dialog, aC, vecDraw);
-			TextView textFinal = (TextView) dialog.findViewById(R.id.tMenuClic); 
+			TextView textFinal = (TextView) dialog.findViewById(R.id.tMenuClic);
 			if((maxIntents != 0 && maxIntents == contador && CO.correcte!=CO.casIni)||contadorT == maxTime && maxTime!=0){
 				sounds.playFinished_error();
 				if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi() != null)
@@ -868,6 +866,8 @@ public class ExchangePuzzle extends Activity{
 					displayedTime = maxTime - contadorT;
 				}
 				else displayedTime=contadorT;
+				intentos.setText(Integer.toString(displayedIntents)); // actualitza numero intents
+				CO.missCorrectes.setText(Integer.toString(CO.correcte)); //actualitza numero caselles correctes
 				//CO.missCorrectes.setText("C = " + CO.correcte + ", I = " + CO.incorrecte +"  In ="+displayedIntents + "T ="+displayedTime);
 			}
 		}
