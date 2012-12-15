@@ -31,6 +31,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
@@ -56,16 +57,20 @@ public class HolePuzzle extends Activity {
 	private int height;
 	private Vector<BitmapDrawable> vecDraw;
 	
-	private Sounds sounds;
-	private pfc.Parser.Dades dades = new pfc.Parser.Dades();
-	private int intents;
-	private int time;
-	private Timer timer;
-	
 	private int indexPos;
 	private int indexBuida;
 	private TextView posBuida = null;
 	private Constants CO = Constants.getInstance();
+	
+	private int maxTime = Parser.getActivitats().get(CO.activitatActual).getTempsMax();
+	private int maxIntents =  Parser.getActivitats().get(CO.activitatActual).getIntentMax();
+	private boolean TimeCountDown =  Parser.getActivitats().get(CO.activitatActual).getTimeCutDown();
+	private boolean IntentCountDown = Parser.getActivitats().get(CO.activitatActual).getIntentCutdown();
+	private Sounds sounds;
+	
+	int contadorIntent = 0; //Comptador per als intents.
+	int contadorTime = 0; //Comptador per al temps.
+	private CountDownTimer timer;
 	
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
@@ -73,7 +78,7 @@ public class HolePuzzle extends Activity {
 	    try{
 	    	reiniciarMenu();
 			agafarDades();
-			sounds = new Sounds(this);
+			sounds = new Sounds(getApplicationContext());
 			
 			if(CO.imatge != null) {
 		    	if(CO.exemple){
@@ -103,10 +108,28 @@ public class HolePuzzle extends Activity {
 					}
 		    	}
 		    }
-			//so comen√ßar partida
+			//so començar partida
 			sounds.playStart();
 			comprobarInicial();
-		    setOnClickListener();
+		    
+			if(maxTime != 0){
+		    	timer = new CountDownTimer(maxTime*1000, 1000){
+		    		@Override
+					public void onFinish() {
+						contadorTime++;
+						setMissatges();						
+					}
+					@Override
+					public void onTick(long arg0) {
+						contadorTime++;
+						setMissatges();							
+					}				    
+			    }.start();
+		    }
+			
+			setOnClickListener();
+		    
+		    
 	    } catch(Exception e){
 	    	Log.d("Error", "catch HolePuzzle: "+e);
 	    }
@@ -118,15 +141,6 @@ public class HolePuzzle extends Activity {
 		super.onDestroy();
 	}
 	
-	final Handler mHandler = new Handler();
-	 
-    final Runnable handler = new Runnable() {
-        public void run() {
-        	time = -1;
-            setMissatges();  // this is the function which changes some Control Value so Wrap this function inside //handler
-            CO.missCorrectes.setEnabled(true);
-        }
-    };
 
 	private void reiniciarMenu(){			
 		if(CO.menu != null){
@@ -167,166 +181,156 @@ public class HolePuzzle extends Activity {
 		}
 	}
 		
-	private void agafarDades() {
-		CO.tl = (TableLayout)findViewById(R.id.tl);
-	    
-		//Si hi ha intents m√†xims
-		if (dades.getTimeCutDown()) {
-            time = dades.getTempsMax();
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                            public void run() {
-                                    mHandler.post(handler);
-                            }
-                    }, time*1000);
-    }
-		//} 	
-		
-		//CANVIAR CO.entrada 
-        Random r = new Random();
-        int rand = r.nextInt(CO.sortida.size());
-		int buit = generarEntrada(rand);
-		
-		agafarCaselles();
-        
-        CO.miss = (TextView) findViewById(R.id.missatge);
-        CO.missCorrectes = (TextView) findViewById(R.id.correcte);
-        CO.cas1 = (TextView) findViewById(R.id.cas1);
-        CO.name = (TextView) findViewById(R.id.titulo);
-        
-        CO.miss.setTextColor(Color.WHITE);
-        CO.missCorrectes.setTextColor(Color.WHITE);
-        CO.name.setTextColor(Color.WHITE);
-        CO.cas1.setTextColor(Color.WHITE);
-        
-        CO.p1 = "<buit>";
-        
-        if(Parser.getActivitats().elementAt(CO.activitatActual).getName() != null)
-        	CO.name.setText(Parser.getActivitats().elementAt(CO.activitatActual).getName());
-        else CO.name.setText("Activitat JClic");
-        
-    	if(CO.rows == 1) CO.tl.setPadding(0,100,0,0);
-    	else if(CO.rows == 2) {
-    		CO.tl.setPadding(0,30,0,0);
-    	}
-    	else CO.tl.setPadding(0,0,0,0);
-    	
-    	if(CO.colorBG != null){
-    		CO.bg = Puzzle.agafarColor(CO.colorBG);
-    	} else CO.bg = Color.BLACK;
-    	
-    	if(CO.colorFG != null){
-    		CO.fg = Puzzle.agafarColor(CO.colorFG);
-    	} else CO.fg = Color.WHITE;
-    	
-        for(int i = 0; i < CO.vecCaselles.size(); i++){
-        	if(CO.vecCaselles.elementAt(i) != null){
-        		CO.vecCaselles.elementAt(i).setBackgroundColor(CO.bg);
-        		CO.vecCaselles.elementAt(i).setTextColor(CO.fg);
-        		CO.vecCaselles.elementAt(i).setPadding(10,15,10,10);
-        		CO.vecCaselles.elementAt(i).setMaxLines(3);
-        		CO.vecCaselles.elementAt(i).setText(CO.entrada.elementAt(i));
-        		if(CO.imatge != null){
-        			CO.vecCaselles.elementAt(i).setBackgroundColor(Color.TRANSPARENT);
-            		CO.vecCaselles.elementAt(i).setTextColor(Color.TRANSPARENT);
-        		}
-            	reestructurarCaselles(CO.vecCaselles.elementAt(i));
-        	}
-        }
-        
-        boolean trobat = false;
-        
-        while(!trobat){
-        	
-        	if(CO.vecCaselles.elementAt(buit) != null){
-            	posBuida = CO.vecCaselles.elementAt(buit);
-            	indexBuida = buit;
-            	trobat = true;
-            }
-        }
-        bloquejarJoc(false);
-        
-        posBuida.setEnabled(false);
-        posBuida.setTextColor(Color.TRANSPARENT);
-        posBuida.setBackgroundColor(Color.GRAY);
-	}
+private void agafarDades() {
+	CO.tl = (TableLayout)findViewById(R.id.tl);
+    
+	//Si hi ha intents màxims
+    
 	
-	private int generarEntrada(int rand) {
-		//creo el vector on generar√© el puzzle on cada posici√≥ indica la posici√≥ a prendre del CO.sortida
-		int[] gen = new int[CO.sortida.size()];
-		for (int i = 0; i < CO.sortida.size(); ++i) gen[i] = i;
-		
-		//posici√≥ buida del puzzle
-		int buit = rand;
-		
-		int moviments_MAX = 40; // Dificultat-> 40 d√≥na un nivell moderat-f√†cil
-		
-		
-		int pas = 0;
-		int pasAnterior = -1;
-		//pasAnterior == 0 Dreta
-		//pasAnterior == 1 Amunt
-		//pasAnterior == 2 Esquerra
-		//pasAnterior == 3 Abaix
-		while (pas < moviments_MAX) {  //canvia quan es crei la constant de dificultat: pas < MOVIMENTS_DIFICULTAT
-			Random r = new Random();
-			int direccio = r.nextInt(4); //direcci√≥ random
-			while (direccio == pasAnterior) direccio = r.nextInt(4); //comprova casos de CO.rows == 1 i CO.cols == 1????
-			pasAnterior = (direccio+2)%4; //Si vinc de l'esquerra (num 2) no vull anar a la Dreta (num 0)
-			switch(direccio) {
-				case(0):
-					if (buit%CO.cols != CO.cols-1) { //Comprova que no estigui al final d'una fila
-						//DRETA
-						int aux = gen[buit];
-						gen[buit] = gen[buit+1];
-						gen[buit+1] = aux;
-						++buit;
-						++pas;
-					}
-					break;
-				case(1):
-					if (buit >= CO.cols) { //Comprova que no estigui al principi d'una columna
-						//AMUNT
-						int aux = gen[buit];
-						gen[buit] = gen[buit-CO.cols];
-						gen[buit-CO.cols] = aux;
-						buit = buit-CO.cols;
-						++pas;
-					}
-					break;
-				case(2):
-					if (buit%CO.cols != 0) { //Comprova que no estigui al principi d'una fila
-						//ESQUERRA
-						int aux = gen[buit];
-						gen[buit] = gen[buit-1];
-						gen[buit-1] = aux;
-						--buit;
-						++pas;
-					}
-					break;
-				case(3):
-					if ((CO.rows-1)*CO.cols > buit) { //Comprova que no estigui al final d'una columna
-						//AVALL
-						int aux = gen[buit];
-						gen[buit] = gen[buit+CO.cols];
-						gen[buit+CO.cols] = aux;
-						buit = buit+CO.cols;
-						++pas;
-					}
-					break;
-			}
-		}
-		//els valors en el vector gen s√≥n les posicions d'un puzzle generat v√†lid
-		//assignem els valors de CO.sortida en l'ordre que indiqui gen a CO.entrada
-		CO.entrada.clear();
-		for (int i = 0; i < CO.sortida.size(); ++i) {
-			
-			CO.entrada.add(i,CO.sortida.get(gen[i]));
-		}
-
-		//retorna quina √©s la posici√≥ buida del puzzle generat
-		return buit;
+	//CANVIAR CO.entrada 
+    Random r = new Random();
+    int rand = r.nextInt(CO.sortida.size());
+    while (CO.sortida.elementAt(rand)==null) rand = r.nextInt(CO.sortida.size());
+	int buit = generarEntrada(rand);
+	agafarCaselles();
+    CO.miss = (TextView) findViewById(R.id.missatge);
+    CO.missCorrectes = (TextView) findViewById(R.id.correcte);
+    CO.cas1 = (TextView) findViewById(R.id.cas1);
+    CO.name = (TextView) findViewById(R.id.titulo);
+    
+    CO.miss.setTextColor(Color.WHITE);
+    CO.missCorrectes.setTextColor(Color.WHITE);
+    CO.name.setTextColor(Color.WHITE);
+    CO.cas1.setTextColor(Color.WHITE);
+    
+    CO.p1 = "<buit>";
+    
+    if(Parser.getActivitats().elementAt(CO.activitatActual).getName() != null)
+    	CO.name.setText(Parser.getActivitats().elementAt(CO.activitatActual).getName());
+    else CO.name.setText("Activitat JClic");
+    
+	if(CO.rows == 1) CO.tl.setPadding(0,100,0,0);
+	else if(CO.rows == 2) {
+		CO.tl.setPadding(0,30,0,0);
 	}
+	else CO.tl.setPadding(0,0,0,0);
+	
+	if(CO.colorBG != null){
+		CO.bg = Puzzle.agafarColor(CO.colorBG);
+	} else CO.bg = Color.BLACK;
+	
+	if(CO.colorFG != null){
+		CO.fg = Puzzle.agafarColor(CO.colorFG);
+	} else CO.fg = Color.WHITE;
+	
+    for(int i = 0; i < CO.vecCaselles.size(); i++){
+    	if(CO.vecCaselles.elementAt(i) != null){
+    		CO.vecCaselles.elementAt(i).setBackgroundColor(CO.bg);
+    		CO.vecCaselles.elementAt(i).setTextColor(CO.fg);
+    		CO.vecCaselles.elementAt(i).setPadding(10,15,10,10);
+    		CO.vecCaselles.elementAt(i).setMaxLines(3);
+    		CO.vecCaselles.elementAt(i).setText(CO.entrada.elementAt(i));
+    		if(CO.imatge != null){
+    			CO.vecCaselles.elementAt(i).setBackgroundColor(Color.TRANSPARENT);
+        		CO.vecCaselles.elementAt(i).setTextColor(Color.TRANSPARENT);
+    		}
+        	reestructurarCaselles(CO.vecCaselles.elementAt(i));
+    	}
+    }
+    if(CO.vecCaselles.elementAt(buit) != null){
+        posBuida = CO.vecCaselles.elementAt(buit);
+        indexBuida = buit;
+    }
+    bloquejarJoc(false);
+    posBuida.setEnabled(false);
+    posBuida.setTextColor(Color.TRANSPARENT);
+    posBuida.setBackgroundColor(Color.GRAY);
+}
+
+private int generarEntrada(int rand) {
+	//creo el vector on generaré el puzzle on cada posició indica la posició a prendre del CO.sortida
+	int[] gen = new int[CO.sortida.size()];
+	int[] nul = new int[CO.sortida.size()];
+	for (int i = 0; i < CO.sortida.size(); ++i) {
+		gen[i] = i;
+		nul[i] = 0;
+		if (CO.sortida.elementAt(i)==null) nul[i]=1;
+	}
+	//posició buida del puzzle
+	int buit = rand;
+	
+	int moviments_MAX = 40; // Dificultat-> 40 dóna un nivell moderat-fàcil
+	
+	int auxiliar = (gen.length-(CO.cols*CO.rows))/CO.rows; //casillas nulas dividido por fila
+	int tamColAmbNuls=CO.cols+auxiliar;
+	int pas = 0;
+	int pasAnterior = -1;
+	//pasAnterior == 0 Dreta
+	//pasAnterior == 1 Amunt
+	//pasAnterior == 2 Esquerra
+	//pasAnterior == 3 Abaix
+	while (pas < moviments_MAX) {  //canvia quan es crei la constant de dificultat: pas < MOVIMENTS_DIFICULTAT
+		Random r = new Random();
+		int direccio = r.nextInt(4); //direcció random
+		while (direccio == pasAnterior) direccio = r.nextInt(4); //comprova casos de CO.rows == 1 i CO.cols == 1????
+		pasAnterior = direccio;
+		switch(direccio) {
+			case(0):
+				if (buit%tamColAmbNuls != tamColAmbNuls-1 && nul[buit+1]==0) { //Comprova que no estigui al final d'una fila
+					//DRETA
+					int aux = gen[buit];
+					gen[buit] = gen[buit+1];
+					gen[buit+1] = aux;
+					++buit;
+					++pas;
+					pasAnterior = (direccio+2)%4; //Si vinc de l'esquerra (num 2) no vull anar a la Dreta (num 0)
+				}
+				break;
+			case(1):
+				if (buit >= CO.cols && nul[buit-tamColAmbNuls]==0) { //Comprova que no estigui al principi d'una columna
+					//AMUNT
+					int aux = gen[buit];
+					gen[buit] = gen[buit-tamColAmbNuls];
+					gen[buit-tamColAmbNuls] = aux;
+					buit = buit-tamColAmbNuls;
+					++pas;
+					pasAnterior = (direccio+2)%4; //Si vinc de l'esquerra (num 2) no vull anar a la Dreta (num 0)
+				}
+				break;
+			case(2):
+				if (buit%tamColAmbNuls != 0) {//  && nul[buit-1]==0) { //Comprova que no estigui al principi d'una fila
+					//ESQUERRA
+					int aux = gen[buit];
+					gen[buit] = gen[buit-1];
+					gen[buit-1] = aux;
+					--buit;
+					++pas;
+					pasAnterior = (direccio+2)%4; //Si vinc de l'esquerra (num 2) no vull anar a la Dreta (num 0)
+				}
+				break;
+			case(3):
+				if ((CO.rows-1)*tamColAmbNuls > buit && nul[buit+tamColAmbNuls]==0) { //Comprova que no estigui al final d'una columna
+					//AVALL
+					int aux = gen[buit];
+					gen[buit] = gen[buit+tamColAmbNuls];
+					gen[buit+tamColAmbNuls] = aux;
+					buit = buit+tamColAmbNuls;
+					++pas;
+					pasAnterior = (direccio+2)%4; //Si vinc de l'esquerra (num 2) no vull anar a la Dreta (num 0)
+				}
+				break;
+		}
+	}
+	//els valors en el vector gen són les posicions d'un puzzle generat vàlid
+	//assignem els valors de CO.sortida en l'ordre que indiqui gen a CO.entrada
+	CO.entrada.removeAllElements();
+	for (int i = 0; i < CO.sortida.size(); ++i) {
+		CO.entrada.addElement(CO.sortida.elementAt(gen[i]));
+	}
+	//retorna quina és la posició buida del puzzle generat
+	return buit;
+}
+
 
 	private void agafarCaselles(){
 		boolean anterior = false;
@@ -726,8 +730,8 @@ public class HolePuzzle extends Activity {
 	}
 	
 	private void swapCaselles(){
-		//Incrementar intents, si esta activat intents sempre ser√† m√©s gran que 0
-		if (intents > 0) ++intents; 
+		//Incrementar intents, si esta activat intents sempre serà més gran que 0
+		if (IntentCountDown) ++contadorIntent; 
 		//So click
 		sounds.playClick();
 		
@@ -776,16 +780,37 @@ public class HolePuzzle extends Activity {
         	CO.p1 = "<buit>";
         	CO.p2 = "<buit>";
 		} else {
-			if ((intents == dades.getIntentMax() && intents != 0) || CO.correcte == CO.casIni || time == -1) {
-				if (CO.correcte == CO.casIni) {
-					//Hem acabat el joc correctament
-					if (Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi() != null)
-						CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
-					else CO.miss.setText("Joc finalitzat!");
-					//So correcte
-					sounds.playFinished_ok();
+			if (CO.correcte == CO.casIni) {
+				//Hem acabat el joc correctament
+				sounds.playFinished_ok();
+				if(maxTime!=0)timer.cancel();
+				if (Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi() != null)
+					CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
+				else CO.miss.setText("Joc finalitzat!");
+				CO.missCorrectes.setText("Prem aqui per continuar.");
+				CO.missCorrectes.setBackgroundColor(Color.WHITE);
+				CO.missCorrectes.setTextColor(Color.BLACK);
+				bloquejarJoc(true);
+				if(CO.imatge != null){
+					int indexEntr = CO.vecCaselles.indexOf(posBuida);
+					int indexSort = CO.sortida.indexOf(posBuida.getText());
+		    		
+					CO.vecCaselles.elementAt(indexEntr).setBackgroundColor(Color.TRANSPARENT);
+		    		CO.vecCaselles.elementAt(indexEntr).setTextColor(Color.TRANSPARENT);
+					
+		    		if(vecDraw.elementAt(indexSort) != null)
+		    			vecDraw.elementAt(indexSort).setAlpha(250);
+		    		
+		    		CO.vecCaselles.elementAt(indexEntr).
+		    			setBackgroundDrawable(vecDraw.elementAt(indexSort));
 				}
-				else if (time == -1) {
+				bloquejarJoc(true);
+				if(CO.menu != null) CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
+			}
+			else if ((CO.correcte != CO.casIni && maxIntents != 0 && maxIntents == contadorIntent) || contadorTime == maxTime && maxTime!=0) {
+				sounds.playFinished_error();
+				if(maxTime!=0)timer.cancel();
+				if (maxTime == contadorTime) {
 					//S'ha acabat el temps
 					if (Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFiErr() != null)
 						CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFiErr());
@@ -801,9 +826,19 @@ public class HolePuzzle extends Activity {
 					//So incorrecte
 					sounds.playFinished_error();
 				}
-				CO.missCorrectes.setText("Prem aqu√≠ per continuar.");
+				if (contadorTime == maxTime && contadorTime != 0) {
+					CO.miss.setText("S'ha acabat el temps!");
+					//CO.miss2.setText("S'ha acabat el temps!");
+				}
+				else {
+					CO.miss.setText("Has superat els intents maxims!");
+					//CO.miss2.setText("Has superat els intents maxims!");
+				}
+				CO.missCorrectes.setText("Prem aqui per continuar.");
 				CO.missCorrectes.setBackgroundColor(Color.WHITE);
 				CO.missCorrectes.setTextColor(Color.BLACK);
+				
+				bloquejarJoc(true);
 				if(CO.imatge != null){
 					int indexEntr = CO.vecCaselles.indexOf(posBuida);
 					int indexSort = CO.sortida.indexOf(posBuida.getText());
@@ -822,9 +857,18 @@ public class HolePuzzle extends Activity {
 			} else {
 				if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeIni() != null)
 					CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeIni());
-				else CO.miss.setText("Comen√ßa el joc!");
-				CO.missCorrectes.setText("Correctes = " + CO.correcte + ", Incorrectes = " + CO.incorrecte);
-			}
+				else CO.miss.setText("Comença el joc!");
+				int displayedIntents;
+				if(IntentCountDown && maxIntents != 0){
+					displayedIntents = maxIntents - contadorIntent;
+				}
+				else displayedIntents=contadorIntent;
+				int displayedTime;
+				if(TimeCountDown && maxTime != 0){
+					displayedTime = maxTime - contadorTime;
+				}
+				else displayedTime=contadorTime;
+				CO.missCorrectes.setText("C = " + CO.correcte + ", Inc = " + CO.incorrecte +"  Int ="+displayedIntents + " T ="+displayedTime);			}
 		}
 	}
 	
@@ -1126,9 +1170,9 @@ public class HolePuzzle extends Activity {
             case MENU_SORTIR:
             	AlertDialog.Builder builder = new AlertDialog.Builder(this);
             	builder.setIcon(R.drawable.jclic_aqua);
-            	builder.setMessage("Est√†s segur de que vols sortir?")
+            	builder.setMessage("Estàs segur de que vols sortir?")
             	       .setCancelable(false)
-            	       .setPositiveButton("S√≠", new DialogInterface.OnClickListener() {
+            	       .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             	           public void onClick(DialogInterface dialog, int id) {
             	                HolePuzzle.this.finish();
             	           }

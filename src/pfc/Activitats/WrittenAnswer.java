@@ -29,13 +29,16 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Toast;
 
-public class Memory extends Activity {
+public class WrittenAnswer extends Activity {
     private static final int MENU_ANT = 0;
 	private static final int MENU_SEG = 1;
 	private static final int MENU_SOLUCIO = 2;
@@ -46,11 +49,9 @@ public class Memory extends Activity {
 	private int newHeight;
 	private int width;
 	private int height;
-	private TextView posAgafada1 = null;
-	private TextView posAgafada2 = null;
 	private Vector<BitmapDrawable> vecDraw;
 	private ArrayList<String> imatges;
-	private Vector<String> parelles;
+	private Vector<String> celes;
 	private Constants CO = Constants.getInstance();
 	Sounds sound;
 	private int maxTime = Parser.getActivitats().get(CO.activitatActual).getTempsMax();
@@ -60,6 +61,8 @@ public class Memory extends Activity {
 	
 	int contador = 0; //Comptador per als intents.
 	int contadorTemps = 0; //Comptador per al temps.
+	private TextView posAgafada = null;
+	private String rEntrada;
 	private CountDownTimer timer;
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -69,8 +72,9 @@ public class Memory extends Activity {
 	    try{
 	    	reiniciarMenu();
 			imatges = Parser.getActivitats().get(CO.activitatActual).getImages();
-			preparaParelles(imatges.size());
+			celes = Parser.getActivitats().get(CO.activitatActual).getCeles();
 			agafarDades();
+			colocaImatges();
 			
 			//aquí s'inicialitza el so
 		    sound = new Sounds(getApplicationContext());
@@ -107,44 +111,38 @@ public class Memory extends Activity {
 	}
 	
 	
-	//Aquesta funció recull els path de les imatges, els agafa, els duplica i els fica 
-	//a un nou vector, on els desordena.
-	private void preparaParelles(int n) {
-		int dob = 2*n;
-
-		Vector<String> ImatgeDoble  = new Vector<String>(dob);
-
-		for (int i = 0; i < n; ++i) {
-			String path="";
-		    if (Descompressor.descompressor(imatges.get(i), CO.path)) {
-		    	path = "/sdcard/tmp/jclic/"+imatges.get(i);  	// No se si el path es al final aquest o què
-		    }	
-		    ImatgeDoble.add(2*i, path);
-		    ImatgeDoble.add(2*i + 1, path);
-		}
-		
-		Vector<Boolean> Comprova = new Vector<Boolean>();
-		parelles = new Vector<String>(dob);
-		boolean b = false;
-		for(int i = 0; i < dob; ++i) {
-			Comprova.add(i, b);
-			parelles.add(i, "");
-		}
-		Random rand = new Random();
-		for (int i = 0; i < dob; ++i) {			
-			int j = rand.nextInt(dob-1);
-			b = Comprova.elementAt(j);
-		    while (b) {
-		    	j = j+i;
-		    	if (j >= dob) j = j-dob;
-		    	b = Comprova.elementAt(j);
-		    }
-		    b = true;
-		    Comprova.set(j, b);
-		    parelles.set(i, ImatgeDoble.get(j));
+	//Aquesta funció col·loca les imatges a cada casella
+	private void colocaImatges() {
+		for(int i = 0; i < CO.vecCaselles.size(); ++i) {
+			if (!imatges.get(i).equals("")) {
+		    	String path="";
+		   		Descompressor.descompressor(imatges.get(i), CO.path);				    		
+		   		path = "/sdcard/tmp/jclic/"+imatges.get(i);
+				Bitmap bMap = BitmapFactory.decodeFile(path);
+				bMap = getResizedBitmap(bMap, height, width);
+				BitmapDrawable bMap2 = new BitmapDrawable(bMap);
+				CO.vecCaselles.elementAt(i).setBackgroundDrawable(bMap2);
+		    }					
+			if(!celes.get(i).equals("")) {
+				CO.vecCaselles.elementAt(i).setText(celes.get(i));					
+			}
 		}
 	}
-
+	
+	//funcio per redimensionar les imatges
+	public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+		int width = bm.getWidth();
+		int height = bm.getHeight();
+		float scaleWidth = ((float) newWidth) / width;
+		float scaleHeight = ((float) newHeight) / height;
+		// CREATE A MATRIX FOR THE MANIPULATION
+		Matrix matrix = new Matrix();
+		// RESIZE THE BIT MAP
+		matrix.postScale(scaleWidth, scaleHeight);
+		// RECREATE THE NEW BITMAP
+		Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+		return resizedBitmap;
+	}
 	
 	@TargetApi(3)
 	private void reiniciarMenu(){			
@@ -200,9 +198,6 @@ public class Memory extends Activity {
         CO.name.setTextColor(Color.WHITE);
         CO.cas1.setTextColor(Color.WHITE);
         
-        CO.p1 = "<buit>";
-		CO.p2 = "<buit>";
-        
 		//agafem el nom de l'activitat
         if(Parser.getActivitats().elementAt(CO.activitatActual).getName() != null)
         	CO.name.setText(Parser.getActivitats().elementAt(CO.activitatActual).getName());
@@ -223,7 +218,7 @@ public class Memory extends Activity {
     	if(CO.colorFG != null){
     		CO.fg = Puzzle.agafarColor(CO.colorFG);
     	} 
-    	else CO.fg = Color.WHITE;
+    	else CO.fg = Color.BLACK;
     	
     	//inicialitzar caselles
         for(int i = 0; i < CO.vecCaselles.size(); i++){
@@ -243,7 +238,7 @@ public class Memory extends Activity {
         bloquejarJoc(false);
 	}
 	
-	//nose com pretens accedir a CO.pos1, CO.pos2... xd
+	//funcio en proces
 	/*private void agafarCaselles() {
 
 		boolean anterior = true;
@@ -269,16 +264,15 @@ public class Memory extends Activity {
 	}*/
 	
 	private void agafarCaselles(){
+		/* Aquesta funció s'ha de canviar. Hem d'agafar el que toca del parser :) */
 		boolean anterior = false;
-		int caselles = imatges.size()*2;
+		int caselles = CO.rows*CO.cols;
 
-		if (CO.cols <= CO.rows) CO.cols *= 2;
-		else CO.rows *= 2;
 		//de moment ho deixo comentat fins que no sapiguem el que
 		//if (CO.cols > CO.maxCols or CO.rows > CO.maxRows) activitatNoPermesa();
 		
 		if(findViewById(R.id.pos1) != null && caselles > 0){
-        	if(parelles.elementAt(0) != null){
+        	if(imatges.get(0) != null){
         		CO.pos1 = (TextView) findViewById(R.id.pos1);
             	CO.vecCaselles.addElement(CO.pos1);
             	anterior = true;
@@ -289,7 +283,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos2) != null && anterior && caselles > 1) {
-        	if(parelles.elementAt(1) != null){
+        	if(imatges.get(1) != null){
         		CO.pos2 = (TextView) findViewById(R.id.pos2);
                 CO.vecCaselles.addElement(CO.pos2);
         	} else {
@@ -303,7 +297,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos3) != null && anterior && caselles > 2){
-        	if(parelles.elementAt(2) != null){
+        	if(imatges.get(2) != null){
 	        	CO.pos3 = (TextView) findViewById(R.id.pos3);
 	            CO.vecCaselles.addElement(CO.pos3);
         	} else {
@@ -317,7 +311,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos4) != null && anterior && caselles > 3){
-        	if(parelles.elementAt(3) != null){
+        	if(imatges.get(3) != null){
         		CO.pos4 = (TextView) findViewById(R.id.pos4);
                 CO.vecCaselles.addElement(CO.pos4);
         	} else {
@@ -331,7 +325,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos5) != null && anterior && caselles > 4){
-        	if(parelles.elementAt(4) != null){
+        	if(imatges.get(4) != null){
         		CO.pos5 = (TextView) findViewById(R.id.pos5);
                 CO.vecCaselles.addElement(CO.pos5);
         	} else {
@@ -345,7 +339,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos6) != null && anterior && caselles > 5){
-        	if(parelles.elementAt(5) != null){
+        	if(imatges.get(5) != null){
         		CO.pos6 = (TextView) findViewById(R.id.pos6);
                 CO.vecCaselles.addElement(CO.pos6);
         	} else {
@@ -359,7 +353,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos7) != null && anterior && caselles > 6){
-        	if(parelles.elementAt(6) != null){
+        	if(imatges.get(6) != null){
         		CO.pos7 = (TextView) findViewById(R.id.pos7);
                 CO.vecCaselles.addElement(CO.pos7);
         	} else {
@@ -373,7 +367,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos8) != null && anterior && caselles > 7){
-        	if(parelles.elementAt(7) != null){
+        	if(imatges.get(7) != null){
         		CO.pos8 = (TextView) findViewById(R.id.pos8);
                 CO.vecCaselles.addElement(CO.pos8);
         	} else {
@@ -387,7 +381,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos9) != null && anterior && caselles > 8){
-        	if(parelles.elementAt(8) != null){
+        	if(imatges.get(8) != null){
         		CO.pos9 = (TextView) findViewById(R.id.pos9);
                 CO.vecCaselles.addElement(CO.pos9);
         	} else {
@@ -401,7 +395,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos10) != null && anterior && caselles > 9){
-        	if(parelles.elementAt(9) != null){
+        	if(imatges.get(9) != null){
         		CO.pos10 = (TextView) findViewById(R.id.pos10);
                 CO.vecCaselles.addElement(CO.pos10);
         	} else {
@@ -415,7 +409,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos11) != null && anterior && caselles > 10){
-        	if(parelles.elementAt(10) != null){
+        	if(imatges.get(10) != null){
         		CO.pos11 = (TextView) findViewById(R.id.pos11);
                 CO.vecCaselles.addElement(CO.pos11);
         	} else {
@@ -429,7 +423,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos12) != null && anterior && caselles > 11){
-        	if(parelles.elementAt(11) != null){
+        	if(imatges.get(11) != null){
         		CO.pos12 = (TextView) findViewById(R.id.pos12);
     	        CO.vecCaselles.addElement(CO.pos12);
         	} else {
@@ -443,7 +437,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos13) != null && anterior && caselles > 12){
-        	if(parelles.elementAt(12) != null){
+        	if(imatges.get(12) != null){
         		CO.pos13 = (TextView) findViewById(R.id.pos13);
     	        CO.vecCaselles.addElement(CO.pos13);
         	} else {
@@ -457,7 +451,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos14) != null && anterior && caselles > 13){
-        	if(parelles.elementAt(13) != null){
+        	if(imatges.get(13) != null){
         		CO.pos14 = (TextView) findViewById(R.id.pos14);
     	        CO.vecCaselles.addElement(CO.pos14);
         	} else {
@@ -471,7 +465,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos15) != null && anterior && caselles > 14){
-        	if(parelles.elementAt(14) != null){
+        	if(imatges.get(14) != null){
         		CO.pos15 = (TextView) findViewById(R.id.pos15);
     	        CO.vecCaselles.addElement(CO.pos15);
         	} else {
@@ -485,7 +479,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos16) != null && anterior && caselles > 15){
-        	if(parelles.elementAt(15) != null){
+        	if(imatges.get(15) != null){
         		CO.pos16 = (TextView) findViewById(R.id.pos16);
     	        CO.vecCaselles.addElement(CO.pos16);
         	} else {
@@ -499,7 +493,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos17) != null && anterior && caselles > 16){
-        	if(parelles.elementAt(16) != null){
+        	if(imatges.get(16) != null){
         		CO.pos17 = (TextView) findViewById(R.id.pos17);
     	        CO.vecCaselles.addElement(CO.pos17);
         	} else {
@@ -513,7 +507,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos18) != null && anterior && caselles > 17){
-        	if(parelles.elementAt(17) != null){
+        	if(imatges.get(17) != null){
     	        CO.pos18 = (TextView) findViewById(R.id.pos18);
     	        CO.vecCaselles.addElement(CO.pos18);
         	} else {
@@ -527,7 +521,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos19) != null && anterior && caselles > 18){
-        	if(parelles.elementAt(18) != null){
+        	if(imatges.get(18) != null){
         		CO.pos19 = (TextView) findViewById(R.id.pos19);
     	        CO.vecCaselles.addElement(CO.pos19);
         	} else {
@@ -541,7 +535,7 @@ public class Memory extends Activity {
         }
 
         if(findViewById(R.id.pos20) != null && anterior && caselles > 19){
-        	if(parelles.elementAt(19) != null){
+        	if(imatges.get(19) != null){
         		CO.pos20 = (TextView) findViewById(R.id.pos20);
     	        CO.vecCaselles.addElement(CO.pos20);
         	} else {
@@ -636,7 +630,7 @@ public class Memory extends Activity {
 		CO.missCorrectes.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
             	if(CO.casIni == CO.correcte || contador==maxIntents || contadorTemps==maxTime){
-            		Intent iSeg = new Intent(Memory.this, Puzzle.class);
+            		Intent iSeg = new Intent(WrittenAnswer.this, Puzzle.class);
                 	startActivity(iSeg);
                 	finish();
             	}
@@ -646,7 +640,7 @@ public class Memory extends Activity {
 		CO.miss.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
             	if(CO.casIni == CO.correcte || contador==maxIntents || contadorTemps==maxTime){
-            		Intent iSeg = new Intent(Memory.this, Puzzle.class);
+            		Intent iSeg = new Intent(WrittenAnswer.this, Puzzle.class);
                 	startActivity(iSeg);
                 	finish();
             	}
@@ -660,111 +654,77 @@ public class Memory extends Activity {
 				pos.setOnClickListener(new View.OnClickListener() {
 		            public void onClick(View view) {	
 		            	executarOnClick(pos);
-		            	if(!CO.p1.equalsIgnoreCase("<buit>") && !CO.p2.equalsIgnoreCase("<buit>")){
-		            		comprovaParella();
-		            		/*posAgafada1 = null;
-		            		posAgafada2 = null;*/
-		            	}
 		            }
 		        });
 			}
 		}
 	}
 	
+	//funcio que executa el clic sobre una casella
 	private void executarOnClick(TextView posicio){
-		//col·loquem la primera imatge
-		 if(CO.p1.equalsIgnoreCase("<buit>")){
-		   sound.playClick();
-		   CO.p1 = (String)posicio.getText();
-		   posAgafada1 = posicio;
-		   CO.cas1.setText(CO.p1);
-		   posicio.setBackgroundColor(Color.TRANSPARENT);
-		   posicio.setTextColor(Color.TRANSPARENT);
-		   int indexEntr = CO.vecCaselles.indexOf(posicio);
-		   
-		   Bitmap bMap = BitmapFactory.decodeFile(parelles.get(indexEntr));
-		   bMap = getResizedBitmap(bMap, height, width);
-		   BitmapDrawable bMap2 = new BitmapDrawable(bMap);
-		   CO.vecCaselles.elementAt(indexEntr).setBackgroundDrawable(bMap2);
-		 }
-		 //Col·loquem la segona imatge
-		 else if(CO.p2.equalsIgnoreCase("<buit>")){
-		   sound.playClick();
-		   CO.p2 = (String)posicio.getText();
-		   posAgafada2 = posicio;
-		   posicio.setBackgroundColor(Color.TRANSPARENT);
-		   posicio.setTextColor(Color.TRANSPARENT);
-		   int indexEntr = CO.vecCaselles.indexOf(posicio);
-
-		   Bitmap bMap = BitmapFactory.decodeFile(parelles.get(indexEntr));
-		   bMap = getResizedBitmap(bMap, height, width);
-		   BitmapDrawable bMap2 = new BitmapDrawable(bMap);
-		   CO.vecCaselles.elementAt(indexEntr).setBackgroundDrawable(bMap2);
-		 }
-		}
-	
-	public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
-		int width = bm.getWidth();
-		int height = bm.getHeight();
-		float scaleWidth = ((float) newWidth) / width;
-		float scaleHeight = ((float) newHeight) / height;
-		// CREATE A MATRIX FOR THE MANIPULATION
-		Matrix matrix = new Matrix();
-		// RESIZE THE BIT MAP
-		matrix.postScale(scaleWidth, scaleHeight);
-		// RECREATE THE NEW BITMAP
-		Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
-		return resizedBitmap;
+		posAgafada = posicio;
+		LayoutInflater factory = LayoutInflater.from(this);            
+    	final View textEntryView = factory.inflate(R.layout.w_answer, null);
+  	    AlertDialog.Builder alert = new AlertDialog.Builder(this); 
+   	    alert.setTitle("Resposta:"); 
+   	    alert.setView(textEntryView); 
+   	    // S'han d'afegir els edittext a les inicialitzacions 
+   	    final EditText input1 = (EditText) textEntryView.findViewById(R.id.m_name);
+	    alert.setPositiveButton("OK", new DialogInterface.OnClickListener() { 
+   	        public void onClick(DialogInterface dialog, int whichButton) {
+   	        	sound.playClick();
+   	        	rEntrada = input1.getText().toString().toUpperCase();
+   	 		    int indexEntr = CO.vecCaselles.indexOf(posAgafada);
+ 	        	String rCorrecta = celes.elementAt(indexEntr+CO.rows+CO.cols-1).toUpperCase();
+ 	        	if (!rEntrada.equals("")) {
+ 	        		++contador;
+	                if (rCorrecta.equals(rEntrada)) {
+	 	    			sound.playAction_ok();
+	 	    		    ++CO.correcte;
+	 	    		    // El que fem és amagar la casella i deixar-la fixe
+	                	posAgafada.setBackgroundColor(Color.WHITE);
+	        			posAgafada.setTextColor(Color.BLACK);
+	 	    		    posAgafada.setEnabled(false);
+	 	    		    int pos = indexEntr+2*(CO.rows+CO.cols-1);
+	 	    		    if(!imatges.get(pos).equals("")) {
+	 	    		    	String path="";
+	 	    		    	Descompressor.descompressor(imatges.get(pos), CO.path);	
+	 	    		    	path = "/sdcard/tmp/jclic/"+imatges.get(pos);
+	 						Bitmap bMap = BitmapFactory.decodeFile(path);
+	 						bMap = getResizedBitmap(bMap, height, width);
+	 						BitmapDrawable bMap2 = new BitmapDrawable(bMap);
+	 						CO.vecCaselles.elementAt(indexEntr).setBackgroundDrawable(bMap2);					
+	 	    		    }
+	 	    		    if(!celes.get(pos).equals("")) {
+	 	    		    	CO.vecCaselles.elementAt(indexEntr).setText(celes.get(pos));					
+	 	    		    }
+	 	    		    else posAgafada.setTextColor(Color.TRANSPARENT);
+	                }
+	                else {
+	 	    			sound.playActionError();
+	                	dialog.cancel();        
+	                }
+	                setMissatges();
+ 	        	}
+    	    	else {
+    	    	  	CharSequence unfilled = "Has d'indicar una resposta!";
+    	            int duration = Toast.LENGTH_SHORT;
+    	            Toast toastunfilled = Toast.makeText(getApplicationContext(), unfilled, duration);
+    	       	    toastunfilled.show();
+    	    	}
+            }
+   	    }); 
+        
+   	    alert.setNegativeButton("Cancel·la", new DialogInterface.OnClickListener() { 
+            public void onClick(DialogInterface dialog, int whichButton) { 
+                dialog.cancel(); 
+            } 
+        });
+        alert.show(); 	
 	}
 	
-	//Aquesta operacio és la de la logica del joc. Aqui es on haurem d'implementar la del memory
-	private void comprovaParella(){
-		  // si hem clicat 2 cops a la mateixa casella o els "id" són diferents, ocultem les imatges (potser s'ha de canviar el paràmetre i   
-		  // posar Color.GRAY enlloc de CO.bg)
-		  ++contador;
-		  int indexEntr = CO.vecCaselles.indexOf(posAgafada1);
-		  int indexEntr2 = CO.vecCaselles.indexOf(posAgafada2);
-		  String s1 = parelles.elementAt(indexEntr);
-		  String s2 = parelles.elementAt(indexEntr2);
-		  if (!s1.equals(s2)){
-			sound.playActionError();
-		    posAgafada1.setBackgroundColor(CO.bg);
-		    posAgafada1.setTextColor(CO.fg);
-			   int entr = CO.vecCaselles.indexOf(posAgafada2);
-			   Bitmap bMap = BitmapFactory.decodeFile(parelles.get(entr));
-			   bMap = getResizedBitmap(bMap, height, width);
-			   BitmapDrawable bMap2 = new BitmapDrawable(bMap);
-			   CO.vecCaselles.elementAt(entr).setBackgroundDrawable(bMap2);
-			posAgafada1 = posAgafada2;
-			posAgafada2 = null;
-			CO.p2 = "<buit>";
-		  }
-		  else if(posAgafada1 == posAgafada2) {
-			sound.playActionError();
-			posAgafada1.setBackgroundColor(CO.bg);
-			posAgafada1.setTextColor(CO.fg);
-			posAgafada1 = null;
-			 CO.p1 = "<buit>";
-			 CO.p2 = "<buit>";
-		  }
-		  // si són parella modifiquem el contador de correctes i les deixem fixes (no serveix de res clicar de nou)
-		  else {
-			sound.playAction_ok();
-		    posAgafada1.setEnabled(false);
-		    posAgafada2.setEnabled(false);
-		    // no sé si conta per parelles (seria lo lògic) o per posicions resoltes del tauler. Assumeixo a)
-		    CO.correcte ++;
-		    posAgafada1 = null;
-		    posAgafada2 = null;
-			 CO.p1 = "<buit>";
-			 CO.p2 = "<buit>";
-		  }
-		 setMissatges();		
-		 CO.cas1.setText("");
-		}
-	
 	@TargetApi(3)
-	private void setMissatges(){
+	private void setMissatges() {
 		if(CO.solucioVisible){
 			CO.miss.setText("");
 			CO.missCorrectes.setText("");
@@ -786,7 +746,7 @@ public class Memory extends Activity {
 				bloquejarJoc(true);
 				if(CO.menu != null) CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
 			}
-			else if(CO.correcte == CO.casIni){
+			else if(CO.correcte == CO.vecCaselles.size()){
 				//Hem acabat el joc
 				if(maxTime!=0)timer.cancel();
 				sound.playFinished_ok();
@@ -894,7 +854,7 @@ public class Memory extends Activity {
             	finish();
                 return true;
             case MENU_AJUDA:
-            	Dialog ajuda = new AlertDialog.Builder(Memory.this)
+            	Dialog ajuda = new AlertDialog.Builder(WrittenAnswer.this)
     	        .setIcon(R.drawable.jclic_aqua)
     	        .setTitle("Ajuda")
     	        .setPositiveButton("D'acord", null)
@@ -979,7 +939,7 @@ public class Memory extends Activity {
             	       .setCancelable(false)
             	       .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             	           public void onClick(DialogInterface dialog, int id) {
-            	                Memory.this.finish();
+            	                WrittenAnswer.this.finish();
             	           }
             	       })
             	       .setNegativeButton("No", new DialogInterface.OnClickListener() {

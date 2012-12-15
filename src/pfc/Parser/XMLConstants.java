@@ -16,6 +16,9 @@ public class XMLConstants {
 	public static final String SETTINGS = "settings";
 	public static final String CELLS = "cells";
 	
+	public static final String ID = "id";
+	public static final String INVERSE = "inverse";
+	
 	//Valors dins dels tag
 	public static final String EXCHANGEPUZZ = "@puzzles.ExchangePuzzle";
 	public static final String HOLEPUZZ = "@puzzles.HolePuzzle";
