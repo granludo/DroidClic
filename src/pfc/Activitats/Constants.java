@@ -160,4 +160,6 @@ public class Constants {
 	public boolean timeCutdown;
 	public boolean intentCutdown;
 	public int intentMax;
+	public int cMaxHor;
+	public int cMaxVert;
 }
