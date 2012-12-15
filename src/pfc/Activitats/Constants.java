@@ -62,7 +62,6 @@ public class Constants {
     public TextView pos39;
     public TextView pos40;
     
-    public ArrayList<TextView> poss;
     
     public TextView miss;
     public TextView miss2;
@@ -103,6 +102,8 @@ public class Constants {
     
     public int maxCols = 4;
     public int maxRows = 5;
+    public int cMaxHor;
+	public int cMaxVert;
     public int cols;
     public int rows;
     public int casIni;
@@ -119,21 +120,21 @@ public class Constants {
 	public boolean solucioVisible;
 	public boolean buidaVisible;
 	public boolean exemple;
-	
+
 	public String imatge;
-	
+
 	public ArrayList<String> imatges;
 	public Vector<String> celes;
-	
+
 	public String fitxer;
-	
+
 	public InputStream is;
 	public URL url;
 	public File file;
 	public String path;
-	
+
 	private static Constants INSTANCE = null;
-	
+
 	public Constants(){
 	}
     
@@ -152,4 +153,5 @@ public class Constants {
 	public boolean timeCutdown;
 	public boolean intentCutdown;
 	public int intentMax;
+	public ArrayList<TextView> poss;
 }

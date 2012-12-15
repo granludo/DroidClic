@@ -21,6 +21,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -28,13 +29,22 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -51,10 +61,14 @@ public class ExchangePuzzle extends Activity{
 	private int newHeight;
 	private int width;
 	private int height;
+	private View ll = null;
 	private TextView posAgafada1 = null;
 	private TextView posAgafada2 = null;
 	private TextView aciertos=null;
 	private TextView intentos=null;
+    private Button bMenu = null;
+    private Button bInici = null;
+	//private  menu = null;
 	//private TextView tiempo=null;
 	private ProgressBar tiempo = null;
 	private Vector<BitmapDrawable> vecDraw;
@@ -64,26 +78,48 @@ public class ExchangePuzzle extends Activity{
 	private int maxIntents =  Parser.getActivitats().get(CO.activitatActual).getIntentMax();
 	private boolean TimeCountDown =  Parser.getActivitats().get(CO.activitatActual).getTimeCutDown();
 	private boolean IntentCountDown =  Parser.getActivitats().get(CO.activitatActual).getIntentCutdown();
-	private int cont =0;
+	private int cont = 0;
 	private int contador = 0;
 	private int contadorT = 0;
 	private CountDownTimer timer;
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	   
-	   
+
+	    
 	    setContentView(R.layout.exchange_hole_puzzle);
 	    sounds = new Sounds(this.getApplicationContext());
-	    aciertos = (EditText)findViewById(R.id.editAciertos);
-	    intentos = (EditText)findViewById(R.id.editIntentos);
+	    
+	    //LinearLayout Mainlayout = (LinearLayout) findViewById(R.layout.exchange_hole_puzzle);
+	    //setContentView(findViewById(R.layout.exchange_hole_puzzle));
+	    /*ll = (LinearLayout) findViewById(R.layout.barra_menu);
+	    if (ll == null) Log.d("#########", "null ll");
+	    Mainlayout.addView(ll);*/
+	    
+	    //LinearLayout layoutMain = new LinearLayout(this);
+	    //layoutMain.setOrientation(LinearLayout.HORIZONTAL);
+	    //setContentView(layoutMain);
+	    /*LayoutInflater inflate = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	    ll = (LinearLayout) inflate.inflate(
+	        R.layout.barra_menu, null);
+	    
+	    Mainlayout.addView(ll);*/ 
+
+	    
+	    //aciertos = (EditText)findViewById(R.id.editAciertos);
+	    intentos = (TextView) findViewById(R.id.editIntentos);
 	    //tiempo.setText(Integer.toString(maxTime));
 	    tiempo = (ProgressBar) findViewById(R.id.progressTime);
+	    
 	    maxTime = 30;  // ELIMINAR
 	    tiempo.setMax(maxTime);
 	    tiempo.setProgress(0);
+	    bMenu = (Button) findViewById(R.id.menu);
+	    
+
 	    
 	    try{
-	    	reiniciarMenu();
+	    	//reiniciarMenu();
 			agafarDades();
 		    comprobarInicial();
 		    if(CO.imatge != null) {
@@ -142,7 +178,21 @@ public class ExchangePuzzle extends Activity{
 	    } catch(Exception e){
 	    	Log.d("Error", "catch ExchangePuzzle: "+e);
 	    }
-	}
+	    
+	    //Insertar esto en una actividad para el uso del menu.
+		final Context aC = this;
+		bMenu.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Dialog dialog = new Dialog(aC, R.style.Dialog);
+				dialog.setContentView(R.layout.menu_clic);
+				dialog.setCanceledOnTouchOutside(true);
+				dialog.show();
+				MenuActivitats ma = new MenuActivitats(timer);
+				ma.butsMenu(dialog, aC, vecDraw);
+			}
+		});	
+	}	
+	/*
 	@TargetApi(3)
 	private void reiniciarMenu(){			
 		if(CO.menu != null){
@@ -180,19 +230,20 @@ public class ExchangePuzzle extends Activity{
 			}
 		}
 	}
-		
+	*/
+	
 	private void agafarDades() {
 		CO.tl = (TableLayout)findViewById(R.id.tl);
 	    
 		agafarCaselles();
        // CO.intentMax = 
         CO.miss = (TextView) findViewById(R.id.missatge);
-        CO.missCorrectes = (TextView) findViewById(R.id.correcte);
+        CO.missCorrectes = (TextView) findViewById(R.id.editAciertos);
         CO.cas1 = (TextView) findViewById(R.id.cas1);
         CO.name = (TextView) findViewById(R.id.titulo);
         
         CO.miss.setTextColor(Color.WHITE);
-        CO.missCorrectes.setTextColor(Color.WHITE);
+        //CO.missCorrectes.setTextColor(Color.WHITE);
         CO.name.setTextColor(Color.WHITE);
         CO.cas1.setTextColor(Color.WHITE);
         
@@ -512,7 +563,7 @@ public class ExchangePuzzle extends Activity{
         } else reiniciarCasella(CO.pos20);
 	}
 	
-	private void reestructurarCaselles(TextView pos) {
+	/*private void reestructurarCaselles(TextView pos) {
 		if(CO.cols == 1){
     		pos.setWidth(250);
     		width = 250;
@@ -546,6 +597,52 @@ public class ExchangePuzzle extends Activity{
     		pos.setMaxLines(2);
     		height = 60;
     	}
+	}*/
+	
+	//nova funcio de reestructurar, es posara en marxa a l'hora de dissenyar la interficie
+	private void reestructurarCaselles(TextView pos) {
+		//ImageView myView = (ImageView)getWindow().findViewById(R.id.ll);
+		Display display = getWindowManager().getDefaultDisplay(); 
+		
+		CO.cMaxHor = display.getWidth() - display.getHeight()/5;
+		CO.cMaxVert = display.getHeight() - display.getHeight()/5;
+
+		if(CO.cols == 1){
+	                pos.setWidth(CO.cMaxHor); // cMaxHor es la distancia horitzontal maxima que tenim.
+	                width = CO.cMaxHor;
+	        } else if(CO.cols == 2){
+	                pos.setWidth(CO.cMaxHor/2 - CO.cMaxHor/20);
+	                width = CO.cMaxHor/2 - CO.cMaxHor/20;
+	        } else if(CO.cols == 3){
+	                pos.setWidth(CO.cMaxHor/3 - CO.cMaxHor/20);
+	                width = CO.cMaxHor/3 - CO.cMaxHor/20;
+	        } else {
+	                //cols == 4
+	                pos.setWidth(CO.cMaxHor/4 - CO.cMaxHor/20);
+	                width = CO.cMaxHor/4 - CO.cMaxHor/20;
+	        }
+	        
+	// Aqui a les columnes fa ago raro amb setMaxLines i amb la OR del principi 
+	// i m'agradaria que ho miressim i tal, xq no ho acabo d'entendre.
+
+	        if(CO.rows == 1 || CO.rows == 2){
+	                pos.setHeight(CO.cMaxVert/2 - CO.cMaxVert/10);
+	                pos.setMaxLines(4);
+	                height = CO.cMaxVert/2 - CO.cMaxVert/10;
+	        } else if(CO.rows == 3){
+	                pos.setHeight(CO.cMaxVert/3 - CO.cMaxVert/10);
+	                pos.setMaxLines(3);
+	                height = CO.cMaxVert/3 - CO.cMaxVert/10;
+	        } else if(CO.rows == 4){
+	                pos.setHeight(CO.cMaxVert/4 - CO.cMaxVert/10);
+	                pos.setMaxLines(2);
+	                height = CO.cMaxVert/4 - CO.cMaxVert/10;
+	        } else {
+	                //CO.rows == 5
+	                pos.setHeight(CO.cMaxVert/5 - CO.cMaxVert/10);
+	                pos.setMaxLines(2);
+	                height = CO.cMaxVert/5 - CO.cMaxVert/10;
+	        }
 	}
 
 	private void comprobarInicial(){
@@ -559,7 +656,7 @@ public class ExchangePuzzle extends Activity{
 	}
 	
 	private void setOnClickListener(){
-		CO.missCorrectes.setOnClickListener(new View.OnClickListener() {
+		/*CO.missCorrectes.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
             	if(CO.casIni == CO.correcte || contador==maxIntents || contadorT==maxTime){
             		Intent iSeg = new Intent(ExchangePuzzle.this, Puzzle.class);
@@ -577,7 +674,7 @@ public class ExchangePuzzle extends Activity{
                 	finish();
             	}
             }
-        });
+        });*/
 		
 		for(int i = 0; i < CO.vecCaselles.size(); i++){
 			if(CO.vecCaselles.elementAt(i) != null){
@@ -595,7 +692,7 @@ public class ExchangePuzzle extends Activity{
 		        });
 			}
 		}
-	}
+	} 
 	
 	private void executarOnClick(TextView posicio){
 		if(CO.p1.equalsIgnoreCase("<buit>")){
@@ -684,7 +781,7 @@ public class ExchangePuzzle extends Activity{
 				if(((String)CO.vecCaselles.elementAt(i).getText()).
 						equalsIgnoreCase(CO.sortida.elementAt(i))) {
 							CO.correcte++; 
-							aciertos.setText(Integer.toString(CO.correcte)); //actualitza numero caselles correctes
+							CO.missCorrectes.setText(Integer.toString(CO.correcte)); //actualitza numero caselles correctes
 				}
 				else CO.incorrecte++;
 			}
@@ -696,7 +793,7 @@ public class ExchangePuzzle extends Activity{
 			if(maxIntents!=0){
 				contador++;
 			}
-			contador++;
+			//contador++;
 			sounds.playAction_ok();
 			cont =0;
 		}
@@ -704,7 +801,7 @@ public class ExchangePuzzle extends Activity{
 			if(maxIntents!=0){
 				contador++;
 			}
-			contador++;
+			//contador++;
 			sounds.playActionError();
 			cont =0;
 		}
@@ -716,7 +813,7 @@ public class ExchangePuzzle extends Activity{
 	private void setMissatges(){
 		if(CO.solucioVisible){
 			CO.miss.setText("");
-			CO.missCorrectes.setText("");
+			//CO.missCorrectes.setText("");
 			CO.cas1.setText("");
 			CO.p1 = "<buit>";
 			CO.p2 = "<buit>";
@@ -725,11 +822,11 @@ public class ExchangePuzzle extends Activity{
 				sounds.playFinished_error();
 				if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi() != null)
 					CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
-				else CO.miss.setText("Superat els intents màxims");
+				else CO.miss.setText("Superat els intents mï¿½xims");
 				if(maxTime!=0)timer.cancel();
-				CO.missCorrectes.setText("Prem aquí per continuar.");
-				CO.missCorrectes.setBackgroundColor(Color.WHITE);
-				CO.missCorrectes.setTextColor(Color.BLACK);
+				//CO.missCorrectes.setText("Prem aquï¿½ per continuar.");
+				//CO.missCorrectes.setBackgroundColor(Color.WHITE);
+				//CO.missCorrectes.setTextColor(Color.BLACK);
 				
 				bloquejarJoc(true);
 				if(CO.menu != null) CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
@@ -742,9 +839,9 @@ public class ExchangePuzzle extends Activity{
 					CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
 				else CO.miss.setText("Joc finalitzat!");
 				
-				CO.missCorrectes.setText("Prem aquí per continuar.");
-				CO.missCorrectes.setBackgroundColor(Color.WHITE);
-				CO.missCorrectes.setTextColor(Color.BLACK);
+				//CO.missCorrectes.setText("Prem aquï¿½ per continuar.");
+				//CO.missCorrectes.setBackgroundColor(Color.WHITE);
+				//CO.missCorrectes.setTextColor(Color.BLACK);
 				
 				bloquejarJoc(true);
 				if(CO.menu != null) CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
@@ -764,7 +861,7 @@ public class ExchangePuzzle extends Activity{
 					displayedTime = maxTime - contadorT;
 				}
 				else displayedTime=contadorT;
-				CO.missCorrectes.setText("C = " + CO.correcte + ", I = " + CO.incorrecte +"  In ="+displayedIntents + "T ="+displayedTime);
+				//CO.missCorrectes.setText("C = " + CO.correcte + ", I = " + CO.incorrecte +"  In ="+displayedIntents + "T ="+displayedTime);
 			}
 		}
 	}
@@ -844,7 +941,7 @@ public class ExchangePuzzle extends Activity{
         	}
         }
 	}
-    
+    /*
 	@TargetApi(3)
 	public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -1001,7 +1098,7 @@ public class ExchangePuzzle extends Activity{
     
         
         return false;
-    }
+    }*/
     protected void onDestroy(){
     	sounds.unloadAll();
     	super.onDestroy();
