@@ -237,15 +237,15 @@ public class ExchangePuzzle extends Activity{
 	    
 		agafarCaselles();
        // CO.intentMax = 
-        CO.miss = (TextView) findViewById(R.id.missatge);
+       //CO.miss = (TextView) findViewById(R.id.missatge);
         CO.missCorrectes = (TextView) findViewById(R.id.editAciertos);
-        CO.cas1 = (TextView) findViewById(R.id.cas1);
+        //CO.cas1 = (TextView) findViewById(R.id.cas1);
         CO.name = (TextView) findViewById(R.id.titulo);
         
-        CO.miss.setTextColor(Color.WHITE);
+        //CO.miss.setTextColor(Color.WHITE);
         //CO.missCorrectes.setTextColor(Color.WHITE);
         CO.name.setTextColor(Color.WHITE);
-        CO.cas1.setTextColor(Color.WHITE);
+        //CO.cas1.setTextColor(Color.WHITE);
         
         CO.p1 = "<buit>";
 		CO.p2 = "<buit>";
@@ -700,14 +700,14 @@ public class ExchangePuzzle extends Activity{
 			CO.p1 = (String)posicio.getText();
 			posAgafada1 = posicio;
 			sounds.playClick();
-			CO.cas1.setText(CO.p1);
+			//CO.cas1.setText(CO.p1);
 			
 			posicio.setBackgroundColor(Color.WHITE);
 			posicio.setTextColor(Color.BLACK);
 			//posar que no posi blanc, sino alpha 100!!!
 			
 			if(CO.imatge != null){
-				CO.cas1.setText("");
+				//CO.cas1.setText("");
 				int indexEntr = CO.vecCaselles.indexOf(posicio);
 				int indexSort = CO.sortida.indexOf(CO.p1);
         		
@@ -741,7 +741,7 @@ public class ExchangePuzzle extends Activity{
 		
 		CO.p1 = "<buit>";
 		CO.p2 = "<buit>";
-		CO.cas1.setText("");
+		//CO.cas1.setText("");
 	}
 	
 	private void comprovar(TextView posicio, int p){
@@ -812,22 +812,29 @@ public class ExchangePuzzle extends Activity{
 	@TargetApi(3)
 	private void setMissatges(){
 		if(CO.solucioVisible){
-			CO.miss.setText("");
+			//CO.miss.setText("");
 			//CO.missCorrectes.setText("");
-			CO.cas1.setText("");
+			//CO.cas1.setText("");
 			CO.p1 = "<buit>";
 			CO.p2 = "<buit>";
 		} else {
+			final Context aC = this;
+			Dialog dialog = new Dialog(aC, R.style.Dialog);
+			dialog.setContentView(R.layout.menu_clic);
+			dialog.setCanceledOnTouchOutside(true);
+			MenuActivitats ma = new MenuActivitats(timer);
+			ma.butsMenu(dialog, aC, vecDraw);
+			TextView textFinal = (TextView) dialog.findViewById(R.id.tMenuClic); 
 			if((maxIntents != 0 && maxIntents == contador && CO.correcte!=CO.casIni)||contadorT == maxTime && maxTime!=0){
 				sounds.playFinished_error();
 				if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi() != null)
-					CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
-				else CO.miss.setText("Superat els intents m�xims");
+					textFinal.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
+				else textFinal.setText("Superat els intents m�xims");
 				if(maxTime!=0)timer.cancel();
 				//CO.missCorrectes.setText("Prem aqu� per continuar.");
 				//CO.missCorrectes.setBackgroundColor(Color.WHITE);
 				//CO.missCorrectes.setTextColor(Color.BLACK);
-				
+				dialog.show();
 				bloquejarJoc(true);
 				if(CO.menu != null) CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
 			}
@@ -836,13 +843,13 @@ public class ExchangePuzzle extends Activity{
 				if(maxTime!=0)timer.cancel();
 				sounds.playFinished_ok();
 				if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi() != null)
-					CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
-				else CO.miss.setText("Joc finalitzat!");
+					textFinal.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
+				else textFinal.setText("Joc finalitzat!");
 				
 				//CO.missCorrectes.setText("Prem aqu� per continuar.");
 				//CO.missCorrectes.setBackgroundColor(Color.WHITE);
 				//CO.missCorrectes.setTextColor(Color.BLACK);
-				
+				dialog.show();
 				bloquejarJoc(true);
 				if(CO.menu != null) CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
 				
