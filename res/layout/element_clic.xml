@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/iconClic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingRight="10dp"
+        android:src="@drawable/icon_example" />
+
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="138dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.53"
+        android:clickable="true"
+        android:gravity="left"
+        android:onClick="mostraDescripcio"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/bplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/jclic_aqua" />
+
+</LinearLayout>

@@ -280,7 +280,6 @@ public class PanelsIdentify extends Activity {
 				aux.setClickable(true);
 				aux.setOnClickListener(new View.OnClickListener() {
 					
-					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
 						click(v);
@@ -509,7 +508,6 @@ public class PanelsIdentify extends Activity {
 		dialog.show();
 		aux.setOnClickListener(new View.OnClickListener() {
 			
-			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				finalClick(v);

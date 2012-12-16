@@ -253,7 +253,6 @@ public class ComplexAssociation extends Activity {
 		    	tmp.setClickable(true);
 		    	tmp.setOnClickListener(new View.OnClickListener() {
 					
-					@Override
 					public void onClick(View v) {
 						if (!CO.inverse) {
 							click(v);			
@@ -294,7 +293,6 @@ public class ComplexAssociation extends Activity {
 		    	tmp.setClickable(true);
 		    	tmp.setOnClickListener(new View.OnClickListener() {
 					
-					@Override
 					public void onClick(View v) {
 						if (!CO.inverse) {
 							click(v);			
