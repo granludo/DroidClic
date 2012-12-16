@@ -268,7 +268,6 @@ public class SimpleAssociation extends Activity {
 		    	tmp.setClickable(true);
 		    	tmp.setOnClickListener(new View.OnClickListener() {
 					
-					@Override
 					public void onClick(View v) {
 						click(v);						
 					}
@@ -303,7 +302,6 @@ public class SimpleAssociation extends Activity {
 		    	tmp.setClickable(true);
 		    	tmp.setOnClickListener(new View.OnClickListener() {
 					
-					@Override
 					public void onClick(View v) {
 						click(v);						
 					}
