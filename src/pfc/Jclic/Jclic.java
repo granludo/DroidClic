@@ -40,7 +40,7 @@ public class Jclic extends Activity {
 	
 	public void onCreate(Bundle savedInstanceState) {		
 	    super.onCreate(savedInstanceState);
-	    LogSystem.Init();
+	   // LogSystem.Init();
 	    setContentView(R.layout.inici);
 	    
 	    Parser.setActivitatsSaltades(false);

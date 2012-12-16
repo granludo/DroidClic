@@ -42,7 +42,6 @@ public class Inici extends Activity {
 	
 	public void onCreate(Bundle savedInstanceState) {		
 	    super.onCreate(savedInstanceState);
-	    LogSystem.Init();
 	    setContentView(R.layout.test);
 	    
 	    Parser.setActivitatsSaltades(false);
@@ -73,7 +72,7 @@ public class Inici extends Activity {
 	    listClics = (ListView)this.findViewById(R.id.listClics);
 	    FDB = new FuncionsBD(this);
 		FDB.open();
-	   //FDB.create("ClicDemo","Demostració ","+18","Mireia & Borja & Merce(laBrasileña)","Esperanto","Demo","/mnt/sdcard/GPS/nadal.jpg","la mireia mola","/mnt/sdcard/GPS/Demo.jclic.zip");
+	   FDB.create("ClicDemo","Demostració ","+18","Mireia & Borja & Merce(laBrasileña)","Esperanto","Demo","/mnt/sdcard/GPS/nadal.jpg","la mireia mola","/mnt/sdcard/GPS/Demo.jclic.zip");
 	    Cursor c = FDB.buscar_tots_clics();
 	    int mireia =  c.getCount();
 	    c.moveToFirst();
