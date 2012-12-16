@@ -29,6 +29,8 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 @TargetApi(8) 
@@ -87,10 +89,11 @@ public class SimpleAssociation extends Activity {
 	
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
+	    //TODO Osea que simple_association.xml no sirve "pa nah" no? xD
 	    setContentView(R.layout.double_puzzle); 
 
 	    //TODO: orientació vertical "provisional"
-	    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 	    
 	    //aquí s'inicialitza el so
 	    sound = new Sounds(getApplicationContext());
@@ -189,6 +192,19 @@ public class SimpleAssociation extends Activity {
 	    	Log.d("Error", "catch SimpleAssociation: "+e);
 	    	e.printStackTrace();
 	    }
+	    final Vector<BitmapDrawable> vecDraw = null;
+	    Button bMenu = (Button) findViewById(R.id.menu);
+		final Context aC = this;
+		bMenu.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Dialog dialog = new Dialog(aC, R.style.Dialog);
+				dialog.setContentView(R.layout.menu_clic);
+				dialog.setCanceledOnTouchOutside(true);
+				dialog.show();
+				MenuActivitats ma = new MenuActivitats(timer);
+				ma.butsMenu(dialog, aC, vecDraw);
+			}
+		});
 	}	
 
 
