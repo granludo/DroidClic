@@ -239,7 +239,7 @@ public class ExchangePuzzle extends Activity{
        // CO.intentMax = 
        //CO.miss = (TextView) findViewById(R.id.missatge);
         CO.missCorrectes = (TextView) findViewById(R.id.editAciertos);
-        //CO.cas1 = (TextView) findViewById(R.id.cas1);
+        CO.cas1 = (TextView) findViewById(R.id.cas1);
         CO.name = (TextView) findViewById(R.id.titulo);
         
         //CO.miss.setTextColor(Color.WHITE);
@@ -853,9 +853,9 @@ public class ExchangePuzzle extends Activity{
 				
 			} 
 			else {
-				if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeIni() != null)
+				/*if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeIni() != null)
 					CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeIni());
-				else CO.miss.setText("ComenÃ§a el joc!");
+				else CO.miss.setText("Comença el joc!");*/
 				int displayedIntents;
 				if(IntentCountDown && maxIntents != 0){
 					displayedIntents = maxIntents - contador;
