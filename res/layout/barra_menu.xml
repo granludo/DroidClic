@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:background="#7777"
+         android:gravity="top" >
+
+        <Button
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Menu" />
+
+        <RelativeLayout
+            android:layout_width="125dp"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/titulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="Small Text"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/aciertos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="aciertos"
+            android:maxLines="1"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/editAciertos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:editable="false"
+            android:ems="10"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:height="@android:dimen/thumbnail_height"
+            android:background="#FFFFFFFF"
+            android:inputType="number"
+            android:linksClickable="false"
+            android:textColor="#000000" 
+            android:gravity="center">
+
+            <requestFocus />
+        </TextView>
+
+        <TextView
+            android:id="@+id/intentos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="intentos"
+            android:maxLines="1"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/editIntentos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:editable="false"
+            android:ems="10"
+            android:focusable="false"
+            android:background="#FFFFFFFF"
+            android:focusableInTouchMode="false"
+            android:inputType="number" 
+            android:textColor="#000000" 
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/tiempo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="tiempo"
+            android:maxLines="1"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <RelativeLayout
+            android:layout_height="match_parent"
+            android:layout_width="100dp" >
+
+            <ProgressBar
+                android:id="@+id/progressTime"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
+	
+</LinearLayout>

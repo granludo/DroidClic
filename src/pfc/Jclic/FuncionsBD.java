@@ -50,8 +50,8 @@ public class FuncionsBD extends Activity {
     	dbHelper.close();
     }
     
-    public long create(String titol, String descripcio, String edat, String autor, String idioma, String categoria, String icona, String keywords, String jclic) {
-        ContentValues initialValues = new ContentValues();
+    public void create(String titol, String descripcio, String edat, String autor, String idioma, String categoria, String icona, String keywords, String jclic) {
+      /*  ContentValues initialValues = new ContentValues();
         initialValues.put(TITULO, titol);
         initialValues.put(DESCRIPCION, descripcio);
         initialValues.put(RANGO_EDAD, edat);
@@ -60,8 +60,12 @@ public class FuncionsBD extends Activity {
         initialValues.put(CATEGORIA, categoria);
         initialValues.put(ICONO, icona);
         initialValues.put(KEYWORDS, keywords);
-        initialValues.put(JCLIC, jclic);
-        return db.insert(DATABASE_TABLE, null, initialValues);
+        initialValues.put(JCLIC, jclic);*/
+        db.execSQL("insert into Clics ("+TITULO+","+DESCRIPCION+","+RANGO_EDAD+","+AUTOR+","+IDIOMA+","+CATEGORIA+","+ICONO+","+KEYWORDS+","+JCLIC+") VALUES ('Democlic', 'funcionara?','edat','autor','idioma', 'categoria', 'mnt/sdcard/GPS/nav" +
+        		"dal.jpg', 'keywords', 'mnt/sdcard/GPS/Demo.jclic.zip')");
+      
+      //  return db.insert(DATABASE_TABLE, null, initialValues);
+
     }
 
     public boolean deleteClic(long rowId) {
@@ -74,11 +78,13 @@ public class FuncionsBD extends Activity {
     
     //Cursor amb totes les notes de la base de dades
     public Cursor buscar_tots_clics() {
-    	return db.query(DATABASE_TABLE, new String[] {KEY_ROWID, TITULO, DESCRIPCION, 
+    	/*return db.query(DATABASE_TABLE, new String[] {KEY_ROWID, TITULO, DESCRIPCION, 
     			RANGO_EDAD, AUTOR, IDIOMA, CATEGORIA, ICONO, KEYWORDS, JCLIC}, 
-    			null, null, null, null, null); 
+    			null, null, null, null, null);*/
+    	Cursor mCursor = db.rawQuery("Select * from Clics", null);
+    	return mCursor;
     }
-    
+ 
     public Cursor buscar_per_idioma(String[] s) throws SQLException {
     	Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE idioma = ? ", s);
         return mCursor;

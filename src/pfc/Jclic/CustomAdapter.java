@@ -7,6 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,53 +29,61 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class CustomAdapter extends CursorAdapter {
+
+	private Cursor mCursor;
+	private Context mContext;
+	private final LayoutInflater mInflater;
+	public int id = 0;
+	private SQLiteDatabase db;
+	public ListView lista = null;  
+	TextView tvDesc;
+	public CustomAdapter(Context context, Cursor c, ListView list, TextView text) {
+		super(context, c);
+		lista = list;
+		mCursor = c;   
+		mInflater=LayoutInflater.from(context);
+		mContext=context;
+		tvDesc=text;
+	}
+
+	@Override
+	public void bindView(final View view,  final Context context, final Cursor cursor) {
+
+		ImageView icona = (ImageView)view.findViewById(R.id.iconClic);
+		Uri dir = Uri.parse("/sdcard/GPS/nadal.jpg");
+		Bitmap bMap = BitmapFactory.decodeFile("/sdcard/GPS/icon_example.png");
+
+		bMap = Bitmap.createBitmap(bMap);
+		BitmapDrawable bMap2 = new BitmapDrawable(bMap);
+
+		icona.setImageBitmap(bMap);
+
+
+
+		TextView titol = (TextView)view.findViewById(R.id.titulo);
+		titol.setText(cursor.getString(cursor.getColumnIndex("titulo")));
+
+		ImageButton play = (ImageButton)view.findViewById(R.id.bplay);
+
 	
-	   private Cursor mCursor;
-	   private Context mContext;
-	   private final LayoutInflater mInflater;
-       public int id = 0;
-       private SQLiteDatabase db;
-       public ListView lista = null;     
-       
-	    public CustomAdapter(Context context, Cursor c, ListView list) {
-	        super(context, c);
-	        lista = list;
-	        mCursor = c;   
-	        mInflater=LayoutInflater.from(context);
-			mContext=context;
-	    }
 
-	    @Override
-	    public void bindView(View view,  final Context context, final Cursor cursor) {
-
-	    	ImageView icona = (ImageView)view.findViewById(R.id.iconClic);
-	    	
-	    	TextView titol = (TextView)view.findViewById(R.id.titulo);
-	    	titol.setText(cursor.getString(cursor.getColumnIndex("titulo")));
-	    	
-	    	ImageButton play = (ImageButton)view.findViewById(R.id.bplay);
-	    	
-	    	final TextView tvDesc = (TextView)view.findViewById(R.id.tvDescripcio);
-	    	
-	    	titol.setOnClickListener(new OnClickListener() {			
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Toast toast1 =  Toast.makeText(context, "va va va va", Toast.LENGTH_LONG);
-				    toast1.show();
-				    tvDesc.setText("això fa algo o que?");
-				}
-			});
-	    	
-	    }
-
-	    @Override
-	    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-	        final View view = mInflater.inflate(R.layout.element_clic, parent,false); 
-	        return view;
-	    }
-	    
+		titol.setOnClickListener(new OnClickListener() {			
+			public void onClick(View v) {
+				//tvDesc = (TextView)view.findViewById(R.id.tvDescripcio);
+				tvDesc.setText(cursor.getString(cursor.getColumnIndex("descripcion")));
+			}
+		});
 
 	}
+
+	@Override
+	public View newView(Context context, Cursor cursor, ViewGroup parent) {
+		final View view = mInflater.inflate(R.layout.element_clic, parent,false); 
+		return view;
+	}
+
+
+}
 
 
 

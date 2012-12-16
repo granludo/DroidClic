@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:gravity="center" 
+            android:id= "@+id/bSuperiores">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true" >
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:gravity="center" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical" >
+
+                        <Button
+                            android:id="@+id/bMenuInici"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="iini"
+                            android:onClick="menubutx" />
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/menu_inicio"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="#000000" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical" >
+
+                        <Button
+                            android:id="@+id/bMenuAyuda"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="iayud" />
+
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/menu_Ayuda"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="#000000" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical" >
+
+                        <Button
+                            android:id="@+id/bMenuResolver"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ires" />
+
+                        <TextView
+                            android:id="@+id/TextView01"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/menu_resolver"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="#000000" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:padding="20dp" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+>
+
+                <TextView
+                    android:id="@+id/tMenuClic"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="Clic"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:gravity="center" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true" >
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:gravity="center" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <Button
+                            android:id="@+id/bMenuAnterior"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="&lt;" />
+                    </LinearLayout>
+                </RelativeLayout>
+                
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:gravity="center" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <Button
+                            android:id="@+id/bMenuOk"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OK" />
+                    </LinearLayout>
+                </RelativeLayout>
+                
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:gravity="center" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <Button
+                            android:id="@+id/bMenuPosterior"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=">" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>

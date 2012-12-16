@@ -74,10 +74,16 @@ public class Parser {
 				Element activity = (Element)itr.next();
 				if(activity.getAttributeValue(XMLConstants.CLASS) != null &&
 						(activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.EXCHANGEPUZZ)
-								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.HOLEPUZZ)
+								//|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.HOLEPUZZ)
+
 								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.DOUBLEPUZZ)
 								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.MEMORYGAME) //descomentar per provar
-								//|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.SIMPLEASSOC) 
+								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.SIMPLEASSOC) 
+								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.PANIDENTIFY)
+								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.COMPLEXASSOC)
+								|| activity.getAttributeValue(XMLConstants.CLASS).equalsIgnoreCase(XMLConstants.TXTWRITEANSWER)
+
+
 								)) {
 					
 					Dades dades = new Dades();
@@ -110,6 +116,15 @@ public class Parser {
 						iterCells = activity.getChildren(XMLConstants.CELLS).iterator();
 						cells = true;
 					}
+					
+					
+					if (activity.getAttributeValue(XMLConstants.INVERSE) != null) {
+						dades.setInverse(Boolean.valueOf(activity.getAttributeValue(XMLConstants.INVERSE)));
+					}
+					else {
+						dades.setInverse(false);
+					}
+					
 					
 					/* Activities - Activity - Description */
 					if(desc && actDescription.getChildText(XMLConstants.P) != null){
@@ -163,21 +178,42 @@ public class Parser {
 					if (cells) {
 						Vector<String> celes = new Vector<String>();
 						ArrayList<String> images = new ArrayList<String>();
+						ArrayList<Integer> relacions = new ArrayList<Integer>();
 
 						while (iterCells.hasNext()) {
 							
 							Element elemCells = (Element) iterCells.next();
 
-							if (elemCells.getAttributeValue(XMLConstants.ROWS) != null)
-								if(dades.getCellRows()== 0)
-								dades.setCellRows(Integer.valueOf(elemCells
-										.getAttributeValue(XMLConstants.ROWS)));
-
+							if (elemCells.getAttributeValue(XMLConstants.ROWS) != null) {
+								
+								if (elemCells.getAttributeValue(XMLConstants.ID) == null || 
+										(elemCells.getAttributeValue(XMLConstants.ID) != null && elemCells.getAttributeValue(XMLConstants.ID).equals("primary"))) {
+									if(dades.getCellRows()== 0)
+										dades.setCellRows(Integer.valueOf(elemCells
+												.getAttributeValue(XMLConstants.ROWS)));
+								}
+								else if (elemCells.getAttributeValue(XMLConstants.ID) != null && elemCells.getAttributeValue(XMLConstants.ID).equals("secondary")) {
+									if (dades.getCellRows2()==0)
+										dades.setCellRows2(Integer.valueOf(elemCells
+												.getAttributeValue(XMLConstants.ROWS)));
+								}
+							}
 							if (elemCells
-									.getAttributeValue(XMLConstants.COLUMNS) != null)
-								if(dades.getCellCols()== 0)
-								dades.setCellCols(Integer.valueOf(elemCells
-										.getAttributeValue(XMLConstants.COLUMNS)));
+									.getAttributeValue(XMLConstants.COLUMNS) != null) {
+								
+								if (elemCells.getAttributeValue(XMLConstants.ID) == null || 
+										(elemCells.getAttributeValue(XMLConstants.ID) != null && elemCells.getAttributeValue(XMLConstants.ID).equals("primary"))) {
+									if(dades.getCellCols()== 0)
+										dades.setCellCols(Integer.valueOf(elemCells
+												.getAttributeValue(XMLConstants.COLUMNS)));
+								}
+								else if (elemCells.getAttributeValue(XMLConstants.ID) != null && elemCells.getAttributeValue(XMLConstants.ID).equals("secondary")) {
+									if (dades.getCellCols2()==0)
+										dades.setCellCols2(Integer.valueOf(elemCells
+												.getAttributeValue(XMLConstants.COLUMNS)));
+								}
+							
+							}
 
 							if (elemCells
 									.getAttributeValue(XMLConstants.BORDER) != null)
@@ -219,12 +255,17 @@ public class Parser {
 									celes.add(cell.getChildText(XMLConstants.P));
 								else
 											celes.add("");
+								if (cell.getAttributeValue(XMLConstants.ID) != null)
+									relacions.add(Integer.valueOf(cell.getAttributeValue(XMLConstants.ID)));
+
+
 								
 							
 							}
 						}
 						dades.setCeles(celes);
 						dades.setImages(images);
+						dades.setRelacions(relacions);
 					}
 					
 					if(!(dades.getCellCols() > 4 || dades.getCellRows() > 5)){

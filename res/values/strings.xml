@@ -63,4 +63,8 @@
 
 <string name="menu_novetats">Novetats</string>
 <string name="menu_cercar">Cercar</string>
+<string name="menu_inicio">Inicio</string>
+<string name="menu_estadisticas">Estadísticas</string>
+<string name="menu_Ayuda">Ayuda</string>
+<string name="menu_resolver">Resolver</string>
 </resources>

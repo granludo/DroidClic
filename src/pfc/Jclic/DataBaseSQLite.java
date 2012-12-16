@@ -22,7 +22,7 @@ public class DataBaseSQLite extends SQLiteOpenHelper {
 	
     private static final String sqlCreate = "CREATE TABLE Clics (_id integer primary key autoincrement, " +
     		"titulo TEXT unique not null, descripcion TEXT, rango_edad TEXT, autor TEXT, idioma TEXT, categoria TEXT, " +
-    		"icono TEXT, keywords TEXT, jclic TEXT)";
+    		"icono varchar(1000), keywords varchar (1000), jclic varchar(1000))";
  
  
  

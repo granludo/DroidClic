@@ -61,7 +61,7 @@ public class Inici extends Activity {
 	    tvEdat = (TextView)findViewById(R.id.tvEdat);
 	    tvIdioma = (TextView)findViewById(R.id.tvIdioma);
 	    
-	    tvDescripcio = (TextView)findViewById(R.id.tvDescripcio);
+ 	    tvDescripcio = (TextView)findViewById(R.id.tvDescripcio);
 	    
 	    tvLlibreria.setText("Llibreria");
 	    tvCategoria.setText("Categoria");
@@ -71,11 +71,18 @@ public class Inici extends Activity {
 	    tvDescripcio.setText("Aqui t'explicarem la nostra vida xD");
 	    
 	    listClics = (ListView)this.findViewById(R.id.listClics);
-	    
-	    
 	    FDB = new FuncionsBD(this);
 		FDB.open();
-		mostrar_clics();
+	   //FDB.create("ClicDemo","Demostració ","+18","Mireia & Borja & Merce(laBrasileña)","Esperanto","Demo","/mnt/sdcard/GPS/nadal.jpg","la mireia mola","/mnt/sdcard/GPS/Demo.jclic.zip");
+	    Cursor c = FDB.buscar_tots_clics();
+	    int mireia =  c.getCount();
+	    c.moveToFirst();
+	    String cagarruta = c.getString(c.getColumnIndex("titulo"));
+		ca = new CustomAdapter(getApplicationContext(), c, listClics, tvDescripcio);
+		listClics.setAdapter(ca);
+	   
+	    
+		//mostrar_clics();
 		
 	    setOnClickListener();
 	}
@@ -115,7 +122,7 @@ public class Inici extends Activity {
 	}
 	
     private void mostrar_clics() {
-        Cursor c = FDB.buscar_tots_clics();
+       /* Cursor c = FDB.buscar_tots_clics();
         if (c.getCount() == 0) Toast.makeText(getApplicationContext(), "No hi ha cap clic disponible", Toast.LENGTH_LONG).show();
         startManagingCursor(c);
         
@@ -124,14 +131,14 @@ public class Inici extends Activity {
         /* 
         SimpleCursorAdapter adpLlistat =
             new SimpleCursorAdapter(this, R.layout.element_clic, c, from, to);
-        listClics.setAdapter(adpLlistat);*/
+        listClics.setAdapter(adpLlistat);
         
 		CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), c, listClics);
-		listClics.setAdapter(customAdapter);
+		listClics.setAdapter(customAdapter);*/
     }  
     
     private void mostrar_clics_cursor(Cursor c) {
-    	if (c.getCount() == 0) Toast.makeText(getApplicationContext(), "No hi ha cap clic disponible", Toast.LENGTH_LONG).show();
+    /*	if (c.getCount() == 0) Toast.makeText(getApplicationContext(), "No hi ha cap clic disponible", Toast.LENGTH_LONG).show();
     	startManagingCursor(c);
         
         String[] from = new String[] {FDB.TITULO}; 
@@ -139,7 +146,7 @@ public class Inici extends Activity {
         
         SimpleCursorAdapter adpLlistat =
             new SimpleCursorAdapter(getApplicationContext(), R.layout.element_clic, c, from, to);
-        listClics.setAdapter(adpLlistat);
+        listClics.setAdapter(adpLlistat);*/
         
     }  
     
