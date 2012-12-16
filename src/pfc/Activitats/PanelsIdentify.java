@@ -9,6 +9,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,6 +22,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import pfc.Parser.Parser;
 import pfc.Descompressor.Descompressor;
@@ -37,6 +41,13 @@ public class PanelsIdentify extends Activity {
 	private int newHeight;
 	private int width;
 	private int height;
+	
+	private TextView aciertos2=null;
+	private TextView intentos=null;
+    private Button bMenu = null;
+	private ProgressBar tiempo = null;
+	private Vector<BitmapDrawable> vecDraw;
+
 	
 	private static final int MENU_ANT = 0;
 	private static final int MENU_SEG = 1;
@@ -73,7 +84,15 @@ public class PanelsIdentify extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.panels_identify);
-		
+		aciertos2 = (TextView)findViewById(R.id.editAciertos);
+	    intentos = (TextView) findViewById(R.id.editIntentos);
+	    //tiempo.setText(Integer.toString(maxTime));
+	    tiempo = (ProgressBar) findViewById(R.id.progressTime);
+	    
+	    //maxTime = 30; 
+	    tiempo.setMax(maxTime);
+	    tiempo.setProgress(0);
+	    bMenu = (Button) findViewById(R.id.menu);
 		sound = new Sounds(getApplicationContext());		
 		
 		try {
@@ -157,21 +176,28 @@ public class PanelsIdentify extends Activity {
 				timer = new CountDownTimer(maxTime*1000, 1000) {
 					@Override
 					public void onFinish() {
-						if(TimeCountDown)
+						if(TimeCountDown) { 
 							contadorTemps--;
-						else
+							tiempo.setProgress(contadorTemps);
+						}
+						else {
 							contadorTemps++;
+							tiempo.setProgress(contadorTemps);
+						}
 						sound.playFinished_error();
 						finalizarJuego();
 					}
 					
 					@Override
 					public void onTick(long arg0) {
-						if(TimeCountDown)
+						if(TimeCountDown) {
 							contadorTemps--;
-						else
+							tiempo.setProgress(contadorTemps);
+						}
+						else {
 							contadorTemps++;
-						
+							tiempo.setProgress(contadorTemps);
+						}						
 						imprimirInfo();
 					}
 				}.start();
@@ -189,7 +215,17 @@ public class PanelsIdentify extends Activity {
 			Log.d("Error", "catch PanelsIdentify: "+e);
 			e.printStackTrace();
 		}
-		
+		final Context aC = this;
+		bMenu.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Dialog dialog = new Dialog(aC, R.style.Dialog);
+				dialog.setContentView(R.layout.menu_clic);
+				dialog.setCanceledOnTouchOutside(true);
+				dialog.show();
+				MenuActivitats ma = new MenuActivitats(timer);
+				ma.butsMenu(dialog, aC, vecDraw);
+			}
+		});	
 		
 	}
 	
@@ -400,10 +436,12 @@ public class PanelsIdentify extends Activity {
 		missIni.setText(missatgeInicial);
 		
 		TextView miss2 = (TextView) findViewById(R.id.correcte);
-		miss2.setText("Aciertos: "+aciertos+" Fallos: "+fallos);
+		aciertos2.setText(Integer.toString(aciertos));
+		intentos.setText(Integer.toString(fallos));
+		//miss2.setText("Aciertos: "+aciertos+" Fallos: "+fallos);
 		
-		TextView info = (TextView) findViewById(R.id.cas1);
-		info.setText("Time: "+contadorTemps+" Intentos: "+contadorIntents);
+		//TextView info = (TextView) findViewById(R.id.cas1);
+		//info.setText("Time: "+contadorTemps+" Intentos: "+contadorIntents);
 	}
 	
 	private void reiniciarMenu() {
@@ -443,26 +481,32 @@ public class PanelsIdentify extends Activity {
 	{
 		for(int i = 0; i < textViews.size(); ++i)
 			textViews.get(i).setClickable(false);
-		
+		final Context aC = this;
+		Dialog dialog = new Dialog(aC, R.style.Dialog);
+		dialog.setContentView(R.layout.menu_clic);
+		dialog.setCanceledOnTouchOutside(true);
+		MenuActivitats ma = new MenuActivitats(timer);
+		ma.butsMenu(dialog, aC, vecDraw);
+		TextView textFinal = (TextView) dialog.findViewById(R.id.tMenuClic);
 		TextView aux = (TextView) findViewById(R.id.cas1);
 		TextView aux2 = (TextView) findViewById(R.id.correcte);
 		if(aciertos == casillasCorrectas) {
-			aux2.setText("Juego Terminado");
-			aux.setText("Pulsa aqu’ para continuar");
+			textFinal.setText("Juego Terminado");
+			//aux.setText("Pulsa aquí para continuar");
 		}
 		else if((contadorIntents == maxIntents && !IntentCountDown) || (contadorIntents == 0 && IntentCountDown)) {
-			aux2.setText("Nœmero de intentos superado");
-			aux.setText("Pulsa aqu’ para continuar");
+			textFinal.setText("Número de intentos superado");
+			//aux.setText("Pulsa aquí para continuar");
 		}
 		else if((contadorTemps == maxTime && !TimeCountDown) || (contadorTemps == 0 && TimeCountDown)) {
-			aux2.setText("Tiempo m‡ximo superado");
-			aux.setText("Pulsa aqu’ para continuar");
+			textFinal.setText("Tiempo máximo superado");
+			//aux.setText("Pulsa aquí para continuar");
 		}
 
 	
 		if(maxTime != 0)
 			timer.cancel();
-		
+		dialog.show();
 		aux.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -621,9 +665,9 @@ public class PanelsIdentify extends Activity {
             case MENU_SORTIR:
             	AlertDialog.Builder builder = new AlertDialog.Builder(this);
             	builder.setIcon(R.drawable.jclic_aqua);
-            	builder.setMessage("EstÃ s segur de que vols sortir?")
+            	builder.setMessage("Estàs segur de que vols sortir?")
             	       .setCancelable(false)
-            	       .setPositiveButton("SÃ­", new DialogInterface.OnClickListener() {
+            	       .setPositiveButton("Sí­", new DialogInterface.OnClickListener() {
             	           public void onClick(DialogInterface dialog, int id) {
             	                PanelsIdentify.this.finish();
             	           }

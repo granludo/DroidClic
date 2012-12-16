@@ -4,7 +4,9 @@
     android:layout_height="fill_parent" 
     android:id="@+id/ll"
 	android:gravity="center_horizontal|center_vertical">
-    
+	
+    <include android:id="@+id/barra_top" layout="@layout/barra_menu" />
+  
 	<LinearLayout 
 		android:orientation="horizontal"
 	    android:layout_width="wrap_content"
@@ -15,7 +17,7 @@
         	android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:id="@+id/titulo"/>
+            android:id="@+id/missatge"/>
     </LinearLayout>
     
 	<LinearLayout 
@@ -123,18 +125,6 @@
 		            android:layout_margin="2dip"/>
 		    </TableRow>
 		</TableLayout>
-	</LinearLayout>
-	
-	<LinearLayout android:orientation="horizontal"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_marginTop="2dip" >
-	    
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLength="35"
-            android:id="@+id/missatge"
-            android:textStyle="bold"/>
 	</LinearLayout>
 	
 	<LinearLayout android:orientation="horizontal"
