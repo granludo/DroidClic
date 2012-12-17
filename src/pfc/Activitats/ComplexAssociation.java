@@ -92,7 +92,6 @@ public class ComplexAssociation extends Activity {
 
 	    //TODO: orientació vertical "provisional"
 	    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-	    
 	    //aquí s'inicialitza el so
 	    sound = new Sounds(getApplicationContext());
 	    

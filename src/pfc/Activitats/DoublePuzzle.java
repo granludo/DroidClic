@@ -61,7 +61,6 @@ public class DoublePuzzle extends Activity {
 	private TextView intentos = null;
 	private ProgressBar tiempo = null;
 	private Button bMenu = null;
-	private Button bInici = null;
 	private int newWidth;
 	private int newHeight;
 	private int width;
@@ -79,11 +78,6 @@ public class DoublePuzzle extends Activity {
 			.get(CO.activitatActual).getTimeCutDown();
 	private boolean IntentCountDown = Parser.getActivitats()
 			.get(CO.activitatActual).getIntentCutdown();
-	// per fer proves.
-	// private int maxIntents = 10;
-	// private boolean IntentCountDown = true;
-	// private int maxTime = 30;
-	// private boolean TimeCountDown = true;
 
 	int contador = 0; // Comptador per als intents.
 	int contadorTemps = 0; // Comptador per al temps.
@@ -1145,15 +1139,6 @@ public class DoublePuzzle extends Activity {
 					displayedTime = contadorTemps;
 				aciertos.setText(Integer.toString(CO.correcte));
 				intentos.setText(Integer.toString(contador));
-
-				// CO.missCorrectes.setText("Correctes = " + CO.correcte +
-				// ", Incorrectes = " + CO.incorrecte);
-				// CO.missCorrectes.setText("C = " + CO.correcte + ", Inc = " +
-				// CO.incorrecte +"  Int ="+displayedIntents +
-				// " T ="+displayedTime);
-				// CO.missCorrectes2.setText("C = " + CO.correcte + ", Inc = " +
-				// CO.incorrecte +"  Int ="+displayedIntents +
-				// " T ="+displayedTime);
 			}
 		}
 	}

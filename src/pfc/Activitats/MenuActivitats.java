@@ -99,6 +99,7 @@ public class MenuActivitats extends Activity {
 		// d = Drawable.createFromPath("@drawable/ic_menu_revert");
 		// bAnt.setBackgroundDrawable(d);
 		
+		
 		bAnt.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				activitatMenu--;
@@ -216,7 +217,7 @@ public class MenuActivitats extends Activity {
 			}
 		});
 		
-		if(!CO.solucioVisible) bSolucio.setEnabled(true);
+		if(!CO.solucioVisible && vecDraw != null) bSolucio.setEnabled(true);
 	    else bSolucio.setEnabled(false);
 		
 		
@@ -228,7 +229,7 @@ public class MenuActivitats extends Activity {
 						.setTitle("Ajuda")
 						.setPositiveButton("D'acord", null)
 						.setMessage(
-								"Intercanvia les caselles per ordenar el puzzle.")
+								"Cambiarlo para cada actividad")
 						.create();
 				ajuda.show();
 			}

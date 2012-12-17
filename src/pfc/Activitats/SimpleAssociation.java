@@ -31,6 +31,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 @TargetApi(8) 
@@ -42,13 +44,18 @@ public class SimpleAssociation extends Activity {
 	private int newHeight;
 	private int width;
 	private int height;
-	
+	//TODO esto es del menu y se quitara
     private static final int MENU_ANT = 0;
 	private static final int MENU_SEG = 1;
 	private static final int MENU_SOLUCIO = 2;
 	private static final int MENU_AJUDA = 3;
 	private static final int MENU_INICI = 4;
 	private static final int MENU_SORTIR = 5;
+	Sounds sound;
+	private TextView aciertos = null;
+	private TextView intentos = null;
+	private ProgressBar tiempo = null;
+	private Vector<BitmapDrawable> vecDraw = null;
 	
 	private Vector<TextView> plafoA = new Vector<TextView>(CO.cols*CO.rows);
 	private Vector<TextView> plafoB = new Vector<TextView>(CO.cols*CO.rows);
@@ -70,18 +77,15 @@ public class SimpleAssociation extends Activity {
 	}
 	
 	
-	Sounds sound;
 	private int maxTime = Parser.getActivitats().get(CO.activitatActual).getTempsMax();
 	private int maxIntents =  Parser.getActivitats().get(CO.activitatActual).getIntentMax();
 	private boolean TimeCountDown =  Parser.getActivitats().get(CO.activitatActual).getTimeCutDown();
 	private boolean IntentCountDown =  Parser.getActivitats().get(CO.activitatActual).getIntentCutdown();
 	
-	
 	private ArrayList<ArrayList<Integer>> idPos = new ArrayList<ArrayList<Integer>>();
-	private TextView seleccionat;
+	private TextView seleccionat = null;
 	private ArrayList<Integer> correspondencies;
 	private ArrayList<Integer> correspondenciesB;
-	
 	
 	int contador = 0; //Comptador per als intents.
 	int contadorTemps = 0; //Comptador per al temps.
@@ -89,19 +93,33 @@ public class SimpleAssociation extends Activity {
 	
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    //TODO Osea que simple_association.xml no sirve "pa nah" no? xD
-	    setContentView(R.layout.double_puzzle); 
+	    
+	    setContentView(R.layout.simple_association); 
 
-	    //TODO: orientació vertical "provisional"
 	    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 	    
-	    //aquí s'inicialitza el so
 	    sound = new Sounds(getApplicationContext());
+		aciertos = (TextView) findViewById(R.id.editAciertos);
+		intentos = (TextView) findViewById(R.id.editIntentos);
+		tiempo = (ProgressBar) findViewById(R.id.progressTime);
+	    tiempo.setMax(maxTime);
+	    tiempo.setProgress(0);
 	    
-	    try{	
-
-	    	reiniciarMenu();
-	    	
+	    Button bMenu = (Button) findViewById(R.id.menu);
+		final Context aC = this;
+		bMenu.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Dialog dialog = new Dialog(aC, R.style.Dialog);
+				dialog.setContentView(R.layout.menu_clic);
+				dialog.setCanceledOnTouchOutside(true);
+				dialog.show();
+				MenuActivitats ma = new MenuActivitats(timer);
+				ma.butsMenu(dialog, aC, vecDraw);
+			}
+		});
+		
+	    try{		
+	    	agafarDades();
 	    	ArrayList<Integer> row = new ArrayList<Integer>();
 		    row.add(R.id.pos1);
 		    row.add(R.id.pos2);
@@ -165,49 +183,136 @@ public class SimpleAssociation extends Activity {
 		    row.add(R.id.pos40);
 		    idPos.add(row);
 		    
-		    
-		    sound.playStart();
-		    
-		    if(maxTime != 0){
-		    	timer = new CountDownTimer(maxTime*1000, 1000){
-		    		@Override
-					public void onFinish() {
-						contadorTemps++;
-						//setMissatges();						
-					}
-					@Override
-					public void onTick(long arg0) {
-						contadorTemps++;
-						//setMissatges();							
-					}				    
-			    }.start();
-		    }
 		    //fer les dos quadricules
 		    initQuadricules();
 
 		    //inicialitzar onClickslisteners
+		    sound.playStart();
+		    //listeners de menus		    
 		    
-		    //listeners de menus
+		    
+		    if(maxTime != 0){
+		    	timer = new CountDownTimer(maxTime*1000, 1000){
+					@Override
+					public void onTick(long arg0) {
+						contadorTemps++;
+						tiempo.setProgress(contadorTemps);
+						setMissatges();
+					}
+		    		@Override
+					public void onFinish() {
+						contadorTemps++;
+						contadorTemps++;
+						tiempo.setProgress(contadorTemps);
+						setMissatges();						
+					}
+			    }.start();
+		    }
+
 	    } catch(Exception e){
 	    	Log.d("Error", "catch SimpleAssociation: "+e);
 	    	e.printStackTrace();
 	    }
-	    final Vector<BitmapDrawable> vecDraw = null;
-	    Button bMenu = (Button) findViewById(R.id.menu);
+	    
+
+	}
+	
+	private void agafarDades() {
+		CO.tl = (TableLayout)findViewById(R.id.tl);
+	    
+		//agafarCaselles();
+       // CO.intentMax = 
+        //CO.miss = (TextView) findViewById(R.id.missatge);
+        //CO.missCorrectes = (TextView) findViewById(R.id.editAciertos);
+        //CO.cas1 = (TextView) findViewById(R.id.cas1);
+        CO.name = (TextView) findViewById(R.id.titulo);
+        
+        //CO.miss.setTextColor(Color.WHITE);
+        //CO.missCorrectes.setTextColor(Color.WHITE);
+        //CO.name.setTextColor(Color.WHITE);
+        //CO.cas1.setTextColor(Color.WHITE);
+        
+        CO.p1 = "<buit>";
+		CO.p2 = "<buit>";
+        
+        if(Parser.getActivitats().elementAt(CO.activitatActual).getName() != null)
+        	CO.name.setText(Parser.getActivitats().elementAt(CO.activitatActual).getName());
+        else CO.name.setText("Activitat JClic");
+        
+    	if(CO.rows == 1) CO.tl.setPadding(0,100,0,0);
+    	else if(CO.rows == 2) {
+    		CO.tl.setPadding(0,30,0,0);
+    	}
+    	else CO.tl.setPadding(0,0,0,0);
+    	
+    	if(CO.colorBG != null){
+    		CO.bg = Puzzle.agafarColor(CO.colorBG);
+    	} else CO.bg = Color.BLACK;
+    	
+    	if(CO.colorFG != null){
+    		CO.fg = Puzzle.agafarColor(CO.colorFG);
+    	} else CO.fg = Color.WHITE;
+	}
+
+	private void setMissatges() {
 		final Context aC = this;
-		bMenu.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				Dialog dialog = new Dialog(aC, R.style.Dialog);
-				dialog.setContentView(R.layout.menu_clic);
-				dialog.setCanceledOnTouchOutside(true);
-				dialog.show();
-				MenuActivitats ma = new MenuActivitats(timer);
-				ma.butsMenu(dialog, aC, vecDraw);
+		Dialog dialog = new Dialog(aC, R.style.Dialog);
+		dialog.setContentView(R.layout.menu_clic);
+		dialog.setCanceledOnTouchOutside(true);
+		MenuActivitats ma = new MenuActivitats(timer);
+		ma.butsMenu(dialog, aC, vecDraw);
+		TextView textFinal = (TextView) dialog.findViewById(R.id.tMenuClic);
+		if (CO.correcte == CO.casIni) {
+			// Hem acabat el joc
+			sound.playFinished_ok();
+			if (maxTime != 0) {
+				timer.cancel();
 			}
-		});
-	}	
-
-
+			if (Parser.getActivitats().elementAt(CO.activitatActual)
+					.getMissatgeFi() != null) {
+				textFinal.setText(Parser.getActivitats()
+						.elementAt(CO.activitatActual).getMissatgeFi());
+			} else {
+				textFinal.setText("Joc finalitzat!");
+				//CO.miss2.setText("Joc finalitzat!");
+			}
+			dialog.show();
+		} else if ((CO.correcte != CO.casIni && maxIntents != 0 && maxIntents == contador)
+				|| contadorTemps == maxTime && maxTime != 0) {
+			sound.playFinished_error();
+			timer.cancel();
+			if (maxTime !=0 && contadorTemps == maxTime) {
+				textFinal.setText("S'ha acabat el temps!");
+			} else {
+				textFinal.setText("Has superat els intents maxims!");
+			}
+			dialog.show();
+		} else {
+			if (Parser.getActivitats().elementAt(CO.activitatActual)
+					.getMissatgeIni() != null) {
+				CO.miss.setText(Parser.getActivitats()
+						.elementAt(CO.activitatActual).getMissatgeIni());
+				//CO.miss2.setText(Parser.getActivitats()
+						//.elementAt(CO.activitatActual).getMissatgeIni());
+			} else {
+				//CO.miss.setText("Comenca el joc!");
+				//CO.miss2.setText("Comenca el joc!");
+			}
+			int displayedIntents;
+			if (IntentCountDown && maxIntents != 0) {
+				displayedIntents = maxIntents - contador;
+			} else
+				displayedIntents = contador;
+			int displayedTime;
+			if (TimeCountDown && maxTime != 0) {
+				displayedTime = maxTime - contadorTemps;
+			} else
+				displayedTime = contadorTemps;
+			aciertos.setText(Integer.toString(CO.correcte));
+			intentos.setText(Integer.toString(contador));
+		}
+	}
+	
 	private void initQuadricules() {
 
 		
@@ -217,7 +322,6 @@ public class SimpleAssociation extends Activity {
 		for (int i = 0; i < CO.rows; ++i) { //posar elems plafo A
 			for (int j = 0; j < CO.cols; ++j) {
 				TextView tmp = (TextView) findViewById(idPos.get(i).get(j));
-		    	
 		    	plafoA.add(tmp);	
 			}
 		}
@@ -227,7 +331,6 @@ public class SimpleAssociation extends Activity {
 		for (int i = 0; i < CO.rows; ++i) { //posar elems plafo B
 			for (int j = 0; j < CO.cols; ++j) {
 				TextView tmp = (TextView) findViewById(idPos.get(5+i).get(j));
-
 		    	plafoB.add(tmp);
 				
 			}
@@ -238,7 +341,6 @@ public class SimpleAssociation extends Activity {
 			for (int j = 0; j < CO.cols; ++j) {
 				TV_ContAlternatiu tmp = new TV_ContAlternatiu(getApplicationContext());
 		    	contAlternatiu.add(tmp);
-				
 			}
 		}
 		
@@ -249,7 +351,6 @@ public class SimpleAssociation extends Activity {
 				TextView tmp = plafoA.get(corresp);
 	    		tmp.setBackgroundColor(Color.DKGRAY);
 
-				
 		    	//plafoA.add(correspondencies.get(i*CO.cols+j), tmp);
 				resizeCaselles(tmp);
 		    	if ("".equals(CO.imatges.get(i*CO.cols+j))) { //no hi ha imatges -> posar text
@@ -343,35 +444,43 @@ public class SimpleAssociation extends Activity {
 	private void click(View v) {
 		
 		sound.playClick();
+		Drawable draw;
 		
 		if (seleccionat == null) { //no n'hi ha cap de seleccionat anteriorment
 			seleccionat = (TextView) v;
-						
-			Drawable draw = seleccionat.getBackground();
+			draw = seleccionat.getBackground();
 			draw.setAlpha(100);
-			seleccionat.setBackgroundDrawable(draw);		
+			seleccionat.setBackgroundDrawable(draw);
 		}
-		
 		else if (seleccionat != null) { // ja en té un de seleccionat
 
-			
-			if ((plafoA.contains(v) && plafoA.contains(seleccionat)) || (plafoB.contains(v) && plafoB.contains(seleccionat))) { //si selecciona un del mateix plafo
+			//Arreglado, se utilizaban backgrounds que no existian.
+			//si selecciona un del mateix plafo
+			if ((plafoA.contains(v) && plafoA.contains(seleccionat)) 
+				|| (plafoB.contains(v) && plafoB.contains(seleccionat))) { 
+				
 				if (v.equals(seleccionat)) { // torna a seleccionar el mateix
-					seleccionat.getBackground().setAlpha(255);
+					draw = seleccionat.getBackground();
+					draw.setAlpha(255);
+					seleccionat.setBackgroundDrawable(draw);
 					seleccionat = null;
 				}
 				else { // en selecciona un altre
-					seleccionat.getBackground().setAlpha(255);
+					draw = seleccionat.getBackground();
+					draw.setAlpha(255);
+					seleccionat.setBackgroundDrawable(draw);
+					
 					seleccionat = (TextView) v;
-					seleccionat.getBackground().setAlpha(100);
+					
+					draw = seleccionat.getBackground();
+					draw.setAlpha(100);
+//					seleccionat.setBackgroundDrawable(draw);
 				}				
 			}
 			
 			
 			else { // en selecciona un d'un plafo diferent
 				contador++;//S'incrementa el contador d'intents
-				
-				
 				String plafoS, plafoV;
 				Integer posS, posV;
 				if (plafoA.contains(v)) {
@@ -390,11 +499,11 @@ public class SimpleAssociation extends Activity {
 				if ("A".equals(plafoS)) { // && "B".equals(plafoV)
 					Integer posInicial = correspondencies.indexOf(posS);
 					Integer posCorrectaB = correspondenciesB.get(posInicial);
+					
 					if (posCorrectaB.equals(posV)) { //correcte
-						
-						
-						
-						seleccionat.getBackground().setAlpha(255);
+						draw = seleccionat.getBackground();
+						draw.setAlpha(255);
+						seleccionat.setBackgroundDrawable(draw);
 						if (CO.imatges.size() > (CO.cols*CO.rows)*2) { // hi ha contingut alternatiu
 							
 							TextView tmp = (TextView) seleccionat;
@@ -419,7 +528,7 @@ public class SimpleAssociation extends Activity {
 						v.setClickable(false);
 						seleccionat.setClickable(false);
 						seleccionat = null;
-						
+						CO.correcte++;
 						sound.playAction_ok();
 						
 					}
@@ -427,7 +536,9 @@ public class SimpleAssociation extends Activity {
 						
 						sound.playActionError();
 						
-						seleccionat.getBackground().setAlpha(255);
+						draw = seleccionat.getBackground();
+						draw.setAlpha(255);
+						seleccionat.setBackgroundDrawable(draw);
 						seleccionat = null;
 					}
 				}
