@@ -53,6 +53,7 @@ public class MenuActivitats extends Activity {
 	private Constants CO = Constants.getInstance();
 	private int activitatMenu;
 	private String activitatMenuName;
+	private Boolean ultimaActivitat = false;
 
 	Sounds sound;
 
@@ -108,21 +109,8 @@ public class MenuActivitats extends Activity {
 				clicText.setText(activitatMenuName);
 			    if(activitatMenu <= 0) bAnt.setEnabled(false);
 			    else bAnt.setEnabled(true);
-			    if(activitatMenu >= (Parser.getActivitats().size())-1) bSeg.setEnabled(false);
-			    else bSeg.setEnabled(true);
-			}
-		});
-		
-		bSeg.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				activitatMenu++;
-				activitatMenuName = Parser.getActivitats().get(activitatMenu).getName();
-				TextView clicText = (TextView) d.findViewById(R.id.tMenuClic);
-				clicText.setText(activitatMenuName);
-			    if(activitatMenu <= 0) bAnt.setEnabled(false);
-			    else bAnt.setEnabled(true);
-			    if(activitatMenu >= (Parser.getActivitats().size())-1) bSeg.setEnabled(false);
-			    else bSeg.setEnabled(true); 
+			    if(activitatMenu >= (Parser.getActivitats().size())-1) ultimaActivitat = true;
+			    else ultimaActivitat = false;
 			}
 		});
 		
@@ -132,8 +120,32 @@ public class MenuActivitats extends Activity {
 		}
 	    if(activitatMenu == (Parser.getActivitats().size() - 1)){
 			//estem a l'ultima activitat, pel que no podem habilitar el seguent
-			bSeg.setEnabled(false);
+			ultimaActivitat = true;
 		}
+	    else ultimaActivitat = false;
+		
+		bSeg.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				if (ultimaActivitat) {
+					if (maxTime1 != 0) timer.cancel();
+						Intent i = new Intent(aC, Jclic.class);
+						aC.startActivity(i);
+						((Activity) aC).finish();
+				}
+				else {
+					activitatMenu++;
+					activitatMenuName = Parser.getActivitats().get(activitatMenu).getName();
+					TextView clicText = (TextView) d.findViewById(R.id.tMenuClic);
+					clicText.setText(activitatMenuName);
+				    if(activitatMenu <= 0) bAnt.setEnabled(false);
+				    else bAnt.setEnabled(true);
+				    if(activitatMenu >= (Parser.getActivitats().size())-1) ultimaActivitat = true;
+				    else ultimaActivitat = false;
+				}
+			}
+		});
+		
+		
 
 		bOk.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {

@@ -46,7 +46,7 @@ public class PanelsIdentify extends Activity {
 	private TextView intentos=null;
     private Button bMenu = null;
 	private ProgressBar tiempo = null;
-	private Vector<BitmapDrawable> vecDraw;
+	private Vector<BitmapDrawable> vecDraw = null;
 
 	
 	private static final int MENU_ANT = 0;
