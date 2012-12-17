@@ -57,6 +57,7 @@ public class CustomAdapter extends CursorAdapter {
 		mContext=context;
 		tvDesc=text;
 	}
+	
 	public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
 		int width = bm.getWidth();
 		int height = bm.getHeight();
@@ -79,15 +80,17 @@ public class CustomAdapter extends CursorAdapter {
 
 		//bMap = Bitmap.createBitmap(bMap);
 		//BitmapDrawable bMap2 = new BitmapDrawable(bMap);
-
 		//icona.setImageBitmap(bMap);
-		Bitmap bMap = BitmapFactory.decodeFile("/sdcard/GPS/nadal.jpg");
+		//Bitmap bMap = BitmapFactory.decodeFile("/sdcard/GPS/nadal.jpg");
+		String s = cursor.getString(cursor.getColumnIndex("icono"));
+		Bitmap bMap = BitmapFactory.decodeFile(s);
 		bMap = getResizedBitmap(bMap, 75, 75);
 		BitmapDrawable bMap2 = new BitmapDrawable(bMap);
 		icona.setBackgroundDrawable(bMap2);
 
 		TextView titol = (TextView)view.findViewById(R.id.titulo);
 		titol.setText(cursor.getString(cursor.getColumnIndex("titulo")));
+		
 		ImageButton play = (ImageButton)view.findViewById(R.id.bplay);
 
 
@@ -103,6 +106,8 @@ public class CustomAdapter extends CursorAdapter {
 			public void onClick(View v){
 				
 				tvDesc.setText("mireia masmola");
+				//String s = cursor.getString(cursor.getColumnIndex("jclic"));
+				//File arxiu = new File(s);
 				File arxiu = new File("/sdcard/GPS/pipinyer.jclic.zip");
 				String path = arxiu.getAbsolutePath();
 				CO.path = path;

@@ -67,12 +67,12 @@ public class Inici extends Activity {
 	    tvEdat.setText("Edat");
 	    tvIdioma.setText("Idioma");
 	    
-	    tvDescripcio.setText("Aqui t'explicarem la nostra vida xD");
+	    tvDescripcio.setText("Descripció del Clic");
 	    
 	    listClics = (ListView)this.findViewById(R.id.listClics);
 	    FDB = new FuncionsBD(this);
 		FDB.open();
-	   //FDB.create("ClicDemo","Demostració ","+18","Mireia & Borja & Merce(laBrasileña)","Esperanto","Demo","/mnt/sdcard/GPS/nadal.jpg","la mireia mola","/mnt/sdcard/GPS/Demo.jclic.zip");
+	   // FDB.create("ClicDemo","Demostració una mica més llarga no?","+18","Mireia & Borja & Merce(laBrasileña)","Esperanto","Demo","/sdcard/GPS/nadal.jpg","la mireia mola","/sdcard/GPS/pipinyer.jclic.zip");
 	    Cursor c = FDB.buscar_tots_clics();
 	    int mireia =  c.getCount();
 	    c.moveToFirst();
@@ -90,31 +90,39 @@ public class Inici extends Activity {
 		
 		bLlibreria.setOnClickListener(new View.OnClickListener() {
 			 public void onClick(View view) {
-				 FDB.create("joc de naturals", "aquest és el millor joc del mon per apendre coses de la vida :)", 
+				/* FDB.create("joc de naturals", "aquest és el millor joc del mon per apendre coses de la vida :)", 
 						 "3-4", "mercè", "català obviament", "mates", "url!!!", "bla, ble, bli", "urlJoc!!!!");			 
 				 Toast toast1 =  Toast.makeText(getApplicationContext(), "ha anat tot bé xatos ;)", Toast.LENGTH_SHORT);
+			     toast1.show();*/
+				 Toast toast1 =  Toast.makeText(getApplicationContext(), "Working..", Toast.LENGTH_SHORT);
 			     toast1.show();
 			 }
 		});
 		
 		bCategoria.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				 showDialog(DIALOG_CATEGORIA_ID);
+				//showDialog(DIALOG_CATEGORIA_ID);
+				Toast toast1 =  Toast.makeText(getApplicationContext(), "Working..", Toast.LENGTH_SHORT);
+			    toast1.show();
 			 }
 		});
 		
 		bEdat.setOnClickListener(new View.OnClickListener() {
 			 public void onClick(View view) {
-				 FDB.create("joc d'anglès", "aquest és el millor joc del mon per apendre coses de la vida :)", 
+				 /*FDB.create("joc d'anglès", "aquest és el millor joc del mon per apendre coses de la vida :)", 
 						 "3-4", "mercè", "castellà", "mates", "url!!!", "bla, ble, bli", "urlJoc!!!!");	
 				 Toast toast1 =  Toast.makeText(getApplicationContext(), "Edat en procés ;)", Toast.LENGTH_LONG);
+			     toast1.show();*/
+				 Toast toast1 =  Toast.makeText(getApplicationContext(), "Working..", Toast.LENGTH_SHORT);
 			     toast1.show();
 			 }
 		});
 		
 		bIdioma.setOnClickListener(new View.OnClickListener() {
 			 public void onClick(View view) {
-				 showDialog(DIALOG_IDIOMA_ID);
+				 //showDialog(DIALOG_IDIOMA_ID);
+				 Toast toast1 =  Toast.makeText(getApplicationContext(), "Working..", Toast.LENGTH_SHORT);
+			     toast1.show();
 			 }
 		});
 		

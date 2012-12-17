@@ -61,8 +61,8 @@ public class FuncionsBD extends Activity {
         initialValues.put(ICONO, icona);
         initialValues.put(KEYWORDS, keywords);
         initialValues.put(JCLIC, jclic);*/
-        db.execSQL("insert into Clics ("+TITULO+","+DESCRIPCION+","+RANGO_EDAD+","+AUTOR+","+IDIOMA+","+CATEGORIA+","+ICONO+","+KEYWORDS+","+JCLIC+") VALUES ('Democlic', 'funcionara?','edat','autor','idioma', 'categoria', 'mnt/sdcard/GPS/nav" +
-        		"dal.jpg', 'keywords', 'mnt/sdcard/GPS/Demo.jclic.zip')");
+        db.execSQL("insert into Clics ("+TITULO+","+DESCRIPCION+","+RANGO_EDAD+","+AUTOR+","+IDIOMA+","+CATEGORIA+","+ICONO+","+KEYWORDS+","+JCLIC+") VALUES ('Democlic', 'una descripció una mica més llarga :)','edat','autor','idioma', " +
+        		"'categoria', '/sdcard/GPS/nadal.jpg', 'keywords', 'mnt/sdcard/GPS/Demo.jclic.zip')");
       
       //  return db.insert(DATABASE_TABLE, null, initialValues);
 

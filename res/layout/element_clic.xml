@@ -8,8 +8,7 @@
         android:id="@+id/iconClic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:paddingRight="10dp" />
+        android:layout_gravity="center_vertical" />
 
     <TextView
         android:id="@+id/titulo"
@@ -20,13 +19,14 @@
         android:clickable="true"
         android:gravity="left"
         android:onClick="mostraDescripcio"
-        android:textSize="15dp"
-        android:textStyle="bold" />
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:paddingLeft="10dp" />
 
     <ImageButton
         android:id="@+id/bplay"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/jclic_aqua" />
+        android:layout_height="match_parent"
+        android:background="@drawable/ico_go" />
 
 </LinearLayout>

@@ -3,30 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" >
-
+
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1.00"
+        android:layout_weight="0.91"
         android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="0.99"
+            android:layout_height="105dp"
+            android:layout_weight="0.02"
             android:orientation="horizontal" >
-
+
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical" >
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical" 
+                android:layout_gravity="center">
 
                 <ImageButton
                     android:id="@+id/bLlibreria"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_url" />
-
+                    android:background="@drawable/ico_libreriab"/>
+
                 <TextView
                     android:id="@+id/tvLlibreria"
                     android:layout_width="wrap_content"
@@ -35,17 +38,19 @@
                     android:text="TextView" />
 
             </LinearLayout>
-
+
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:gravity="center"
                 android:orientation="vertical" >
 
                 <ImageButton
                     android:id="@+id/bCategoria"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_about" />
+                    android:background="@drawable/ico_categoria" />
 
                 <TextView
                     android:id="@+id/tvCategoria"
@@ -55,17 +60,19 @@
                     android:text="TextView" />
 
             </LinearLayout>
-
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:gravity="center"
                 android:orientation="vertical" >
 
                 <ImageButton
                     android:id="@+id/bEdat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_local" />
+                    android:background="@drawable/ico_edad" />
 
                 <TextView
                     android:id="@+id/tvEdat"
@@ -75,17 +82,19 @@
                     android:text="TextView" />
 
             </LinearLayout>
-
+
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:gravity="center"
                 android:orientation="vertical" >
 
                 <ImageButton
                     android:id="@+id/bIdioma"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_example" />
+                    android:background="@drawable/ico_idioma"/>
 
                 <TextView
                     android:id="@+id/tvIdioma"
@@ -96,17 +105,21 @@
 
             </LinearLayout>
         </LinearLayout>
-
+
         <LinearLayout
-            android:layout_width="248dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2.35" >
-
+            android:layout_weight="6.10"
+            android:layout_margin="10dp" 
+            >
+			
             <TextView
                 android:id="@+id/tvDescripcio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView" 
+                android:textSize="20dp"
+                />
 
         </LinearLayout>
     </LinearLayout>
@@ -116,7 +129,7 @@
         android:layout_height="match_parent"
         android:layout_weight="0.97"
         android:orientation="vertical" >
-
+
         <include
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
