@@ -13,9 +13,10 @@ public class XMLConstants {
 	public static final String DESCRIPTION = "description";
 	public static final String MESSAGES = "messages";
 	public static final String CELL = "cell";
+	public static final String DOCUMENT = "document";
 	public static final String SETTINGS = "settings";
 	public static final String CELLS = "cells";
-	
+	public static final String TEXT = "text";
 	public static final String ID = "id";
 	public static final String INVERSE = "inverse";
 	
@@ -34,6 +35,7 @@ public class XMLConstants {
 	public static final String TXTWRITEANSWER = "@text.WrittenAnswer";
 	public static final String TXTFILLBLANKS = "@text.FillInBlanks";
 	public static final String TXTIDENTIFY = "@text.Identify";
+	public static final String IDENTIFY = "@text.Identify";
 	public static final String TXTORDERELEM = "@text.Order";
 	public static final String TGRIDWORDSEARCH = "@textGrid.WordSearch";
 	public static final String TGRIDCROSSWORD = "@textGrid.CrossWord";
@@ -56,6 +58,8 @@ public class XMLConstants {
 	public static final String COLOR = "color";
 	public static final String FOREGROUND = "foreground";
 	public static final String BACKGROUND = "background";
+	public static final String SECTION = "section";
+
 
 	public static final String STYLE = "style";
 	public static final String HELPWINDOW = "helpWindow";

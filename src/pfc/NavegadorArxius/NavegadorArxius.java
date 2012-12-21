@@ -78,7 +78,7 @@ public class NavegadorArxius extends ListActivity {
          		    	        .setIcon(R.drawable.jclic_aqua)
          		    	        .setTitle("No hi ha activitats")
          		    	        .setPositiveButton("D'acord", null)
-         		    	        .setMessage("No hi ha activitats o les que hi ha no són vàlides!")
+         		    	        .setMessage("No hi ha activitats o les que hi ha no s��n v��lides!")
          		    	        .create();
          						noActivitats.show();
          					} else {
@@ -96,18 +96,18 @@ public class NavegadorArxius extends ListActivity {
              			} else {
              				Dialog noActivitats = new AlertDialog.Builder(NavegadorArxius.this)
      		    	        .setIcon(R.drawable.jclic_aqua)
-     		    	        .setTitle("Fitxer invàlid")
+     		    	        .setTitle("Fitxer inv��lid")
      		    	        .setPositiveButton("D'acord", null)
-     		    	        .setMessage("El fitxer no és vàlid!")
+     		    	        .setMessage("El fitxer no ��s v��lid!")
      		    	        .create();
      						noActivitats.show();
              			}
              		} else {
          				Dialog noActivitats = new AlertDialog.Builder(NavegadorArxius.this)
  		    	        .setIcon(R.drawable.jclic_aqua)
- 		    	        .setTitle("Fitxer invàlid")
+ 		    	        .setTitle("Fitxer inv��lid")
  		    	        .setPositiveButton("D'acord", null)
- 		    	        .setMessage("El fitxer no és vàlid!")
+ 		    	        .setMessage("El fitxer no ��s v��lid!")
  		    	        .create();
  						noActivitats.show();
              		}
@@ -136,7 +136,7 @@ public class NavegadorArxius extends ListActivity {
         	Dialog noContingut = new AlertDialog.Builder(NavegadorArxius.this)
  	        .setTitle("Carpeta Buida")
  	        .setPositiveButton("OK", null)
- 	        .setMessage("Aquesta carpeta està buida")
+ 	        .setMessage("Aquesta carpeta est�� buida")
  	        .setIcon(R.drawable.jclic_aqua)
  	        .create();
         	noContingut.show();
@@ -184,9 +184,9 @@ public class NavegadorArxius extends ListActivity {
             case MENU_SORTIR:
             	AlertDialog.Builder builder = new AlertDialog.Builder(this);
             	builder.setIcon(R.drawable.jclic_aqua);
-            	builder.setMessage("Estàs segur de que vols sortir?")
+            	builder.setMessage("Est��s segur de que vols sortir?")
             	       .setCancelable(false)
-            	       .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            	       .setPositiveButton("S��", new DialogInterface.OnClickListener() {
             	           public void onClick(DialogInterface dialog, int id) {
             	                NavegadorArxius.this.finish();
             	           }

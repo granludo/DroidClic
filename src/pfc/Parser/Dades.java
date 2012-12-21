@@ -37,6 +37,8 @@ public class Dades {
 	private boolean intentCutdown= false;
 	private int intentMax= 0;
 	private ArrayList<String> images;
+	ArrayList textus;
+	private int targets;
 	
 	public void Dades(){
 	}
@@ -225,6 +227,23 @@ public class Dades {
 	public void setRelacions(ArrayList<Integer> relacions) {
 		this.relacions = relacions;
 	}
+	
+	public void setTextus(ArrayList textus){
+		this.textus = textus;
+	}
+	
+	public ArrayList getTextus(){
+		return textus;
+	}
+	
+	public void setNumTargets(int n){
+		targets = n;
+	}
+	
+	public int getNumTargets(){
+		return targets;
+	}
+	
 	
 	//********************************************
 }

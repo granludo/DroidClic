@@ -172,9 +172,9 @@ public class Jclic extends Activity {
 	private void click_sortir(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(Jclic.this);
     	builder.setIcon(R.drawable.jclic_aqua);
-    	builder.setMessage("Estàs segur de que vols sortir?")
+    	builder.setMessage("Est��s segur de que vols sortir?")
     	       .setCancelable(false)
-    	       .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+    	       .setPositiveButton("S��", new DialogInterface.OnClickListener() {
     	           public void onClick(DialogInterface dialog, int id) {
     	                Jclic.this.finish();
     	           }

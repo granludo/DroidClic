@@ -19,6 +19,8 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
+import pfc.Activitats.DadesText;
+
 import android.util.Log;
 
 public class Parser {
@@ -152,7 +154,7 @@ public class Parser {
 					
 					/* Activities - Activity - Settings */
 					if(sett){
-						//**Codi afegit per: Pau Farré**
+						//**Codi afegit per: Pau Farrï¿½**
 						if (activity.getChild(XMLConstants.SETTINGS).getAttributeValue(XMLConstants.MAXTIME) != null) {
 							dades.setTempsMax(Integer.valueOf(activity.getChild(XMLConstants.SETTINGS).getAttributeValue(XMLConstants.MAXTIME)));
 						}
@@ -272,6 +274,176 @@ public class Parser {
 						Parser.activitats.add(dades);
 					} else Parser.actSaltades = true;
 				}
+				else if(activity.getAttributeValue(XMLConstants.CLASS).
+						equalsIgnoreCase(XMLConstants.IDENTIFY) ){
+							Log.d("hh", "hh");
+							Dades dades = new Dades();
+							dades.setClas(activity.getAttributeValue(XMLConstants.CLASS));
+							dades.setName(activity.getAttributeValue(XMLConstants.NAME));
+							
+							//booleans per assegurar-me de que els atributs hi son al xml
+							boolean desc = false, mess = false, sett = false, text = false;
+							List actMessages = null, actSettings = null;
+							Element actDescription = null, actdoc = null;
+							
+							if(activity.getChild(XMLConstants.DESCRIPTION) != null){
+								actDescription = activity.getChild(XMLConstants.DESCRIPTION);
+								desc = true;
+							}
+							if(activity.getChild(XMLConstants.MESSAGES) != null){
+								actMessages = activity.getChild(XMLConstants.MESSAGES).getChildren();
+								mess = true;
+							}
+							if(activity.getChild(XMLConstants.SETTINGS) != null){
+								actSettings = activity.getChild(XMLConstants.SETTINGS).getChildren();
+								sett = true;
+							}
+							if(activity.getChild(XMLConstants.DOCUMENT) != null){
+								actdoc = activity.getChild(XMLConstants.DOCUMENT);
+								text = true;
+							}
+							
+
+							/* Activities - Activity - Description */
+							if(desc && actDescription.getChildText(XMLConstants.P) != null){
+								dades.setDescripcio(actDescription.getChildText(XMLConstants.P));
+							}
+							
+							/* Activities - Activity - Messages */
+							if(mess){
+								Iterator itMess = actMessages.iterator();
+								
+								while(itMess.hasNext()){
+									Element descripcio = (Element)itMess.next();
+									
+									String tipus = descripcio.getAttributeValue(XMLConstants.TYPE);
+
+									if(tipus.equalsIgnoreCase(XMLConstants.INITIAL)){
+										dades.setMissatgeIni(descripcio.getChildText(XMLConstants.P));
+									} else if(tipus.equalsIgnoreCase(XMLConstants.FINAL)){
+										dades.setMissatgeFi(descripcio.getChildText(XMLConstants.P));
+									} else if(tipus.equalsIgnoreCase(XMLConstants.FINALERROR)){
+										dades.setMissatgeFiErr(descripcio.getChildText(XMLConstants.P));
+									}
+								}
+								
+							}
+								/* Activities - Activity - Settings */
+								if(sett){
+									
+									if (activity.getChild(XMLConstants.SETTINGS).getAttributeValue(XMLConstants.MAXTIME) != null) {
+										dades.setTempsMax(Integer.valueOf(activity.getChild(XMLConstants.SETTINGS).getAttributeValue(XMLConstants.MAXTIME)));
+									}
+									if (activity.getChild(XMLConstants.SETTINGS).getAttributeValue(XMLConstants.COUNTDOWNTIME) != null) {
+										dades.setTimeCutdown(Boolean.valueOf(activity.getChild(XMLConstants.SETTINGS).getAttributeValue(XMLConstants.COUNTDOWNTIME)));
+									}
+									if (activity.getChild(XMLConstants.SETTINGS).getAttributeValue(XMLConstants.COUNTDOWNACT) != null) {
+										dades.setIntentCutdown(Boolean.valueOf(activity.getChild(XMLConstants.SETTINGS).getAttributeValue(XMLConstants.COUNTDOWNACT)));
+									}
+									if (activity.getChild(XMLConstants.SETTINGS).getAttributeValue(XMLConstants.MAXACTIONS) != null) {
+										dades.setIntentMax(Integer.valueOf(activity.getChild(XMLConstants.SETTINGS).getAttributeValue(XMLConstants.MAXACTIONS)));
+									}
+									
+									//******************************
+									if(activity.getChild(XMLConstants.SETTINGS).getChild(XMLConstants.HELPWINDOW) != null){
+										dades.setMostrarSolucio(Boolean.valueOf(activity.getChild(XMLConstants.SETTINGS).
+												getChild(XMLConstants.HELPWINDOW).
+												getAttributeValue(XMLConstants.SHOWSOLUTION)));							
+									} else dades.setMostrarSolucio(false);
+								}
+								
+							
+							List actsec = actdoc.getChild(XMLConstants.SECTION).getChildren();
+							ArrayList textus = new ArrayList();
+						   Iterator itP =  actsec.iterator();
+						   	int position = 0;
+						   	int targets = 0;
+						   	Log.d("abc", "entra");
+								for (int i = 0; itP.hasNext(); ++i){
+
+									Element p = (Element)itP.next();
+									List listText = p.getChildren();
+									Iterator itTEXT =  listText.iterator();
+									ArrayList arrayP = new ArrayList();
+									for(int j = 0; itTEXT.hasNext() ; ++j){	
+										Element etext = (Element)itTEXT.next();
+										if(etext.getName() == "target"){
+											++targets;
+											DadesText d1 = new DadesText();
+											d1.text = etext.getText();
+											d1.polsat = false;
+											d1.tag = etext.getName();
+											d1.ranginici = position;
+											position += d1.text.length();
+											d1.rangfi = position;
+											arrayP.add(d1);
+										}
+										
+										else if(etext.getName() == "text"){
+											Log.d("Filtre", etext.getText());
+											int posfi= position;
+											String paraula = "";										
+											for(int l=0; l < etext.getText().length(); ++l){
+												if(  (char) etext.getText().charAt(l) == ' ' || (char) etext.getText().charAt(l) == '	'  ){
+													if (paraula.length()> 0){
+														DadesText d1 = new DadesText();
+														d1.text = paraula;
+														d1.tag = "text";
+														d1.polsat = false;
+														d1.ranginici = position;
+														d1.rangfi = posfi;
+							                            position = posfi;
+														arrayP.add(d1);
+														paraula = "";
+													}
+													DadesText d1 = new DadesText();
+													++posfi;
+													if ((char) etext.getText().charAt(l) == ' ')  d1.text = " ";
+													else d1.text = "	";
+													d1.tag = "espais";
+													d1.polsat = false;
+													d1.ranginici = position;
+													d1.rangfi = posfi;
+													arrayP.add(d1);
+													position = posfi;
+												}
+												else {
+													paraula += (char) etext.getText().charAt(l);
+                                                    ++posfi;
+												}
+											}
+											if (paraula.length()> 0){
+												DadesText d1 = new DadesText();
+												d1.text = paraula;
+												d1.tag = "text";
+												d1.polsat = false;
+												d1.ranginici = position;
+												d1.rangfi = posfi;
+												position = posfi;
+												arrayP.add(d1);
+												paraula = "";
+											}
+
+										}
+									}
+									//ACABA la linia; afegim un salt de linia
+									DadesText d1 = new DadesText();
+									d1.text = "\n";
+									d1.tag = "saltLinia";
+									d1.polsat = false;
+									d1.ranginici = position;
+									++position;
+									d1.rangfi = position;
+									arrayP.add(d1);																							
+									if (!arrayP.isEmpty()) textus.add(arrayP);
+								}
+								dades.setTextus(textus);
+							   dades.setNumTargets(targets);
+								Parser.activitats.add(dades);
+								  Log.d("TEXT","--------------------------------");
+				
+			
+		}
 			}
 		}
 		catch(Exception e){
