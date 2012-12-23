@@ -72,7 +72,6 @@ public class Inici extends Activity {
 	    listClics = (ListView)this.findViewById(R.id.listClics);
 	    FDB = new FuncionsBD(this);
 		FDB.open();
-	   // FDB.create("ClicDemo","Demostració una mica més llarga no?","+18","Mireia & Borja & Merce(laBrasileña)","Esperanto","Demo","/sdcard/GPS/nadal.jpg","la mireia mola","/sdcard/GPS/pipinyer.jclic.zip");
 	    Cursor c = FDB.buscar_tots_clics();
 	    int mireia =  c.getCount();
 	    c.moveToFirst();
@@ -90,6 +89,8 @@ public class Inici extends Activity {
 		
 		bLlibreria.setOnClickListener(new View.OnClickListener() {
 			 public void onClick(View view) {
+				// FDB.create("Clidfdfc","Demostració una mica mé no?","+18","Mireia & Borja & Merce(laBrasileña)","Esperanto","Demo","/sdcard/GPS/nadal.jpg","la mireia mola","/sdcard/GPS/pipinyer.jclic.zip");
+
 				/* FDB.create("joc de naturals", "aquest és el millor joc del mon per apendre coses de la vida :)", 
 						 "3-4", "mercè", "català obviament", "mates", "url!!!", "bla, ble, bli", "urlJoc!!!!");			 
 				 Toast toast1 =  Toast.makeText(getApplicationContext(), "ha anat tot bé xatos ;)", Toast.LENGTH_SHORT);
@@ -101,8 +102,8 @@ public class Inici extends Activity {
 		
 		bCategoria.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				//showDialog(DIALOG_CATEGORIA_ID);
-				Toast toast1 =  Toast.makeText(getApplicationContext(), "Working..", Toast.LENGTH_SHORT);
+				showDialog(DIALOG_CATEGORIA_ID);
+				Toast toast1 =  Toast.makeText(getApplicationContext(), "Filtratge per categoria", Toast.LENGTH_SHORT);
 			    toast1.show();
 			 }
 		});
@@ -113,15 +114,16 @@ public class Inici extends Activity {
 						 "3-4", "mercè", "castellà", "mates", "url!!!", "bla, ble, bli", "urlJoc!!!!");	
 				 Toast toast1 =  Toast.makeText(getApplicationContext(), "Edat en procés ;)", Toast.LENGTH_LONG);
 			     toast1.show();*/
-				 Toast toast1 =  Toast.makeText(getApplicationContext(), "Working..", Toast.LENGTH_SHORT);
+				 showDialog(DIALOG_EDAT_ID);
+				 Toast toast1 =  Toast.makeText(getApplicationContext(), "Filtratge per edat", Toast.LENGTH_SHORT);
 			     toast1.show();
 			 }
 		});
 		
 		bIdioma.setOnClickListener(new View.OnClickListener() {
 			 public void onClick(View view) {
-				 //showDialog(DIALOG_IDIOMA_ID);
-				 Toast toast1 =  Toast.makeText(getApplicationContext(), "Working..", Toast.LENGTH_SHORT);
+				 showDialog(DIALOG_IDIOMA_ID);
+				 Toast toast1 =  Toast.makeText(getApplicationContext(), "Filtratge per idioma", Toast.LENGTH_SHORT);
 			     toast1.show();
 			 }
 		});
@@ -163,9 +165,9 @@ public class Inici extends Activity {
 	    	case DIALOG_CATEGORIA_ID:
 				dialog = crearCategoria();
 				break;
-	    	/*case DIALOG_EDAT_ID:
+	    	case DIALOG_EDAT_ID:
 	    		dialog = crearEdat();
-	    		break;*/
+	    		break;
     		case DIALOG_IDIOMA_ID:
     			dialog = crearIdioma();
     			break;    
@@ -183,13 +185,36 @@ public class Inici extends Activity {
 		builder.setItems(items, new DialogInterface.OnClickListener() {			
 			public void onClick(DialogInterface dialog, int item) {
 				// TODO Auto-generated method stub
+				Cursor c;
 				String categoria = items[item].toString();
 				String[] args = new String[]{categoria};
-				if (categoria == "tots")  mostrar_clics();
+				if (categoria == "tots")  c = FDB.buscar_tots_clics();
 				else {				
-					Cursor c = FDB.buscar_per_categoria(args);
-					mostrar_clics_cursor(c);
+					c = FDB.buscar_per_categoria(args);
+					//mostrar_clics_cursor(c);
 				}
+				ca = new CustomAdapter(getApplicationContext(), c, listClics, tvDescripcio);
+				listClics.setAdapter(ca);
+			}
+		});
+		return builder.create();
+	}
+    
+    private Dialog crearEdat() {
+		// TODO Auto-generated method stub
+		final CharSequence[] items ={"0..3", "4..5", "6..8", "9..12", "13..15", "16..17", "tots"};
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Selecciona un rang d'edat");
+		builder.setItems(items, new DialogInterface.OnClickListener() {			
+			public void onClick(DialogInterface dialog, int item) {
+				// TODO Auto-generated method stub
+				Cursor c;
+				String edat = items[item].toString();
+				String[] args = new String[]{edat};
+				if (edat == "tots")  c = FDB.buscar_tots_clics();
+				else c = FDB.buscar_per_edat(args);
+				ca = new CustomAdapter(getApplicationContext(), c, listClics, tvDescripcio);
+				listClics.setAdapter(ca);
 			}
 		});
 		return builder.create();
@@ -204,13 +229,13 @@ public class Inici extends Activity {
 		builder.setItems(items, new DialogInterface.OnClickListener() {			
 			public void onClick(DialogInterface dialog, int item) {
 				// TODO Auto-generated method stub
+				Cursor c;
 				String idioma = items[item].toString();
 				String[] args = new String[]{idioma};
-				if (idioma == "tots")  mostrar_clics();
-				else {				
-					Cursor c = FDB.buscar_per_idioma(args);
-					mostrar_clics_cursor(c);
-				}
+				if (idioma == "tots")  c = FDB.buscar_tots_clics();
+				else c = FDB.buscar_per_idioma(args);
+				ca = new CustomAdapter(getApplicationContext(), c, listClics, tvDescripcio);
+				listClics.setAdapter(ca);
 			}
 		});
 		return builder.create();

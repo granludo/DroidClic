@@ -105,10 +105,10 @@ public class CustomAdapter extends CursorAdapter {
 		play.setOnClickListener(new OnClickListener() {
 			public void onClick(View v){
 				
-				tvDesc.setText("mireia masmola");
-				//String s = cursor.getString(cursor.getColumnIndex("jclic"));
-				//File arxiu = new File(s);
-				File arxiu = new File("/sdcard/GPS/pipinyer.jclic.zip");
+				tvDesc.setText(cursor.getString(cursor.getColumnIndex("descripcion")));
+				String s = cursor.getString(cursor.getColumnIndex("jclic"));
+				File arxiu = new File(s);
+				//File arxiu = new File("/sdcard/GPS/christma.jclic.zip");
 				String path = arxiu.getAbsolutePath();
 				CO.path = path;
 

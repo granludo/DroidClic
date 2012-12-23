@@ -61,8 +61,8 @@ public class FuncionsBD extends Activity {
         initialValues.put(ICONO, icona);
         initialValues.put(KEYWORDS, keywords);
         initialValues.put(JCLIC, jclic);*/
-        db.execSQL("insert into Clics ("+TITULO+","+DESCRIPCION+","+RANGO_EDAD+","+AUTOR+","+IDIOMA+","+CATEGORIA+","+ICONO+","+KEYWORDS+","+JCLIC+") VALUES ('Democlic', 'una descripció una mica més llarga :)','edat','autor','idioma', " +
-        		"'categoria', '/sdcard/GPS/nadal.jpg', 'keywords', 'mnt/sdcard/GPS/Demo.jclic.zip')");
+        db.execSQL("insert into Clics ("+TITULO+","+DESCRIPCION+","+RANGO_EDAD+","+AUTOR+","+IDIOMA+","+CATEGORIA+","+ICONO+","+KEYWORDS+","+JCLIC+") VALUES ('tititititititi', 'una descripció una mica més llarga :)','edat','autor','idioma', " +
+        		"'categoria', '/sdcard/GPS/nadal.jpg', 'keywords', '/sdcard/GPS/christma.jclic.zip')");
       
       //  return db.insert(DATABASE_TABLE, null, initialValues);
 
@@ -89,12 +89,16 @@ public class FuncionsBD extends Activity {
     	Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE idioma = ? ", s);
         return mCursor;
     }
-
+    
 	public Cursor buscar_per_categoria(String[] s) {
 		Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE categoria = ? ", s);
         return mCursor;
 	}
-    	
+    
+	public Cursor buscar_per_edat(String[] s) {
+		Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE rango_edad = ? ", s);
+        return mCursor;
+	}
     	
     }
    
