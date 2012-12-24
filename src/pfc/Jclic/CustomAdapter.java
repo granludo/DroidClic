@@ -82,8 +82,11 @@ public class CustomAdapter extends CursorAdapter {
 		//BitmapDrawable bMap2 = new BitmapDrawable(bMap);
 		//icona.setImageBitmap(bMap);
 		//Bitmap bMap = BitmapFactory.decodeFile("/sdcard/GPS/nadal.jpg");
-		String s = cursor.getString(cursor.getColumnIndex("icono"));
-		Bitmap bMap = BitmapFactory.decodeFile(s);
+		
+		Bitmap bMap = BitmapFactory.decodeFile("/mnt/sdcard/GPS/nadal.jpg");
+		
+		//String s = cursor.getString(cursor.getColumnIndex("icono"));
+		//Bitmap bMap = BitmapFactory.decodeFile(s);
 		bMap = getResizedBitmap(bMap, 75, 75);
 		BitmapDrawable bMap2 = new BitmapDrawable(bMap);
 		icona.setBackgroundDrawable(bMap2);

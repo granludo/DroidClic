@@ -3,7 +3,7 @@
       android:versionCode="1"
       android:versionName="2.2" package="pfc.Jclic">
   <!-- Nuevo menú no tocar!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
-  <!--   <application android:label="@string/app_name" android:debuggable="true" android:icon="@drawable/jclic_aqua" android:theme="@android:style/Theme.NoTitleBar">
+  <!--    <application android:label="@string/app_name" android:debuggable="true" android:icon="@drawable/jclic_aqua" android:theme="@android:style/Theme.NoTitleBar">
         <activity android:label="@string/app_name" android:screenOrientation="landscape" android:name="pfc.Jclic.Inici"> -->
 
     <application android:label="@string/app_name" android:debuggable="true" android:icon="@drawable/jclic_aqua" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
@@ -19,7 +19,7 @@
 
 
 <!-- Cambiar todo a landscape -->
-<!--  <activity android:name="pfc.Jclic.Jclic" android:screenOrientation="portrait"></activity>-->
+<!--   <activity android:name="pfc.Jclic.Jclic" android:screenOrientation="portrait"></activity>-->
 <!-- <activity android:name="pfc.Jclic.DataBaseSQLite" android:screenOrientation="portrait"></activity>
 <activity android:name="pfc.Jclic.FuncionsBD" android:screenOrientation="portrait"></activity>-->
 <activity android:name="pfc.Activitats.DoublePuzzle" android:screenOrientation="landscape"></activity>

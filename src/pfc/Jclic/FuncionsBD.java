@@ -61,8 +61,8 @@ public class FuncionsBD extends Activity {
         initialValues.put(ICONO, icona);
         initialValues.put(KEYWORDS, keywords);
         initialValues.put(JCLIC, jclic);*/
-        db.execSQL("insert into Clics ("+TITULO+","+DESCRIPCION+","+RANGO_EDAD+","+AUTOR+","+IDIOMA+","+CATEGORIA+","+ICONO+","+KEYWORDS+","+JCLIC+") VALUES ('tititititititi', 'una descripció una mica més llarga :)','edat','autor','idioma', " +
-        		"'categoria', '/sdcard/GPS/nadal.jpg', 'keywords', '/sdcard/GPS/christma.jclic.zip')");
+        db.execSQL("insert into Clics ("+TITULO+","+DESCRIPCION+","+RANGO_EDAD+","+AUTOR+","+IDIOMA+","+CATEGORIA+","+ICONO+","+KEYWORDS+","+JCLIC+") VALUES ('clic7', 'descripcio4..5..castellà..mates','4..5','MMB','castellà', " +
+        		"'llengua', '/sdcard/GPS/nadal.jpg', 'brrrrr', '/sdcard/GPS/pipinyer.jclic.zip')");
       
       //  return db.insert(DATABASE_TABLE, null, initialValues);
 
@@ -85,6 +85,7 @@ public class FuncionsBD extends Activity {
     	return mCursor;
     }
  
+    
     public Cursor buscar_per_idioma(String[] s) throws SQLException {
     	Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE idioma = ? ", s);
         return mCursor;
@@ -99,7 +100,32 @@ public class FuncionsBD extends Activity {
 		Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE rango_edad = ? ", s);
         return mCursor;
 	}
-    	
+    
+	
+	public Cursor buscar_catEdat(String[] s) {
+		Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE categoria = ? and rango_edad = ?", s);
+        return mCursor;
+	}
+	
+	public Cursor buscar_catIdioma(String[] s) {
+		Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE categoria = ? and idioma = ?", s);
+        return mCursor;
+	}
+	
+	public Cursor buscar_edatIdioma(String[] s) {
+		Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE rango_edad = ? and idioma = ?", s);
+        return mCursor;
+	}
+	
+	
+	
+	public Cursor buscar_tot(String[] s) {
+		Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE categoria = ? and  rango_edad = ? and idioma = ?", s);
+        return mCursor;
+	}	
+	
+	
+	
     }
    
 

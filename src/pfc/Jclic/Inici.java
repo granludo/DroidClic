@@ -38,6 +38,11 @@ public class Inici extends Activity {
 	ListView listClics;
 	CustomAdapter ca;
 	
+	String edat= "tots";
+	String categoria= "tots";
+	String idioma= "tots";
+	
+	
 	private FuncionsBD FDB;
 	
 	public void onCreate(Bundle savedInstanceState) {		
@@ -72,6 +77,10 @@ public class Inici extends Activity {
 	    listClics = (ListView)this.findViewById(R.id.listClics);
 	    FDB = new FuncionsBD(this);
 		FDB.open();
+		//
+		//FDB.deletesAll();
+		FDB.create("clic2","A veure si funciona","4..5","Mireia & Borja & Merce(laBrasileña)","alemany","mates","/sdcard/GPS/nadal.jpg","la mireia mola","/sdcard/GPS/pipinyer.jclic.zip");
+		//
 	    Cursor c = FDB.buscar_tots_clics();
 	    int mireia =  c.getCount();
 	    c.moveToFirst();
@@ -185,21 +194,59 @@ public class Inici extends Activity {
 		builder.setItems(items, new DialogInterface.OnClickListener() {			
 			public void onClick(DialogInterface dialog, int item) {
 				// TODO Auto-generated method stub
-				Cursor c;
-				String categoria = items[item].toString();
-				String[] args = new String[]{categoria};
-				if (categoria == "tots")  c = FDB.buscar_tots_clics();
-				else {				
-					c = FDB.buscar_per_categoria(args);
-					//mostrar_clics_cursor(c);
-				}
-				ca = new CustomAdapter(getApplicationContext(), c, listClics, tvDescripcio);
-				listClics.setAdapter(ca);
+				categoria = items[item].toString();
+				cridaFiltes();
 			}
 		});
 		return builder.create();
+    }
+    
+    private void cridaFiltes() {
+    	
+		Cursor c = null;
+		String[] args = new String[]{categoria, edat, idioma};
+		
+		if ((categoria == "tots") && (edat == "tots") && (idioma == "tots") )  c = FDB.buscar_tots_clics();
+		
+		else if ((categoria == "tots") && (idioma != "tots") && (edat == "tots")){	// buscar per idioma	
+			args = new String[]{idioma};
+			c = FDB.buscar_per_idioma(args);
+			//mostrar_clics_cursor(c);
+		}
+		else if ((categoria == "tots") && (idioma == "tots") && (edat != "tots")){	// buscar per edat
+			args = new String[]{edat};
+			c = FDB.buscar_per_edat(args);
+		}
+		else if ((categoria != "tots") && (idioma == "tots") && (edat == "tots")){	// buscar per categoria
+			args = new String[]{categoria};
+			c = FDB.buscar_per_categoria(args);
+		}
+		
+		else if ((categoria != "tots") && (idioma == "tots") && (edat != "tots")){	// buscar per categoria + edat
+			args = new String[]{categoria, edat};
+			c = FDB.buscar_catEdat(args);
+		}
+		else if ((categoria != "tots") && (idioma != "tots") && (edat == "tots")){	// buscar per categoria + idioma
+			args = new String[]{categoria, idioma};
+			c = FDB.buscar_catIdioma(args);
+		}
+		else if ((categoria == "tots") && (idioma != "tots") && (edat != "tots")){	// buscar per edat + idioma
+			args = new String[]{edat, idioma};
+			c = FDB.buscar_edatIdioma(args);
+		}
+		else if ((categoria != "tots") && (idioma != "tots") && (edat != "tots")){	// buscar per categoria + idioma + edat
+			c = FDB.buscar_tot(args);
+		}
+		
+		ca = new CustomAdapter(getApplicationContext(), c, listClics, tvDescripcio);
+		listClics.setAdapter(ca);		
 	}
     
+	
+	
+	
+	
+	
     private Dialog crearEdat() {
 		// TODO Auto-generated method stub
 		final CharSequence[] items ={"0..3", "4..5", "6..8", "9..12", "13..15", "16..17", "tots"};
@@ -208,13 +255,18 @@ public class Inici extends Activity {
 		builder.setItems(items, new DialogInterface.OnClickListener() {			
 			public void onClick(DialogInterface dialog, int item) {
 				// TODO Auto-generated method stub
+				edat = items[item].toString();
+				cridaFiltes();
+				/*
 				Cursor c;
 				String edat = items[item].toString();
+				
 				String[] args = new String[]{edat};
 				if (edat == "tots")  c = FDB.buscar_tots_clics();
 				else c = FDB.buscar_per_edat(args);
 				ca = new CustomAdapter(getApplicationContext(), c, listClics, tvDescripcio);
 				listClics.setAdapter(ca);
+				*/
 			}
 		});
 		return builder.create();
@@ -229,6 +281,9 @@ public class Inici extends Activity {
 		builder.setItems(items, new DialogInterface.OnClickListener() {			
 			public void onClick(DialogInterface dialog, int item) {
 				// TODO Auto-generated method stub
+				idioma = items[item].toString();
+				cridaFiltes();
+				/*
 				Cursor c;
 				String idioma = items[item].toString();
 				String[] args = new String[]{idioma};
@@ -236,6 +291,7 @@ public class Inici extends Activity {
 				else c = FDB.buscar_per_idioma(args);
 				ca = new CustomAdapter(getApplicationContext(), c, listClics, tvDescripcio);
 				listClics.setAdapter(ca);
+				*/
 			}
 		});
 		return builder.create();
