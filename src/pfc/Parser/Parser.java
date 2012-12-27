@@ -98,12 +98,9 @@ public class Parser {
                                         XMLConstants.PANIDENTIFY)
                                 || activity.getAttributeValue(
                                         XMLConstants.CLASS).equalsIgnoreCase(
-                                        XMLConstants.COMPLEXASSOC)
-                                || activity.getAttributeValue(
-                                        XMLConstants.CLASS).equalsIgnoreCase(
-                                        XMLConstants.TXTWRITEANSWER) || activity
+                                        XMLConstants.COMPLEXASSOC) || activity
                                 .getAttributeValue(XMLConstants.CLASS)
-                                .equalsIgnoreCase(XMLConstants.TXTORDERELEM))) {
+                                .equalsIgnoreCase(XMLConstants.TXTWRITEANSWER))) {
 
                     Dades dades = new Dades();
                     dades.setClas(activity
