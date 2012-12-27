@@ -124,7 +124,15 @@ public class Puzzle extends Activity{
 				Intent i = new Intent(this, WrittenAnswer.class);
 				startActivity(i);
 				finish();
-			}	
+			}
+			else if(Parser.getActivitats().elementAt(CO.activitatActual+1).getClas()
+                    .equals(XMLConstants.TXTORDERELEM)) {
+			    Log.d("ActivityName", "TextOrder");
+                CO.activitatActual++;
+                Intent i = new Intent(this, TextOrder.class);
+                startActivity(i);
+                finish();
+            }
 		}
 	}
 	
