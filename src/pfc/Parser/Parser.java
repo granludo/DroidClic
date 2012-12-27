@@ -19,6 +19,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
 import pfc.Activitats.DadesText;
+import pfc.Parser.Dades.Info;
 
 import android.util.Log;
 
@@ -344,6 +345,39 @@ public class Parser {
                     else
                         Parser.actSaltades = true;
                 }
+                else if(activity.getAttributeValue(XMLConstants.CLASS).
+						equalsIgnoreCase(XMLConstants.FILLINBLANKS)){
+					
+					Dades dades = new Dades();
+					dades.setClas(activity.getAttributeValue(XMLConstants.CLASS));
+					dades.setName(activity.getAttributeValue(XMLConstants.NAME));
+					
+					Info info = dades.new Info();
+					
+					Element actTarget = null, section=null, p=null; 
+					if(activity.getChild(XMLConstants.DESCRIPTION) != null){
+						actTarget = activity.getChild("document");
+						section = actTarget.getChild("section");
+						p = section.getChild("p");
+						List elementos = p.getChildren();
+						for(int i=0; i < elementos.size();++i){
+							Element incognita = (Element)elementos.get(i);
+							if(incognita.getName() == "target"){
+								info = dades.new Info();
+								info.isBlank=true;
+								info.text = incognita.getChildText("text");
+							}
+							else if (incognita.getName() == "text"){
+								info = dades.new Info();
+								info.isBlank=false;
+								info.text = incognita.getText();
+							}
+							dades.addInfoToArray(i, info);
+						}
+						Parser.activitats.add(dades);
+					}
+					
+				}
                 else if (activity.getAttributeValue(XMLConstants.CLASS)
                         .equalsIgnoreCase(XMLConstants.IDENTIFY)) {
                     Log.d("hh", "hh");

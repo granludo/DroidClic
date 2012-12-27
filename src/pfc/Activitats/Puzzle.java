@@ -132,7 +132,12 @@ public class Puzzle extends Activity{
                 Intent i = new Intent(this, TextOrder.class);
                 startActivity(i);
                 finish();
-            }
+			}
+			else if(Parser.getActivitats().elementAt(CO.activitatActual+1).getClas().equals(XMLConstants.FILLINBLANKS)){
+				Intent i = new Intent(this,FillinBlanks.class);
+				startActivity(i);
+				finish();
+			}
 		}
 	}
 	

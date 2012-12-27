@@ -34,13 +34,16 @@ public class XMLConstants {
     public static final String TXTCOMPLETE = "@text.Complete";
     public static final String TXTWRITEANSWER = "@text.WrittenAnswer";
     public static final String TXTFILLBLANKS = "@text.FillInBlanks";
+    public static final String FILLINBLANKS = "@text.FillInBlanks";
     public static final String TXTIDENTIFY = "@text.Identify";
     public static final String IDENTIFY = "@text.Identify";
     public static final String TXTORDERELEM = "@text.Order";
     public static final String TGRIDWORDSEARCH = "@textGrid.WordSearch";
     public static final String TGRIDCROSSWORD = "@textGrid.CrossWord";
     // ***********************************
-
+    
+   
+	
     public static final String P = "p";
     public static final String CLASS = "class";
     public static final String NAME = "name";

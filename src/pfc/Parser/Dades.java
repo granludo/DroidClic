@@ -30,7 +30,13 @@ public class Dades {
     private String missFiErr;
     private boolean mostrarSolucio;
     private String image;
-
+    
+    public class Info {
+		public boolean isBlank;
+		public String text;
+	}
+	ArrayList<Info> infoArray = new ArrayList<Info>();
+    
     // *camps nous*******
     private int tempsMax = 0;
     private boolean timeCutdown = false;
@@ -264,5 +270,11 @@ public class Dades {
         this.quees = quees;
     }
 
+    public void addInfoToArray(int j, Info i){
+    	infoArray.add(j, i);
+    }
+    public ArrayList<Info> getArrayFillInBlanks(){
+    	return this.infoArray;
+    }
     // ********************************************
 }
