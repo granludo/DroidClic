@@ -47,11 +47,22 @@ public class TextOrder extends Activity {
     private pfc.Parser.Dades dades = new pfc.Parser.Dades();
 
     final Handler mHandler = new Handler();
-
+    
+    int posicioTargets[];
+    
+    int iniciPrimeraParaula;
+    
+    int finalPrimeraParaula;
+    
+    boolean primeraParaulaTrobada;
+    
+    String primeraParaula;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.textorder);
+        primeraParaulaTrobada = false;
         textView = (TextView) findViewById(R.id.textView1);
         textOriginal = Parser.getActivitats().elementAt(CO.activitatActual)
             .getT();
@@ -64,7 +75,6 @@ public class TextOrder extends Activity {
 
         Vector<String> textBarrejat = barrejaTargets();
         String text = converteixAString(textBarrejat);
-        System.out.println(text);
         inicialitzaTextView(text);
         inicialitzaTemporitzador();
     }
@@ -98,6 +108,7 @@ public class TextOrder extends Activity {
 
             }
             anterior = aux;
+            posicioTargets = posini;
         }
         return convertidor.toString();
     }
@@ -116,12 +127,46 @@ public class TextOrder extends Activity {
 
                 @Override
                 public void onClick(View widget) {
-                    TextView tv = (TextView) widget;
-                    String s = tv
-                        .getText()
-                        .subSequence(tv.getSelectionStart(),
-                            tv.getSelectionEnd()).toString();
-                    Log.d("called", s);
+                    CharSequence textComplet = (Spannable) textView.getText();
+                    String text = textView.getText()
+                        .subSequence(textView.getSelectionStart(),
+                            textView.getSelectionEnd()).toString();                    
+                    if (esTarget(textView.getSelectionStart(), text)) {
+                        if (!primeraParaulaTrobada) {
+                            iniciPrimeraParaula = textView.getSelectionStart();
+                            finalPrimeraParaula = textView.getSelectionEnd();
+                            primeraParaulaTrobada = true;
+                            primeraParaula = text;
+                        }
+                        else {
+                            primeraParaulaTrobada = false;
+                            String nouText = "";
+                            for (int i = 0; i < textComplet.length(); ++i) {
+                                if (i != iniciPrimeraParaula) {
+                                    if (i == textView.getSelectionStart()) {
+                                        nouText = nouText.concat(primeraParaula);
+                                        i += text.length() - 1;
+                                    }
+                                    else
+                                        nouText = nouText.concat(Character.toString(textComplet.charAt(i)));
+                                }
+                                else {
+                                    nouText = nouText.concat(text);
+                                    i += primeraParaula.length() - 1;
+                                }
+                            }
+                            inicialitzaTextView(nouText);
+                        }
+                    }
+                }
+
+                private boolean esTarget(int selectionStart, String text) {
+                    for (int i = 0; i < posicioTargets.length; ++i) {
+                        if ((selectionStart == posicioTargets[i] && i == 0) ||
+                            selectionStart ==  1 + posicioTargets[i])
+                            return true;
+                    }
+                    return false;
                 }
 
                 @Override
