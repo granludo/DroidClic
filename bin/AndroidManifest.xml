@@ -52,13 +52,9 @@
         </activity>
         <activity
             android:name="pfc.Activitats.TextOrder"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="pfc.Activitats.FillinBlanks"
             android:screenOrientation="landscape" >
         </activity>
-</application>
+    </application>
 
     <uses-permission android:name="android.permission.INTERNET" >
     </uses-permission>

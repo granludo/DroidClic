@@ -17,220 +17,111 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
-import pfc.Descompressor.Descompressor;
-import pfc.Jclic.Jclic;
 import pfc.Parser.Parser;
 
 public class TextOrder extends Activity {
-    private pfc.Parser.Dades dades = new pfc.Parser.Dades();
+
+    /** Contants rellevants per a poder utilitzar el parser. */
     Constants CO = Constants.getInstance();
-    private int time;
-    private Timer timer;
-    Chronometer cr;
-    String text;
-    Vector<String> tt = new Vector<String>();
-    Vector<Boolean> quees = new Vector<Boolean>();
-    Vector<String> fin = new Vector<String>();
-    boolean clic = false;
-    int startt;
-    int fint;
+
+    /** Text provinent del parser. */
+    Vector<String> textOriginal = new Vector<String>();
+
+    /** Vector que indica si un element de textOriginal es un target (true) o no
+     * (false). */
+    Vector<Boolean> tipusText = new Vector<Boolean>();
+
     TextView textView;
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.textorder);
+    private int time;
 
-        tt = Parser.getActivitats().elementAt(CO.activitatActual).getT();
-        
-        quees = Parser.getActivitats().elementAt(CO.activitatActual).getbool();
-        // inicialitzaTextView();
-        cr = (Chronometer) findViewById(R.id.chronometer1);
-        cr.start();
+    private Timer timer;
 
-        time = dades.getTempsMax();
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            public void run() {
-                mHandler.post(handler);
-            }
-        }, 30 * 1000);
+    Chronometer cr;
 
-        Random r = new Random();
-
-        int i, k;
-        int tamtt = tt.size();
-        int tamp = 0;
-        int j = 0;
-        for (i = 0; i < tamtt; i++) {
-            if (quees.elementAt(i).equals(true)) {
-                ++tamp;
-            }
-        }
-
-        int posicions[] = new int[tamp];
-        int posdes[] = new int[tamp];
-        boolean trobats[] = new boolean[tamp];
-        int p = 0;
-        int z;
-        for (z = 0; z < tamtt; z++) {
-            if (quees.elementAt(z).equals(true)) {
-                posicions[p] = z;
-                ++p;
-            }
-
-        }
-        boolean imparell = false;
-        if (tamp % 2 == 1)
-            imparell = true;
-        while (j < tamp) {
-            int a = r.nextInt(tamp);
-            if (trobats[a] == false && (a != j || (j == tamp - 1 && imparell))) {
-                posdes[j] = posicions[a];
-                trobats[a] = true;
-                if (j == tamp - 1 && imparell)
-                    posdes[j] = posicions[a];
-                ++j;
-            }
-        }
-
-        String taritext[] = new String[tamtt];
-        String resultat[] = new String[tamtt];
-        Boolean queson[] = new Boolean[tamtt];
-        for (int y = 0; y < tamtt; y++) {
-            taritext[y] = tt.elementAt(y);
-            if (quees.elementAt(y).equals(false))
-                resultat[y] = tt.elementAt(y);
-        }
-        int p2 = 0;
-        for (k = 0; k < tamtt; k++) {
-            if (quees.elementAt(k).equals(true)) {
-                int val = posdes[p2];
-                resultat[k] = taritext[val];
-                ++p2;
-            }
-        }
-        int c;
-        for (c = 0; c < tamtt; c++) {
-            String valor = resultat[c];
-            fin.add(valor);
-        }
-        converteix_a_string();
-
-    }
+    private pfc.Parser.Dades dades = new pfc.Parser.Dades();
 
     final Handler mHandler = new Handler();
 
-    final Runnable handler = new Runnable() {
-        public void run() {
-            time = -1;
-            cr.stop();
-            System.out.println("S'HA ACABAT EL TEMPS");
-        }
-    };
-
-    private void converteix_a_string() {
-        StringBuffer convertidor = new StringBuffer();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.textorder);
         textView = (TextView) findViewById(R.id.textView1);
+        textOriginal = Parser.getActivitats().elementAt(CO.activitatActual)
+            .getT();
+        tipusText = Parser.getActivitats().elementAt(CO.activitatActual)
+            .getbool();
 
+        // Eliminem possibles espais al principi i al final de cada element
+        for (int i = 0; i < textOriginal.size(); ++i)
+            textOriginal.set(i, textOriginal.get(i).trim());
+
+        Vector<String> textBarrejat = barrejaTargets();
+        String text = converteixAString(textBarrejat);
+        System.out.println(text);
+        inicialitzaTextView(text);
+        inicialitzaTemporitzador();
+    }
+
+    private String converteixAString(Vector<String> textBarrejat) {
+        StringBuffer convertidor = new StringBuffer();
         int ntargets = 0;
         int i, j, k;
-        for (j = 0; j < quees.size(); j++) {
-            if (quees.elementAt(j) == true)
+        for (j = 0; j < tipusText.size(); j++) {
+            if (tipusText.elementAt(j) == true)
                 ntargets++;
         }
         final int posini[] = new int[ntargets];
         int posfi[] = new int[ntargets];
         int var = 0;
-        for (i = 0; i < fin.size(); i++) {
+        String anterior = "";
+        for (i = 0; i < textBarrejat.size(); i++) {
             int pos = convertidor.length();
-            String aux = fin.elementAt(i);
-            convertidor.append(aux);
-            if (quees.elementAt(i)) {
+            String aux = textBarrejat.elementAt(i);
+            if (aux.length() == 0)
+                convertidor.append("\n");
+            else if (anterior.length() != 0)
+                convertidor.append(" " + aux);
+            else
+                convertidor.append(aux);
+            if (tipusText.elementAt(i)) {
                 int posfinal = convertidor.length();
                 posini[var] = pos;
                 posfi[var] = posfinal;
                 var++;
 
             }
+            anterior = aux;
         }
-        text = convertidor.toString();
-        System.out.println(text);
+        return convertidor.toString();
+    }
+
+    private void inicialitzaTextView(String text) {
         Editable str = Editable.Factory.getInstance().newEditable(text);
-        // str.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), posini[0],
-        // posfi[0],Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        for (k = 0; k < posini.length; k++) {
-            str.setSpan(new ForegroundColorSpan(android.graphics.Color.RED),
-                    posini[k], posfi[k], Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        // textView.setText(str);
         textView.setMovementMethod(LinkMovementMethod.getInstance());
         textView.setText(str, BufferType.SPANNABLE);
         Spannable spans = (Spannable) textView.getText();
+
         Integer[] indices = getSpaceIndices(textView.getText().toString(), ' ');
         int start = 0;
         int end = 0;
-        for (i = 0; i <= indices.length; i++) {
+        for (int i = 0; i <= indices.length; i++) {
             ClickableSpan clickSpan = new ClickableSpan() {
+
                 @Override
                 public void onClick(View widget) {
-                    boolean trobat = false;
                     TextView tv = (TextView) widget;
-                    int k;
-                    for (k = 0; k < posini.length && !trobat; k++) {
-                        if (tv.getSelectionStart() == posini[k])
-                            trobat = true;
-                    }
-
-                    if (trobat) {
-                        if (!clic) {
-                            startt = tv.getSelectionStart();
-                            fint = tv.getSelectionEnd();
-                            clic = true;
-                        }
-                        else {
-                            int z;
-                            String s2 = "";
-                            int posVector1 = 0;
-                            int posVector2 = 0;
-                            int mida = 0;
-                            for (z = 0; z < fin.size(); z++) {
-                                if (mida == tv.getSelectionStart())
-                                    posVector1 = z;
-                                else if (mida == startt)
-                                    posVector2 = z;
-                                mida += fin.get(z).length();
-                            }
-                            // System.out.println("acaba bucle");
-                            Vector<String> fin2 = fin;
-                            String paraula2 = fin.get(posVector2);
-                            String paraula1 = fin.get(posVector1);
-                            fin2.setElementAt(paraula2, posVector1);
-                            fin2.setElementAt(paraula1, posVector2);
-                            StringBuffer convert = new StringBuffer();
-
-                            int y;
-
-                            for (y = 0; y < fin2.size(); y++) {
-                                String aux = fin2.elementAt(y);
-                                convert.append(aux);
-
-                            }
-                            String aa = convert.toString();
-                            System.out.println(aa);
-                            System.out.println(text.length());
-                            System.out.println(aa.length());
-                            textView.setText(aa, BufferType.SPANNABLE);
-
-                        }
-                    }
-
+                    String s = tv
+                        .getText()
+                        .subSequence(tv.getSelectionStart(),
+                            tv.getSelectionEnd()).toString();
+                    Log.d("called", s);
                 }
 
                 @Override
@@ -240,37 +131,86 @@ public class TextOrder extends Activity {
             };
             end = (i < indices.length ? indices[i] : spans.length());
             spans.setSpan(clickSpan, start, end,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             start = end + 1;
         }
 
     }
 
-    /*
-     * private void inicialitzaTextView() { String s =
-     * "Aquesta es una frase de prova"; TextView textView = (TextView)
-     * findViewById(R.id.textView1);
-     * textView.setMovementMethod(LinkMovementMethod.getInstance());
-     * textView.setText(s, BufferType.SPANNABLE);
+    private void inicialitzaTemporitzador() {
+        cr = (Chronometer) findViewById(R.id.chronometer1);
+        cr.start();
+
+        time = dades.getTempsMax();
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            public void run() {
+                mHandler.post(handler);
+            }
+        }, 30 * 1000);
+    }
+
+    /** Barreja els targets del text original.
      * 
-     * 
-     * Spannable spans = (Spannable) textView.getText(); Integer[] indices =
-     * getSpaceIndices(textView.getText().toString(), ' '); int start = 0; int
-     * end = 0; for (int i = 0; i <= indices.length; i++) { ClickableSpan
-     * clickSpan = new ClickableSpan() {
-     * 
-     * @Override public void onClick(View widget) { TextView tv = (TextView)
-     * widget; String s = tv .getText() .subSequence(tv.getSelectionStart(),
-     * tv.getSelectionEnd()).toString(); Log.d("called", s); }
-     * 
-     * 
-     * @Override public void updateDrawState(TextPaint ds) {
-     * super.updateDrawState(ds); } }; end = (i < indices.length ? indices[i] :
-     * spans.length()); spans.setSpan(clickSpan, start, end,
-     * Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); start = end + 1; }
-     * 
-     * }
-     */
+     * @return Un vector que representa el text amb els targets ens posicions
+     *         aleatories. */
+    private Vector<String> barrejaTargets() {
+        int nTargets = 0;
+        for (int i = 0; i < textOriginal.size(); i++) {
+            if (tipusText.elementAt(i).equals(true)) {
+                ++nTargets;
+            }
+        }
+        int posicions[] = new int[nTargets];
+        int posdes[] = new int[nTargets];
+        boolean trobats[] = new boolean[nTargets];
+        int p = 0;
+        for (int z = 0; z < textOriginal.size(); z++) {
+            if (tipusText.elementAt(z).equals(true)) {
+                posicions[p] = z;
+                ++p;
+            }
+        }
+        boolean imparell = false;
+        if (nTargets % 2 == 1)
+            imparell = true;
+        int j = 0;
+        Random r = new Random();
+        while (j < nTargets) {
+            int a = r.nextInt(nTargets);
+            if (trobats[a] == false
+                && (a != j || (j == nTargets - 1 && imparell))) {
+                posdes[j] = posicions[a];
+                trobats[a] = true;
+                if (j == nTargets - 1 && imparell)
+                    posdes[j] = posicions[a];
+                ++j;
+            }
+        }
+        String taritext[] = new String[textOriginal.size()];
+        String resultat[] = new String[textOriginal.size()];
+        for (int y = 0; y < textOriginal.size(); y++) {
+            taritext[y] = textOriginal.elementAt(y);
+            if (tipusText.elementAt(y).equals(false))
+                resultat[y] = textOriginal.elementAt(y);
+        }
+        int p2 = 0;
+        for (int k = 0; k < textOriginal.size(); k++) {
+            if (tipusText.elementAt(k).equals(true)) {
+                int val = posdes[p2];
+                resultat[k] = taritext[val];
+                ++p2;
+            }
+        }
+        int c;
+        Vector<String> fin = new Vector<String>();
+        for (c = 0; c < textOriginal.size(); c++) {
+            String valor = resultat[c];
+            fin.add(valor);
+        }
+        return fin;
+    }
 
     public static Integer[] getSpaceIndices(String s, char c) {
         int pos = s.indexOf(c, 0);
@@ -282,4 +222,12 @@ public class TextOrder extends Activity {
         return indices.toArray(new Integer[0]);
     }
 
+    final Runnable handler = new Runnable() {
+
+        public void run() {
+            time = -1;
+            cr.stop();
+            System.out.println("S'HA ACABAT EL TEMPS");
+        }
+    };
 }
