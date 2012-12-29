@@ -108,7 +108,7 @@ public class TextOrder extends Activity {
         textView.setText(str, BufferType.SPANNABLE);
         Spannable spans = (Spannable) textView.getText();
 
-        Integer[] indices = getSpaceIndices(textView.getText().toString(), ' ');
+        Integer[] indices = getSpaceIndices(textView.getText().toString());
         int start = 0;
         int end = 0;
         for (int i = 0; i <= indices.length; i++) {
@@ -134,7 +134,6 @@ public class TextOrder extends Activity {
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             start = end + 1;
         }
-
     }
 
     private void inicialitzaTemporitzador() {
@@ -212,12 +211,18 @@ public class TextOrder extends Activity {
         return fin;
     }
 
-    public static Integer[] getSpaceIndices(String s, char c) {
-        int pos = s.indexOf(c, 0);
+    public static Integer[] getSpaceIndices(String s) {
+        int posEspai = s.indexOf(' ', 0);
+        int posLinia = s.indexOf('\n', 0);
         List<Integer> indices = new ArrayList<Integer>();
-        while (pos != -1) {
-            indices.add(pos);
-            pos = s.indexOf(c, pos + 1);
+        int posicio = Math.min(posEspai, posLinia);
+        while (posicio != -1) {
+            indices.add(posicio);
+            if (posicio == posLinia)
+                posLinia = s.indexOf('\n', posLinia + 1);
+            else
+                posEspai = s.indexOf(' ', posEspai + 1);
+            posicio = Math.min(posEspai, posLinia);
         }
         return indices.toArray(new Integer[0]);
     }
