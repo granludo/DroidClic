@@ -134,10 +134,8 @@ public class Puzzle extends Activity{
                 finish();
 			}
 			else if(Parser.getActivitats().elementAt(CO.activitatActual+1).getClas().equals(XMLConstants.FILLINBLANKS)){
-				//Intent i = new Intent(this,FillinBlanks.class);
-				//startActivity(i);
-			    // He comentat aquestes dues linies perque no existeix el FillinBlanks.class al projecte
-			    // i per aquest motiu no compila
+				Intent i = new Intent(this,FillinBlanks.class);
+				startActivity(i);
 				finish();
 			}
 		}

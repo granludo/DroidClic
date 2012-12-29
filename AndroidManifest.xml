@@ -42,6 +42,10 @@
             android:name="pfc.Activitats.Text"
             android:screenOrientation="landscape" >
         </activity>
+         <activity
+            android:name="pfc.Activitats.FillinBlanks"
+            android:screenOrientation="landscape" >
+        </activity>
         <activity
             android:name="pfc.Activitats.Identify"
             android:screenOrientation="landscape" >
