@@ -24,6 +24,7 @@ import android.util.Log;
 public class Parser {
 	private static Vector<Dades> activitats;
 	private static boolean actSaltades;
+	private static ClicSettings clicSettings;
 	
 	public static void ParserXML(URL url){
         try {
@@ -65,6 +66,24 @@ public class Parser {
 		try{
 			activitats = new Vector<Dades>();
 			Element projecte = doc.getRootElement();
+			
+			String title = projecte.getChild(XMLConstants.SETTINGS).getChildText(XMLConstants.TITLE);
+			String author = projecte.getChild(XMLConstants.SETTINGS).getChild(XMLConstants.AUTHOR).getAttributeValue(XMLConstants.NAME);
+			String language = projecte.getChild(XMLConstants.SETTINGS).getChildText(XMLConstants.LANGUAGE);
+			String description = projecte.getChild(XMLConstants.SETTINGS).getChild(XMLConstants.DESCRIPTION).getChildText(XMLConstants.P);
+			String keywords = projecte.getChild(XMLConstants.SETTINGS).getChildText(XMLConstants.DESCRIPTORS);
+			String category = projecte.getChild(XMLConstants.SETTINGS).getChild(XMLConstants.DESCRIPTORS).getAttributeValue(XMLConstants.AREA);
+			String age = projecte.getChild(XMLConstants.SETTINGS).getChild(XMLConstants.DESCRIPTORS).getAttributeValue(XMLConstants.LEVEL);
+			clicSettings = new ClicSettings();
+			clicSettings.setTitle(title);
+			clicSettings.setAuthor(author);
+			clicSettings.setLanguage(language);
+			clicSettings.setDescription(description);
+			clicSettings.setKeywords(keywords);
+			clicSettings.setCategory(category);
+			clicSettings.setAge(age);
+			// en el xml no sale el nombre del icono, se mostrara el por defecto
+//			clicSettings.setIconName();
 			
 			List activities = projecte.getChild(XMLConstants.ACTIVITIES).getChildren();
 			Iterator itr = activities.iterator();
@@ -294,4 +313,13 @@ public class Parser {
 	public static boolean getActivitatsSaltades(){
 		return Parser.actSaltades;
 	}
+
+	public static void setClicSettings(ClicSettings clicSettings){
+		Parser.clicSettings = clicSettings;
+	}
+	
+	public static ClicSettings getClicSettings(){
+		return Parser.clicSettings;
+	}
+
 }

@@ -8,7 +8,9 @@
         android:id="@+id/iconClic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical" />
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/jclic_aqua" />
+        <!-- android:src="@drawable/jclic_aqua" -->
 
     <TextView
         android:id="@+id/titulo"
@@ -27,6 +29,7 @@
         android:id="@+id/bplay"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@drawable/ico_go" />
+        android:background="@android:color/transparent" />
+<!-- android:src="@drawable/ico_go" /> -->        
 
 </LinearLayout>
