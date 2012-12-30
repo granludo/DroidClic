@@ -64,6 +64,7 @@ public class CustomAdapter extends CursorAdapter {
 		// el tag es per guardar la posicio dins la llista
 		icona.setTag(cursor.getPosition());
 
+		Inici.jclicDir.mkdirs();
 		String iconName = cursor.getString(cursor.getColumnIndexOrThrow("nombre")) + ".ico";
 		String iconPath = Inici.jclicDir.getAbsolutePath() + "/" + iconName;
 		Bitmap bMap = BitmapFactory.decodeFile(iconPath);

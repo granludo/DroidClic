@@ -248,7 +248,7 @@ public class Inici extends Activity {
 	}
     
     private Dialog crearCategoria() {
-		final CharSequence[] items ={"Llengües", "Matemàtiques", "Ciències socials", "Ciències experimentals", "Música", "Plàstica i visual", "Educació física", "Diversos"};
+		final CharSequence[] items ={"Tots", "Llengües", "Matemàtiques", "Ciències socials", "Ciències experimentals", "Música", "Plàstica i visual", "Educació física", "Diversos"};
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Selecciona una categoria");
 		builder.setItems(items, new DialogInterface.OnClickListener() {			
@@ -261,7 +261,7 @@ public class Inici extends Activity {
     }
 
     private Dialog crearEdat() {
-		final CharSequence[] items ={"Infantil (3-6)", "Primària (6-12)", "Secundària (12-16)", "Batxillerat (16-18)", "tots"};
+		final CharSequence[] items ={"Tots", "Infantil (3-6)", "Primària (6-12)", "Secundària (12-16)", "Batxillerat (16-18)"};
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Selecciona un rang d'edat");
 		builder.setItems(items, new DialogInterface.OnClickListener() {			
@@ -274,7 +274,7 @@ public class Inici extends Activity {
 	}
     
     private Dialog crearIdioma() {
-		final CharSequence[] items ={"català", "español", "English", "German", "French", "Other"};
+		final CharSequence[] items ={"Tots", "Català", "Español", "English", "German", "French", "Other"};
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Selecciona un idioma");
 		builder.setItems(items, new DialogInterface.OnClickListener() {			

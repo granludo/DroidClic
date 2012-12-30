@@ -115,7 +115,8 @@ public class LlibreriaSimpleAdapter extends SimpleAdapter {
 			public void onClick(View v) {
 				mDescView.setText(data.getBody());
 				Toast.makeText(mContext, "Descarregant clic...", Toast.LENGTH_LONG).show();
-				
+				Inici.jclicDir.mkdirs();
+
 				byte[] fileBytes;
 				File file;
 				try {
