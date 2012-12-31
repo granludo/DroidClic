@@ -47,21 +47,24 @@ public class TextOrder extends Activity {
     private pfc.Parser.Dades dades = new pfc.Parser.Dades();
 
     final Handler mHandler = new Handler();
-    
+
     int posicioTargets[];
-    
+
     int iniciPrimeraParaula;
-    
+
     int finalPrimeraParaula;
-    
+
     boolean primeraParaulaTrobada;
-    
+
     String primeraParaula;
-    
+
+    Posicions posicions;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.textorder);
+        posicions = new Posicions();
         primeraParaulaTrobada = false;
         textView = (TextView) findViewById(R.id.textView1);
         textOriginal = Parser.getActivitats().elementAt(CO.activitatActual)
@@ -75,8 +78,24 @@ public class TextOrder extends Activity {
 
         Vector<String> textBarrejat = barrejaTargets();
         String text = converteixAString(textBarrejat);
+        inicialitzaPosicioTargets(textBarrejat);
         inicialitzaTextView(text);
         inicialitzaTemporitzador();
+    }
+
+    private void inicialitzaPosicioTargets(Vector<String> textBarrejat) {
+        int sum = 0;
+        int j = 0;
+        for (int i = 0; i < tipusText.size(); ++i) {
+            if (tipusText.get(i)) {
+                posicioTargets[j] = sum;
+                ++j;
+            }
+            sum += textBarrejat.get(i).length();
+            if (textBarrejat.get(i).length() != 0)
+                ++sum;
+        }
+
     }
 
     private String converteixAString(Vector<String> textBarrejat) {
@@ -108,8 +127,8 @@ public class TextOrder extends Activity {
 
             }
             anterior = aux;
-            posicioTargets = posini;
         }
+        posicioTargets = new int[posini.length];
         return convertidor.toString();
     }
 
@@ -128,9 +147,10 @@ public class TextOrder extends Activity {
                 @Override
                 public void onClick(View widget) {
                     CharSequence textComplet = (Spannable) textView.getText();
-                    String text = textView.getText()
+                    String text = textView
+                        .getText()
                         .subSequence(textView.getSelectionStart(),
-                            textView.getSelectionEnd()).toString();                    
+                            textView.getSelectionEnd()).toString();
                     if (esTarget(textView.getSelectionStart(), text)) {
                         if (!primeraParaulaTrobada) {
                             iniciPrimeraParaula = textView.getSelectionStart();
@@ -144,27 +164,52 @@ public class TextOrder extends Activity {
                             for (int i = 0; i < textComplet.length(); ++i) {
                                 if (i != iniciPrimeraParaula) {
                                     if (i == textView.getSelectionStart()) {
-                                        nouText = nouText.concat(primeraParaula);
+                                        // segona paraula
+                                        posicions.nouValorPrimeraParaula = nouText
+                                            .length();
+                                        nouText = nouText
+                                            .concat(primeraParaula);
                                         i += text.length() - 1;
                                     }
-                                    else
-                                        nouText = nouText.concat(Character.toString(textComplet.charAt(i)));
+                                    else {
+                                        nouText = nouText.concat(Character
+                                            .toString(textComplet.charAt(i)));
+                                    }
                                 }
                                 else {
+                                    posicions.nouValorSegonaParaula = nouText
+                                        .length();
+                                    ;
                                     nouText = nouText.concat(text);
                                     i += primeraParaula.length() - 1;
                                 }
                             }
+                            actualitzaPosicions();
                             inicialitzaTextView(nouText);
                         }
                     }
                 }
 
+                private void actualitzaPosicions() {
+                    for (int i = 0; i < posicioTargets.length; ++i) {
+                        if (i == posicions.indexPrimeraParaula)
+                            posicioTargets[i] = posicions.nouValorPrimeraParaula;
+                        else if (i == posicions.indexSegonaParaula)
+                            posicioTargets[i] = posicions.nouValorSegonaParaula;
+
+                    }
+
+                }
+
                 private boolean esTarget(int selectionStart, String text) {
                     for (int i = 0; i < posicioTargets.length; ++i) {
-                        if ((selectionStart == posicioTargets[i] && i == 0) ||
-                            selectionStart ==  1 + posicioTargets[i])
+                        if (selectionStart == posicioTargets[i]) {
+                            if (!primeraParaulaTrobada)
+                                posicions.indexPrimeraParaula = i;
+                            else
+                                posicions.indexSegonaParaula = i;
                             return true;
+                        }
                     }
                     return false;
                 }
@@ -280,4 +325,15 @@ public class TextOrder extends Activity {
             System.out.println("S'HA ACABAT EL TEMPS");
         }
     };
+
+    class Posicions {
+
+        public int indexPrimeraParaula;
+
+        public int nouValorPrimeraParaula;
+
+        public int indexSegonaParaula;
+
+        public int nouValorSegonaParaula;
+    }
 }
