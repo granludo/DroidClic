@@ -19,9 +19,7 @@ public class FuncionsBD extends Activity {
 	public final String AUTOR = "autor";
 	public final String IDIOMA = "idioma";
 	public final String CATEGORIA = "categoria";
-	public final String ICONO = "icono";
-	public final String KEYWORDS = "keywords";
-	public final String JCLIC = "jclic";
+	public final String NOMBRE = "nombre";
 	
 	private static final String DATABASE_TABLE = "Clics";
 	
@@ -36,7 +34,6 @@ public class FuncionsBD extends Activity {
 	}
 		
     public FuncionsBD(Context ctx) {
-		// TODO Auto-generated constructor stub
     	 this.context = ctx;
 	}
     
@@ -50,22 +47,16 @@ public class FuncionsBD extends Activity {
     	dbHelper.close();
     }
     
-    public void create(String titol, String descripcio, String edat, String autor, String idioma, String categoria, String icona, String keywords, String jclic) {
-      /*  ContentValues initialValues = new ContentValues();
+    public long create(String titol, String descripcio, int edat, String autor, int idioma, int categoria, String nombre) {
+        ContentValues initialValues = new ContentValues();
         initialValues.put(TITULO, titol);
         initialValues.put(DESCRIPCION, descripcio);
         initialValues.put(RANGO_EDAD, edat);
         initialValues.put(AUTOR, autor);
         initialValues.put(IDIOMA, idioma);
         initialValues.put(CATEGORIA, categoria);
-        initialValues.put(ICONO, icona);
-        initialValues.put(KEYWORDS, keywords);
-        initialValues.put(JCLIC, jclic);*/
-        db.execSQL("insert into Clics ("+TITULO+","+DESCRIPCION+","+RANGO_EDAD+","+AUTOR+","+IDIOMA+","+CATEGORIA+","+ICONO+","+KEYWORDS+","+JCLIC+") VALUES ('clic7', 'descripcio4..5..castellà..mates','4..5','MMB','castellà', " +
-        		"'llengua', '/sdcard/GPS/nadal.jpg', 'brrrrr', '/sdcard/GPS/pipinyer.jclic.zip')");
-      
-      //  return db.insert(DATABASE_TABLE, null, initialValues);
-
+        initialValues.put(NOMBRE, nombre);
+        return db.insert(DATABASE_TABLE, null, initialValues);
     }
 
     public boolean deleteClic(long rowId) {
@@ -78,54 +69,61 @@ public class FuncionsBD extends Activity {
     
     //Cursor amb totes les notes de la base de dades
     public Cursor buscar_tots_clics() {
-    	/*return db.query(DATABASE_TABLE, new String[] {KEY_ROWID, TITULO, DESCRIPCION, 
-    			RANGO_EDAD, AUTOR, IDIOMA, CATEGORIA, ICONO, KEYWORDS, JCLIC}, 
-    			null, null, null, null, null);*/
-    	Cursor mCursor = db.rawQuery("Select * from Clics", null);
-    	return mCursor;
+    	return db.query(DATABASE_TABLE, new String[] {KEY_ROWID, TITULO, DESCRIPCION, 
+    			RANGO_EDAD, AUTOR, IDIOMA, CATEGORIA, NOMBRE}, 
+    			null, null, null, null, null);
     }
  
-    
-    public Cursor buscar_per_idioma(String[] s) throws SQLException {
-    	Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE idioma = ? ", s);
+    public Cursor buscar_per_idioma(int s) throws SQLException {
+    	String[] ss = new String[] { String.valueOf(s)};
+    	Cursor mCursor = db.query(DATABASE_TABLE, new String[] {KEY_ROWID, TITULO, DESCRIPCION, 
+    			RANGO_EDAD, AUTOR, IDIOMA, CATEGORIA, NOMBRE},  "idioma = ?", ss, null, null, null);
         return mCursor;
     }
     
-	public Cursor buscar_per_categoria(String[] s) {
-		Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE categoria = ? ", s);
+	public Cursor buscar_per_categoria(int s) {
+    	String[] ss = new String[] { String.valueOf(s)};
+    	Cursor mCursor = db.query(DATABASE_TABLE, new String[] {KEY_ROWID, TITULO, DESCRIPCION, 
+    			RANGO_EDAD, AUTOR, IDIOMA, CATEGORIA, NOMBRE},  "categoria = ?", ss, null, null, null);
         return mCursor;
 	}
     
-	public Cursor buscar_per_edat(String[] s) {
-		Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE rango_edad = ? ", s);
+	public Cursor buscar_per_edat(int s) {
+		String[] ss = new String[] { String.valueOf(s)};
+    	Cursor mCursor = db.query(DATABASE_TABLE, new String[] {KEY_ROWID, TITULO, DESCRIPCION, 
+    			RANGO_EDAD, AUTOR, IDIOMA, CATEGORIA, NOMBRE},  "rango_edad = ?", ss, null, null, null);
         return mCursor;
 	}
     
-	
-	public Cursor buscar_catEdat(String[] s) {
-		Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE categoria = ? and rango_edad = ?", s);
+	public Cursor buscar_catEdat(int[] s) {
+		String[] ss = new String[] { String.valueOf(s)};
+    	Cursor mCursor = db.query(DATABASE_TABLE, new String[] {KEY_ROWID, TITULO, DESCRIPCION, 
+    			RANGO_EDAD, AUTOR, IDIOMA, CATEGORIA, NOMBRE},  "categoria = ? and rango_edad = ?", ss, null, null, null);
         return mCursor;
 	}
 	
-	public Cursor buscar_catIdioma(String[] s) {
-		Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE categoria = ? and idioma = ?", s);
+	public Cursor buscar_catIdioma(int[] s) {
+		String[] ss = new String[] { String.valueOf(s)};
+    	Cursor mCursor = db.query(DATABASE_TABLE, new String[] {KEY_ROWID, TITULO, DESCRIPCION, 
+    			RANGO_EDAD, AUTOR, IDIOMA, CATEGORIA, NOMBRE},  "categoria = ? and idioma = ?", ss, null, null, null);
         return mCursor;
 	}
 	
-	public Cursor buscar_edatIdioma(String[] s) {
-		Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE rango_edad = ? and idioma = ?", s);
+	public Cursor buscar_edatIdioma(int[] s) {
+		String[] ss = new String[] { String.valueOf(s)};
+    	Cursor mCursor = db.query(DATABASE_TABLE, new String[] {KEY_ROWID, TITULO, DESCRIPCION, 
+    			RANGO_EDAD, AUTOR, IDIOMA, CATEGORIA, NOMBRE},  "rango_edad = ? and idioma = ?", ss, null, null, null);
         return mCursor;
 	}
 	
 	
-	
-	public Cursor buscar_tot(String[] s) {
-		Cursor mCursor = db.rawQuery("SELECT  _id ,titulo FROM Clics WHERE categoria = ? and  rango_edad = ? and idioma = ?", s);
+	public Cursor buscar_tot(int[] s) {
+		String[] ss = new String[] { String.valueOf(s)};
+    	Cursor mCursor = db.query(DATABASE_TABLE, new String[] {KEY_ROWID, TITULO, DESCRIPCION, 
+    			RANGO_EDAD, AUTOR, IDIOMA, CATEGORIA, NOMBRE},  "categoria = ? and rango_edad = ? and idioma = ?", ss, null, null, null);
         return mCursor;
 	}	
 	
-	
-	
-    }
+}
    
 

@@ -65,4 +65,12 @@ public class XMLConstants {
 	public static final String COUNTDOWNTIME = "countDownTime";
 	public static final String COUNTDOWNACT = "countDownActions";
 	public static final String MAXACTIONS = "maxActions";
+	
+	// settings children:
+	public static final String TITLE = "title";
+	public static final String AUTHOR = "author";
+	public static final String LANGUAGE = "language";
+	public static final String DESCRIPTORS = "descriptors";
+	public static final String AREA = "area";
+	public static final String LEVEL = "level";
 }

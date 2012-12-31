@@ -1,177 +1,136 @@
 package pfc.Jclic;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import pfc.Activitats.Constants;
-import pfc.Descompressor.Descompressor;
-import pfc.Parser.Parser;
-import pfc.Repositori.DadesServidor;
+import pfc.ConnectionLayer.ClicMetaData;
+import pfc.ConnectionLayer.SearchResult;
+import pfc.ConnectionLayer.ServerAPI;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Inici extends Activity {
-	
-	private Constants CO = Constants.getInstance();
-	
+public class Llibreria extends Activity {
+
 	static final int DIALOG_CATEGORIA_ID = 1;
 	static final int DIALOG_EDAT_ID = 2;
 	static final int DIALOG_IDIOMA_ID = 3;
 	
-	private ImageButton bLlibreria;
+	private ImageButton bTornar;
 	private ImageButton bCategoria;
 	private ImageButton bEdat;
 	private ImageButton bIdioma;
-	private TextView tvLlibreria;
+	private TextView tvTornar;
 	private TextView tvCategoria;
 	private TextView tvEdat;
 	private TextView tvIdioma;
 	private TextView tvDescripcio;
 	private ListView listClics;
-	private CustomAdapter ca;
 	
-	private int edat = -1;
-	private int categoria = -1;
-	private int idioma = -1;
-	
-	public static File jclicDir = new File(Environment.getExternalStorageDirectory(), "JClic");
-	
-	private FuncionsBD FDB;
-	
+	private Integer edat = -1;
+	private Integer categoria = -1;
+	private Integer idioma = -1;
+
 	public void onCreate(Bundle savedInstanceState) {		
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.test);
-	    
-	    Parser.setActivitatsSaltades(false);
-	    CO.activitatActual = -1;
-	    CO.exemple = false;
-	    DadesServidor.keyword = "";
-	    DadesServidor.all = true;
-	    
-	    bLlibreria = (ImageButton)findViewById(R.id.bLlibreria);
+   
+	    bTornar = (ImageButton)findViewById(R.id.bLlibreria);
 	    bCategoria = (ImageButton)findViewById(R.id.bCategoria);
 	    bEdat = (ImageButton)findViewById(R.id.bEdat);
 	    bIdioma = (ImageButton)findViewById(R.id.bIdioma);
-
-	    bLlibreria.setBackgroundResource(R.drawable.ico_libreriab);
 	    
-	    tvLlibreria = (TextView)findViewById(R.id.tvLlibreria);
+	    bTornar.setBackgroundResource(R.drawable.ico_back);
+
+	    tvTornar = (TextView)findViewById(R.id.tvLlibreria);
 	    tvCategoria = (TextView)findViewById(R.id.tvCategoria);
 	    tvEdat = (TextView)findViewById(R.id.tvEdat);
-	    tvIdioma = (TextView)findViewById(R.id.tvIdioma);	    
+	    tvIdioma = (TextView)findViewById(R.id.tvIdioma);
  	    tvDescripcio = (TextView)findViewById(R.id.tvDescripcio);
 	    
-	    tvLlibreria.setText("Llibreria");
+	    tvTornar.setText("Tornar");
 	    tvCategoria.setText("Categoria");
 	    tvEdat.setText("Edat");
 	    tvIdioma.setText("Idioma");
 	    tvDescripcio.setText("Descripció del Clic");
 	    
 	    listClics = (ListView)this.findViewById(R.id.listClics);
+	    
+	    populateListFromRepo(getAllResults());
 
-	    FDB = new FuncionsBD(this);
-	    
-	    // TODO: nomes s'omple la llista en crear lactivitat, esto esta MAAL, perque al tornar surt la llista buida!
-	    // TODO: caldria veure quan cal i quan no repoblar la bd
-	    prepareDB();
-	    fillListFromDB();
-	    
 	    setOnClickListener();
 	}
 	
-	private void prepareDB(){
-		String state = Environment.getExternalStorageState();
-		if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-		    // We can read the media
+	private SearchResult getAllResults() {
+		SearchResult results = null;
+		Toast.makeText(getApplicationContext(), "Carregant Resultats...", Toast.LENGTH_LONG).show();
+		try {
+			results = ServerAPI.getAll(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			tvDescripcio.setText("No es pot connectar amb la Llibreria");
+		}
+		return results;
+	}
+	
+	private SearchResult getSearchResults(Map<String, String> params) {
+		SearchResult results = null;
+		Toast.makeText(getApplicationContext(), "Carregant Resultats...", Toast.LENGTH_LONG).show();
+		try {
+			results = ServerAPI.search(params, 0);
+		} catch (Exception e) {
+			tvDescripcio.setText("No es pot connectar amb la Llibreria");
+			e.printStackTrace();
+		}
+		return results;
+	}
 
-			// we look for clics on the SDcard
-			jclicDir.mkdirs();
-			FilenameFilter jclicFilter = new FilenameFilter() {
-				public boolean accept(File directory, String fileName) {
-				    return fileName.endsWith(".jclic.zip");
-				}
-			};
-			File[] files = jclicDir.listFiles(jclicFilter);
-			
-			fillDatabaseFromSD(files);
-		
+	private void populateListFromRepo(SearchResult results) {
+		List<Map<String, Object>> dadesLlista = new ArrayList<Map<String, Object>>();
+		int numResults;
+		if (results == null) {
+			numResults = 0;
+			tvDescripcio.setText("No hi ha resultats");
 		} else {
-		    // Something is wrong, cannot read form SDcard
-			Toast.makeText(getApplicationContext(), "The device is not mounted", Toast.LENGTH_LONG).show();		
+			numResults = results.getResultsLength();
+			tvDescripcio.setText("Selecciona un clic");
 		}
+		for (int i = 0; i < numResults; i++) {
+			ClicMetaData result = results.getResult(i);
+			Map<String, Object> dadesClic = new HashMap<String, Object>();
+			dadesClic.put("clicmetadata", result);
+			dadesLlista.add(dadesClic);
+		}
+		LlibreriaSimpleAdapter listAdapter = new LlibreriaSimpleAdapter(
+				this,
+				dadesLlista,
+				R.layout.element_clic,
+				new String[] {"clicmetadata"},
+				new int[] {R.id.iconClic, R.id.titulo, R.id.bplay},
+				tvDescripcio
+				);
+		listClics.setAdapter(listAdapter);
 	}
 	
-
-	private void fillDatabaseFromSD(File[] files){
-		FDB.open();
-		FDB.deletesAll();
-
-		for (File file : files) {
-			// uncompress clics to get metadata
-			CO.path = file.getAbsolutePath();
-			CO.fitxer = (String) CO.path.subSequence(0, CO.path.length() - 4);
-			String[] split = CO.fitxer.split("/");
-			CO.fitxer = split[split.length - 1];
-
-			if(Descompressor.descompressor(CO.fitxer, CO.path)){
-				File tmpFile = new File(Environment.getExternalStorageDirectory(), "tmp/jclic/" + CO.fitxer);
-				try {
-					tmpFile.createNewFile();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				Parser.ParserXML(tmpFile);
-
-				// get clics metadata
-				String title = Parser.getClicSettings().getTitle();
-				String description = Parser.getClicSettings().getDescription();
-				String author = Parser.getClicSettings().getAuthor();
-				int age = ageToInt(Parser.getClicSettings().getAge());
-				int language = languageToInt(Parser.getClicSettings().getLanguage());
-				int category = categoryToInt(Parser.getClicSettings().getCategory());
-				String fname = file.getName();
-				String[] split1 = fname.split("\\.");
-				String name = split1[0];
-				
-				// save clics metadata to DB
-				FDB.create(title, description, age, author, language, category, name);
-			}
-		}
-		FDB.close();
-	}
-	
-	private void fillListFromDB(){
-		FDB.open();
-	    Cursor c = FDB.buscar_tots_clics();
-	    startManagingCursor(c);
-	    if (c.moveToFirst()) {
-	    	ca = new CustomAdapter(getApplicationContext(), c, listClics, tvDescripcio);
-			listClics.setAdapter(ca);
-	    } else {
-	    	tvDescripcio.setText("No hi ha activitats");
-	    }
-		FDB.close();
-	}
 	
 	private void setOnClickListener(){
 		
-		bLlibreria.setOnClickListener(new View.OnClickListener() {
+		bTornar.setOnClickListener(new View.OnClickListener() {
 			 public void onClick(View view) {
-				 Toast.makeText(getApplicationContext(), "Obrint Llibreria...", Toast.LENGTH_LONG).show();
-				 Intent i = new Intent(getApplicationContext(), Llibreria.class);
+				 Intent i = new Intent(getApplicationContext(), Inici.class);
 				 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				 Toast.makeText(getApplicationContext(), "Inici...", Toast.LENGTH_LONG).show();
 				 startActivity(i);
 			 }
 		});
@@ -215,40 +174,15 @@ public class Inici extends Activity {
     }
     
     private void cridaFiltres() {
-		FDB.open();
-		Cursor c = null;
-
-		if (categoria != -1 && edat == -1 && idioma == -1) c = FDB.buscar_per_categoria(categoria);
-		else if (categoria == -1 && edat == -1 && idioma != -1) c = FDB.buscar_per_idioma(idioma);
-		else if (categoria == -1 && edat != -1 && idioma == -1) c = FDB.buscar_per_edat(edat);
-		else if (categoria != -1 && edat != -1 && idioma == -1) {
-			int[] x = new int[] {categoria, edat};
-			c = FDB.buscar_catEdat(x);
-		}
-		else if (categoria != -1 && edat == -1 && idioma != -1) {
-			int[] x = new int[] {categoria, idioma};
-			c = FDB.buscar_catIdioma(x);
-		}
-		else if (categoria == -1 && edat != -1 && idioma != -1) {
-			int[] x = new int[] {edat, idioma};
-			c = FDB.buscar_edatIdioma(x);
-		}
-		else if (categoria != -1 && edat != -1 && idioma != -1) {
-			int[] x = new int[] {categoria, edat, idioma};
-			c = FDB.buscar_tot(x);
-		}
-		else c = FDB.buscar_tots_clics();
-		
-		startManagingCursor(c);
-		if (!c.moveToFirst()) tvDescripcio.setText("No hi ha clics");
-		else tvDescripcio.setText("Selecciona un clic");
-		ca = new CustomAdapter(getApplicationContext(), c, listClics, tvDescripcio);
-		listClics.setAdapter(ca);
-		FDB.close();
+    	Map<String, String> params = new HashMap<String, String>();
+		if (categoria != -1) params.put("thematic", categoria.toString());
+		if (edat != -1) params.put("age", edat.toString());
+		if (idioma != -1) params.put("language", idioma.toString());
+		populateListFromRepo(getSearchResults(params));
 	}
     
     private Dialog crearCategoria() {
-		final CharSequence[] items ={"Tots", "Llengües", "Matemàtiques", "Ciències socials", "Ciències experimentals", "Música", "Plàstica i visual", "Educació física", "Diversos"};
+		final CharSequence[] items = {"Tots", "Llengües", "Matemàtiques", "Ciències socials", "Ciències experimentals", "Música", "Plàstica i visual", "Educació física", "Diversos"};
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Selecciona una categoria");
 		builder.setItems(items, new DialogInterface.OnClickListener() {			
@@ -325,5 +259,5 @@ public class Inici extends Activity {
     	else category = -1;
     	return category;
     }
-   
+
 }
