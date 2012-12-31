@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import pfc.Jclic.R;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -17,7 +18,7 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.Log;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.TextView;
@@ -48,7 +49,9 @@ public class TextOrder extends Activity {
 
     final Handler mHandler = new Handler();
 
-    int posicioTargets[];
+    // int posicioTargets[];
+
+    // int posicioFinalTargets[];
 
     int iniciPrimeraParaula;
 
@@ -58,14 +61,16 @@ public class TextOrder extends Activity {
 
     String primeraParaula;
 
-    Posicions posicions;
+    ArrayList<Posicio> poss = new ArrayList<Posicio>();
+
+    Paraules paraules;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.textorder);
-        posicions = new Posicions();
         primeraParaulaTrobada = false;
+        paraules = new Paraules();
         textView = (TextView) findViewById(R.id.textView1);
         textOriginal = Parser.getActivitats().elementAt(CO.activitatActual)
             .getT();
@@ -88,7 +93,12 @@ public class TextOrder extends Activity {
         int j = 0;
         for (int i = 0; i < tipusText.size(); ++i) {
             if (tipusText.get(i)) {
-                posicioTargets[j] = sum;
+                Posicio p = new Posicio();
+                p.posicioInicial = sum;
+                p.posicioFinal = sum + textBarrejat.get(i).length() - 1;
+                poss.add(p);
+                // posicioTargets[j] = sum;
+                // posicioFinalTargets[j] = sum + textBarrejat.get(i).length();
                 ++j;
             }
             sum += textBarrejat.get(i).length();
@@ -128,7 +138,8 @@ public class TextOrder extends Activity {
             }
             anterior = aux;
         }
-        posicioTargets = new int[posini.length];
+        // posicioTargets = new int[posini.length];
+        // posicioFinalTargets = new int[posini.length];
         return convertidor.toString();
     }
 
@@ -146,7 +157,7 @@ public class TextOrder extends Activity {
 
                 @Override
                 public void onClick(View widget) {
-                    CharSequence textComplet = (Spannable) textView.getText();
+                    CharSequence textComplet = textView.getText();
                     String text = textView
                         .getText()
                         .subSequence(textView.getSelectionStart(),
@@ -161,12 +172,10 @@ public class TextOrder extends Activity {
                         else {
                             primeraParaulaTrobada = false;
                             String nouText = "";
+                            int targets = 0;
                             for (int i = 0; i < textComplet.length(); ++i) {
                                 if (i != iniciPrimeraParaula) {
                                     if (i == textView.getSelectionStart()) {
-                                        // segona paraula
-                                        posicions.nouValorPrimeraParaula = nouText
-                                            .length();
                                         nouText = nouText
                                             .concat(primeraParaula);
                                         i += text.length() - 1;
@@ -177,37 +186,61 @@ public class TextOrder extends Activity {
                                     }
                                 }
                                 else {
-                                    posicions.nouValorSegonaParaula = nouText
-                                        .length();
-                                    ;
                                     nouText = nouText.concat(text);
                                     i += primeraParaula.length() - 1;
                                 }
                             }
-                            actualitzaPosicions();
+                            if (Math.min(paraules.indexSegonaParaula,
+                                paraules.indexPrimeraParaula) == paraules.indexPrimeraParaula)
+                                actualitzaPosicions(
+                                    paraules.indexPrimeraParaula,
+                                    paraules.indexSegonaParaula,
+                                    text.length(), primeraParaula.length());
+                            else
+                                actualitzaPosicions(
+                                    paraules.indexSegonaParaula,
+                                    paraules.indexPrimeraParaula,
+                                    primeraParaula.length(), text.length());
+
                             inicialitzaTextView(nouText);
                         }
                     }
                 }
 
-                private void actualitzaPosicions() {
-                    for (int i = 0; i < posicioTargets.length; ++i) {
-                        if (i == posicions.indexPrimeraParaula)
-                            posicioTargets[i] = posicions.nouValorPrimeraParaula;
-                        else if (i == posicions.indexSegonaParaula)
-                            posicioTargets[i] = posicions.nouValorSegonaParaula;
-
+                /**
+                 * Actualitza les posicions dels targets.
+                 * @param indexInicial Index del primer target a partir del qual s'han d'actualitzar les posicions.
+                 * @param indexFinal Index del segon target fins al qual s'han d'actualitzar les posicions.
+                 * @param sizePrimeraParaula Mida de la paraula que va al primer index.
+                 * @param sizeSegonaParaula Mida de la paraula que va al segon index.
+                 */
+                private void actualitzaPosicions(int indexInicial,
+                    int indexFinal, int sizePrimeraParaula,
+                    int sizeSegonaParaula) {
+                    Posicio pIni = poss.get(indexInicial);
+                    pIni.posicioFinal =  pIni.posicioInicial + sizePrimeraParaula - 1;
+                    poss.set(indexInicial, pIni);
+                    for (int i = indexInicial + 1; i < indexFinal; ++i) {
+                        Posicio p = poss.get(i);
+                        System.out.println("MIDA1: " + sizePrimeraParaula);
+                        System.out.println("MIDA2: " + sizeSegonaParaula);
+                        p.posicioInicial += sizePrimeraParaula - sizeSegonaParaula;
+                        p.posicioFinal += sizePrimeraParaula - sizeSegonaParaula;
+                        poss.set(i, p);
                     }
-
+                    Posicio pFi = poss.get(indexFinal);
+                    pFi.posicioInicial += sizePrimeraParaula - sizeSegonaParaula;
+                    pFi.posicioFinal = pFi.posicioInicial + sizeSegonaParaula - 1;
+                    poss.set(indexFinal, pFi);
                 }
 
                 private boolean esTarget(int selectionStart, String text) {
-                    for (int i = 0; i < posicioTargets.length; ++i) {
-                        if (selectionStart == posicioTargets[i]) {
+                    for (int i = 0; i < poss.size(); ++i) {
+                        if (selectionStart == poss.get(i).posicioInicial) {
                             if (!primeraParaulaTrobada)
-                                posicions.indexPrimeraParaula = i;
+                                paraules.indexPrimeraParaula = i;
                             else
-                                posicions.indexSegonaParaula = i;
+                                paraules.indexSegonaParaula = i;
                             return true;
                         }
                     }
@@ -216,12 +249,19 @@ public class TextOrder extends Activity {
 
                 @Override
                 public void updateDrawState(TextPaint ds) {
-                    super.updateDrawState(ds);
+                    ds.setColor(Color.WHITE); // Aquest es el color per les
+                    // paraules que no siguin target.
+                    ds.setUnderlineText(false);
                 }
             };
             end = (i < indices.length ? indices[i] : spans.length());
             spans.setSpan(clickSpan, start, end,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            for (int j = 0; j < poss.size(); ++j) {
+                spans.setSpan(new ForegroundColorSpan(Color.BLUE),
+                    poss.get(j).posicioInicial, poss.get(j).posicioFinal + 1,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
             start = end + 1;
         }
     }
@@ -234,6 +274,7 @@ public class TextOrder extends Activity {
         timer = new Timer();
         timer.schedule(new TimerTask() {
 
+            @Override
             public void run() {
                 mHandler.post(handler);
             }
@@ -319,6 +360,7 @@ public class TextOrder extends Activity {
 
     final Runnable handler = new Runnable() {
 
+        @Override
         public void run() {
             time = -1;
             cr.stop();
@@ -326,14 +368,17 @@ public class TextOrder extends Activity {
         }
     };
 
-    class Posicions {
+    class Posicio {
+
+        public int posicioInicial;
+
+        public int posicioFinal;
+    }
+
+    class Paraules {
 
         public int indexPrimeraParaula;
 
-        public int nouValorPrimeraParaula;
-
         public int indexSegonaParaula;
-
-        public int nouValorSegonaParaula;
     }
 }
