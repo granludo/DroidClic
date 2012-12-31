@@ -23,6 +23,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -37,6 +38,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -72,11 +76,32 @@ public class HolePuzzle extends Activity {
 	int contadorTime = 0; //Comptador per al temps.
 	private CountDownTimer timer;
 	
+	//Interface
+	private TextView aciertos = null;
+	private TextView intentos = null;
+	private Button bMenu = null;
+	private ProgressBar tiempo = null;
+	
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.exchange_hole_puzzle);
+	    setContentView(R.layout.hole_puzzle);
+	    
+	    aciertos = (TextView) findViewById(R.id.editAciertos);
+	    intentos = (TextView) findViewById(R.id.editIntentos);
+	    tiempo = (ProgressBar) findViewById(R.id.progressTime);
+	    bMenu = (Button) findViewById(R.id.menu);
+	    tiempo.setMax(maxTime);
+	    tiempo.setProgress(0);
+	    
 	    try{
 	    	reiniciarMenu();
+	    	
+	    	if(TimeCountDown)
+				contadorTime = maxTime;
+			
+			if(IntentCountDown)
+				contadorIntent = maxIntents;
+	    	
 			agafarDades();
 			sounds = new Sounds(getApplicationContext());
 			
@@ -116,12 +141,22 @@ public class HolePuzzle extends Activity {
 		    	timer = new CountDownTimer(maxTime*1000, 1000){
 		    		@Override
 					public void onFinish() {
-						contadorTime++;
+		    			if(TimeCountDown)
+		    				contadorTime--;
+		    			else
+		    				contadorTime++;
+		    			
+						tiempo.setProgress(contadorTime);
 						setMissatges();						
 					}
 					@Override
 					public void onTick(long arg0) {
-						contadorTime++;
+						if(TimeCountDown)
+							contadorTime--;
+						else
+							contadorTime++;
+						
+						tiempo.setProgress(contadorTime);
 						setMissatges();							
 					}				    
 			    }.start();
@@ -133,6 +168,17 @@ public class HolePuzzle extends Activity {
 	    } catch(Exception e){
 	    	Log.d("Error", "catch HolePuzzle: "+e);
 	    }
+	    final Context aC = this;
+		bMenu.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Dialog dialog = new Dialog(aC, R.style.Dialog);
+				dialog.setContentView(R.layout.menu_clic);
+				dialog.setCanceledOnTouchOutside(true);
+				dialog.show();
+				MenuActivitats ma = new MenuActivitats(timer);
+				ma.butsMenu(dialog, aC, vecDraw);
+			}
+		});	
 	}
 	
 	protected void onDestroy() {        
@@ -731,7 +777,10 @@ private int generarEntrada(int rand) {
 	
 	private void swapCaselles(){
 		//Incrementar intents, si esta activat intents sempre serà més gran que 0
-		if (IntentCountDown) ++contadorIntent; 
+		if(IntentCountDown)
+			contadorIntent--;
+		else
+			contadorIntent++; 
 		//So click
 		sounds.playClick();
 		
@@ -779,6 +828,7 @@ private int generarEntrada(int rand) {
 			CO.cas1.setText("");
         	CO.p1 = "<buit>";
         	CO.p2 = "<buit>";
+        	imprimirInfo();
 		} else {
 			if (CO.correcte == CO.casIni) {
 				//Hem acabat el joc correctament
@@ -806,11 +856,15 @@ private int generarEntrada(int rand) {
 				}
 				bloquejarJoc(true);
 				if(CO.menu != null) CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
+				imprimirInfo();
 			}
-			else if ((CO.correcte != CO.casIni && maxIntents != 0 && maxIntents == contadorIntent) || contadorTime == maxTime && maxTime!=0) {
+			else if (CO.correcte != CO.casIni &&
+					(maxIntents != 0 && ((IntentCountDown && contadorIntent == 0) || (!IntentCountDown && maxIntents == contadorIntent))
+					|| (maxTime != 0 && ((TimeCountDown && contadorTime == 0) || (!TimeCountDown && maxTime == contadorTime)))))  {
 				sounds.playFinished_error();
 				if(maxTime!=0)timer.cancel();
-				if (maxTime == contadorTime) {
+				if (maxTime != 0 && ((!TimeCountDown && maxTime == contadorTime)
+					||(TimeCountDown && contadorTime == 0))) {
 					//S'ha acabat el temps
 					if (Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFiErr() != null)
 						CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFiErr());
@@ -826,14 +880,14 @@ private int generarEntrada(int rand) {
 					//So incorrecte
 					sounds.playFinished_error();
 				}
-				if (contadorTime == maxTime && contadorTime != 0) {
+				/*if (contadorTime == maxTime && contadorTime != 0) {
 					CO.miss.setText("S'ha acabat el temps!");
 					//CO.miss2.setText("S'ha acabat el temps!");
 				}
 				else {
 					CO.miss.setText("Has superat els intents maxims!");
 					//CO.miss2.setText("Has superat els intents maxims!");
-				}
+				}*/
 				CO.missCorrectes.setText("Prem aqui per continuar.");
 				CO.missCorrectes.setBackgroundColor(Color.WHITE);
 				CO.missCorrectes.setTextColor(Color.BLACK);
@@ -854,11 +908,12 @@ private int generarEntrada(int rand) {
 				}
 				bloquejarJoc(true);
 				if(CO.menu != null) CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
+				imprimirInfo();
 			} else {
 				if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeIni() != null)
 					CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeIni());
 				else CO.miss.setText("Comença el joc!");
-				int displayedIntents;
+				/*int displayedIntents;
 				if(IntentCountDown && maxIntents != 0){
 					displayedIntents = maxIntents - contadorIntent;
 				}
@@ -868,7 +923,9 @@ private int generarEntrada(int rand) {
 					displayedTime = maxTime - contadorTime;
 				}
 				else displayedTime=contadorTime;
-				CO.missCorrectes.setText("C = " + CO.correcte + ", Inc = " + CO.incorrecte +"  Int ="+displayedIntents + " T ="+displayedTime);			}
+				CO.missCorrectes.setText("C = " + CO.correcte + ", Inc = " + CO.incorrecte +"  Int ="+displayedIntents + " T ="+displayedTime);*/
+				imprimirInfo();
+				}
 		}
 	}
 	
@@ -946,6 +1003,12 @@ private int generarEntrada(int rand) {
         		CO.vecCaselles.elementAt(i).setBackgroundDrawable(vecDraw.elementAt(index));
         	}
         }
+	}
+	
+	void imprimirInfo()
+	{
+		aciertos.setText(""+CO.correcte);
+		intentos.setText(""+contadorIntent);
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {

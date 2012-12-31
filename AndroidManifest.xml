@@ -23,7 +23,7 @@
 <!-- <activity android:name="pfc.Jclic.DataBaseSQLite" android:screenOrientation="portrait"></activity>
 <activity android:name="pfc.Jclic.FuncionsBD" android:screenOrientation="portrait"></activity>-->
 <activity android:name="pfc.Activitats.DoublePuzzle" android:screenOrientation="landscape"></activity>
-<activity android:name="pfc.Activitats.HolePuzzle" android:screenOrientation="portrait"></activity>
+<activity android:name="pfc.Activitats.HolePuzzle" android:screenOrientation="landscape"></activity>
 <activity android:screenOrientation="landscape" android:name="pfc.Activitats.Puzzle"></activity>
 <activity android:name="pfc.NavegadorArxius.NavegadorArxius" android:screenOrientation="portrait"></activity>
 <activity android:name="pfc.Repositori.LlistatProjectes" android:screenOrientation="portrait"></activity>
