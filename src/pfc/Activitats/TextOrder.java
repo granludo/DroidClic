@@ -58,8 +58,6 @@ public class TextOrder extends Activity {
 
     // private Timer timer;
 
-    Chronometer cr;
-
     private pfc.Parser.Dades dades = new pfc.Parser.Dades();
 
     final Handler mHandler = new Handler();
@@ -636,14 +634,6 @@ public class TextOrder extends Activity {
             start = end + 1;
         }
     }
-
-    /* private void inicialitzaTemporitzador() { cr = (Chronometer)
-     * findViewById(R.id.chronometer1); cr.start();
-     * 
-     * time = dades.getTempsMax(); timer = new Timer(); timer.schedule(new
-     * TimerTask() {
-     * 
-     * @Override public void run() { mHandler.post(handler); } }, 30 * 1000); } */
 
     /** Barreja els targets del text original.
      * 

@@ -88,7 +88,6 @@
             android:maxLines="1"
             android:text="tiempo"
             android:textAppearance="?android:attr/textAppearanceSmall" />
-        
 
         <RelativeLayout
             android:layout_width="100dp"
@@ -103,31 +102,40 @@
                 android:layout_centerVertical="true" />
         </RelativeLayout>
     </LinearLayout>
-   <LinearLayout 
-        android:id="@+id/linearLayoutorder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
         android:background="#FFFFFF"
-        android:orientation="vertical" >
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Large Text"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:fillViewport="true" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Large Text"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF" >
 
         <Button
             android:id="@+id/button1"
-            android:layout_width="53dp"
-            android:layout_height="wrap_content"
-            android:text="OK" />
-
-         <Chronometer
-            android:id="@+id/chronometer1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chronometer" />
-
+            android:text="Button" />
     </LinearLayout>
 
 </LinearLayout>
