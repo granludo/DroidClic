@@ -156,7 +156,6 @@ public class TextOrder extends Activity {
                                     @Override
                                     public void onClick(DialogInterface dialog,
                                         int which) {
-                                        // TODO Auto-generated method stub
                                         Intent i = new Intent(TextOrder.this,
                                             Jclic.class);
                                         startActivity(i);
@@ -428,7 +427,6 @@ public class TextOrder extends Activity {
                             @Override
                             public void onClick(DialogInterface dialog,
                                 int which) {
-                                // TODO Auto-generated method stub
                                 Intent i = new Intent(TextOrder.this,
                                     Jclic.class);
                                 startActivity(i);
@@ -455,8 +453,8 @@ public class TextOrder extends Activity {
         }
 
         Button b1 = (Button) findViewById(R.id.buttonMenu);
-        Button b2 = (Button) findViewById(R.id.button1);
-        b2.setBackgroundColor(Color.GREEN);
+        Button buttonOk = (Button) findViewById(R.id.button1);
+        buttonOk.setBackgroundColor(Color.GREEN);
         b1.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -464,6 +462,7 @@ public class TextOrder extends Activity {
                 openOptionsMenu();
             }
         });
+                
         TextView intentos = (TextView) findViewById(R.id.editIntentos);
         TextView aciertos = (TextView) findViewById(R.id.editAciertos);
         intentos.setText(String.valueOf(contador));
@@ -487,6 +486,18 @@ public class TextOrder extends Activity {
         String text = converteixAString(textBarrejat);
         inicialitzaPosicioTargets(textBarrejat);
         inicialitzaTextView(text);
+        buttonOk.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                String textCorrecte = converteixAString(textOriginal);
+                Spannable spans = (Spannable) textView.getText();
+                System.out.println(spans.toString());
+                if (spans.toString().contentEquals(textCorrecte))
+                    Log.d("OkButton", "Correct");
+                else
+                    Log.d("OkButton", "Wrong");
+            }
+        });
         // inicialitzaTemporitzador();
     }
 

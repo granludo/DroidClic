@@ -681,8 +681,6 @@ public class Parser {
                                 }
                             }
                         }
-                        // tt.setSize(tt.size()-1);
-                        // quees.setSize(quees.size()-1);
                         dades.setT(tt);
                         dades.setbool(quees);
                         // dades.setTextos(textos);
