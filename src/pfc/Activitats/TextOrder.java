@@ -413,21 +413,30 @@ public class TextOrder extends Activity {
                     timer.cancel();
                     textView.setText(textCorrecte);
                     textView.setTextColor(Color.BLACK);
-                    fesDialeg("Resultat", "Resposta correcta!");                    
+                    fesDialeg("Resultat", "Resposta correcta!");
                     aciertos.setText(String.valueOf(nTargets));
                     openOptionsMenu();
                 }
                 else {
                     int encerts = nTargets;
-                    String [] correctes = textCorrecte.split("\\s+");
-                    String [] actuals = textActual.split("\\s+");
+                    String[] correctes = textCorrecte.split("\\s+");
+                    String[] actuals = textActual.split("\\s+");
+                    boolean targetLlarg = false;
                     int posicio = 0;
                     for (int i = 0; i < correctes.length; ++i) {
-                        if (!correctes[i].contentEquals(actuals[i]))
+                        if (!correctes[i].contentEquals(actuals[i])) {
                             spans.setSpan(new ForegroundColorSpan(Color.RED),
-                                posicio, posicio + actuals[i].length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                posicio, posicio + actuals[i].length(),
+                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            if (!targetLlarg) {
+                                targetLlarg = true;
+                                --encerts;
+                            }
+                        }
+                        else
+                            targetLlarg = false;
                         posicio += actuals[i].length() + 1;
-                        
+
                     }
                     aciertos.setText(String.valueOf(encerts));
                     fesDialeg("Resultat", "Resposta incorrecta!");
@@ -725,7 +734,7 @@ public class TextOrder extends Activity {
                 ++nTargets;
         return nTargets;
     }
-    
+
     public void fesDialeg(String titol, String missatge) {
         Dialog dialeg = new AlertDialog.Builder(TextOrder.this)
             .setIcon(R.drawable.jclic_aqua).setTitle(titol)
@@ -733,8 +742,8 @@ public class TextOrder extends Activity {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    /* Es pot passar a la següent activitat a través del
-                     * menú. així que aquí no cal fer res. */
+                    /* Es pot passar a la següent activitat a través del menú.
+                     * així que aquí no cal fer res. */
 
                 }
             }).setMessage(missatge).create();
