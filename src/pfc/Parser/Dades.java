@@ -31,6 +31,7 @@ public class Dades {
     private boolean mostrarSolucio;
     private String image;
     
+    
     public class Info {
 		public boolean isBlank;
 		public String text;
@@ -44,6 +45,9 @@ public class Dades {
     private int intentMax = 0;
     private ArrayList<String> images;
     ArrayList textus;
+    private ArrayList rowsus; 
+    private ArrayList horitzontals;
+    private ArrayList verticals;
     private int targets;
     private Vector<String> tt;
     private Vector<Boolean> quees;
@@ -244,6 +248,30 @@ public class Dades {
 
     public ArrayList getTextus() {
         return textus;
+    }
+    
+    public void setCrossword(ArrayList rowsus) {
+        this.rowsus = rowsus;
+    }
+
+    public ArrayList getCrossword() {
+        return rowsus;
+    }
+    
+    public void setHoritzontals(ArrayList hor) {
+        this.horitzontals = hor;
+    }
+
+    public ArrayList getHoritzontals() {
+        return horitzontals;
+    }
+    
+    public void setVerticals(ArrayList ver) {
+        this.verticals = ver;
+    }
+
+    public ArrayList getVertical() {
+        return verticals;
     }
 
     public void setNumTargets(int n) {

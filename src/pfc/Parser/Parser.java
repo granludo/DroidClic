@@ -183,7 +183,7 @@ public class Parser {
 
                     /* Activities - Activity - Settings */
                     if (sett) {
-                        // **Codi afegit per: Pau Farr�**
+                        // **Codi afegit per: Pau Farré**
                         if (activity.getChild(XMLConstants.SETTINGS)
                             .getAttributeValue(XMLConstants.MAXTIME) != null) {
                             dades.setTempsMax(Integer.valueOf(activity
@@ -380,7 +380,6 @@ public class Parser {
                 }
                 else if (activity.getAttributeValue(XMLConstants.CLASS)
                     .equalsIgnoreCase(XMLConstants.IDENTIFY)) {
-                    Log.d("hh", "hh");
                     Dades dades = new Dades();
                     dades.setClas(activity
                         .getAttributeValue(XMLConstants.CLASS));
@@ -494,7 +493,6 @@ public class Parser {
                     Iterator itP = actsec.iterator();
                     int position = 0;
                     int targets = 0;
-                    Log.d("abc", "entra");
                     for (int i = 0; itP.hasNext(); ++i) {
 
                         Element p = (Element) itP.next();
@@ -516,7 +514,6 @@ public class Parser {
                             }
 
                             else if (etext.getName() == "text") {
-                                Log.d("Filtre", etext.getText());
                                 int posfi = position;
                                 String paraula = "";
                                 for (int l = 0; l < etext.getText().length(); ++l) {
@@ -581,7 +578,172 @@ public class Parser {
                     dades.setTextus(textus);
                     dades.setNumTargets(targets);
                     Parser.activitats.add(dades);
-                    Log.d("TEXT", "--------------------------------");
+
+                }
+                else if (activity.getAttributeValue(XMLConstants.CLASS)
+                        .equalsIgnoreCase(XMLConstants.TGRIDCROSSWORD)) {
+                    Dades dades = new Dades();
+                    dades.setClas(activity
+                            .getAttributeValue(XMLConstants.CLASS));
+                    dades.setName(activity.getAttributeValue(XMLConstants.NAME));
+
+                    // booleans per assegurar-me de que els atributs hi son al
+                    // xml
+                    boolean desc = false, mess = false, sett = false, text = false;
+                    List actMessages = null, actSettings = null;
+                    Element actDescription = null, actdoc = null, actTextGrid = null;
+
+                    if (activity.getChild(XMLConstants.DESCRIPTION) != null) {
+                        actDescription = activity
+                                .getChild(XMLConstants.DESCRIPTION);
+                        desc = true;
+                    }
+                    if (activity.getChild(XMLConstants.MESSAGES) != null) {
+                        actMessages = activity.getChild(XMLConstants.MESSAGES)
+                                .getChildren();
+                        mess = true;
+                    }
+                    if (activity.getChild(XMLConstants.SETTINGS) != null) {
+                        actSettings = activity.getChild(XMLConstants.SETTINGS)
+                                .getChildren();
+                        sett = true;
+                    }
+                    if (activity.getChild(XMLConstants.TEXTGRID) != null) {
+                        actTextGrid = activity.getChild(XMLConstants.TEXTGRID);
+                        text = true;
+                    }
+
+
+                    /* Activities - Activity - Description */
+                    if (desc
+                            && actDescription.getChildText(XMLConstants.P) != null) {
+                        dades.setDescripcio(actDescription
+                                .getChildText(XMLConstants.P));
+                    }
+
+                    /* Activities - Activity - Messages */
+                    if (mess) {
+                        Iterator itMess = actMessages.iterator();
+
+                        while (itMess.hasNext()) {
+                            Element descripcio = (Element) itMess.next();
+
+                            String tipus = descripcio
+                                    .getAttributeValue(XMLConstants.TYPE);
+
+                            if (tipus.equalsIgnoreCase(XMLConstants.INITIAL)) {
+                                dades.setMissatgeIni(descripcio
+                                        .getChildText(XMLConstants.P));
+                            }
+                            else if (tipus.equalsIgnoreCase(XMLConstants.FINAL)) {
+                                dades.setMissatgeFi(descripcio
+                                        .getChildText(XMLConstants.P));
+                            }
+                            else if (tipus
+                                    .equalsIgnoreCase(XMLConstants.FINALERROR)) {
+                                dades.setMissatgeFiErr(descripcio
+                                        .getChildText(XMLConstants.P));
+                            }
+                        }
+
+                    }
+                    /* Activities - Activity - Settings */
+                    if (sett) {
+
+                        if (activity.getChild(XMLConstants.SETTINGS)
+                                .getAttributeValue(XMLConstants.MAXTIME) != null) {
+                            dades.setTempsMax(Integer.valueOf(activity
+                                    .getChild(XMLConstants.SETTINGS)
+                                    .getAttributeValue(XMLConstants.MAXTIME)));
+                        }
+                        if (activity.getChild(XMLConstants.SETTINGS)
+                                .getAttributeValue(XMLConstants.COUNTDOWNTIME) != null) {
+                            dades.setTimeCutdown(Boolean.valueOf(activity
+                                    .getChild(XMLConstants.SETTINGS)
+                                    .getAttributeValue(
+                                            XMLConstants.COUNTDOWNTIME)));
+                        }
+                        if (activity.getChild(XMLConstants.SETTINGS)
+                                .getAttributeValue(XMLConstants.COUNTDOWNACT) != null) {
+                            dades.setIntentCutdown(Boolean.valueOf(activity
+                                    .getChild(XMLConstants.SETTINGS)
+                                    .getAttributeValue(
+                                            XMLConstants.COUNTDOWNACT)));
+                        }
+                        if (activity.getChild(XMLConstants.SETTINGS)
+                                .getAttributeValue(XMLConstants.MAXACTIONS) != null) {
+                            dades.setIntentMax(Integer
+                                    .valueOf(activity.getChild(
+                                            XMLConstants.SETTINGS)
+                                            .getAttributeValue(
+                                                    XMLConstants.MAXACTIONS)));
+                        }
+
+                        // ******************************
+                        if (activity.getChild(XMLConstants.SETTINGS).getChild(
+                                XMLConstants.HELPWINDOW) != null) {
+                            dades.setMostrarSolucio(Boolean.valueOf(activity
+                                    .getChild(XMLConstants.SETTINGS)
+                                    .getChild(XMLConstants.HELPWINDOW)
+                                    .getAttributeValue(
+                                            XMLConstants.SHOWSOLUTION)));
+                        }
+                        else
+                            dades.setMostrarSolucio(false);
+                    }
+                    List acttext =  actTextGrid.getChild(XMLConstants.TEXT).getChildren();
+                    
+                    ArrayList rowsus = new ArrayList();
+                    Iterator itP = acttext.iterator();
+                    int rows = 0;
+                    int columnes = 0;
+                    for (int i = 0; itP.hasNext(); ++i) {
+                        Element p = (Element) itP.next();
+                        String row = p.getText();
+                        columnes = row.length();
+                         rowsus.add(row);
+                    }
+                    rows = rowsus.size();
+                    
+                    dades.setCrossword(rowsus);
+                    
+                    ArrayList horitzontals = new ArrayList();
+                	ArrayList verticals = new ArrayList();
+                    if (activity.getChild(XMLConstants.CELLS) != null) {
+                    	List actCells = activity.getChildren();
+                    	Iterator itPo = actCells.iterator();
+                    	Boolean firstTime = true;
+                      for (int i = 0; itPo.hasNext(); ++i) {
+                        Element p = (Element) itPo.next();
+                        if (p.getName() == "cells"){
+	                	  List actcell =  p.getChildren();
+	                	  Iterator itTEXT = actcell.iterator();
+	                      ArrayList arrayP = new ArrayList();
+	                      for (int j = 0; itTEXT.hasNext(); ++j) {
+	                             Element etext = (Element) itTEXT.next();
+	                             if (etext.getName() == "cell") {
+	                            	 String descp = " ";
+	                            	 List actPs = etext.getChildren();
+	                            	 Iterator itPs = actPs.iterator();
+	                            	 if (itPs.hasNext()){
+	                            		 Element Ps = (Element) itPs.next();
+	                            		 descp = Ps.getText();
+	                            	 }
+	                            	if(firstTime) horitzontals.add(descp);
+	                            	else verticals.add(descp);
+	                             }
+                         }
+	                     firstTime = false;
+                      }       
+                   }
+                    
+                }
+                    dades.setHoritzontals(horitzontals);
+                    dades.setVerticals(verticals);
+                   
+                  
+                    Parser.activitats.add(dades);
+                   // Log.d("CROSSWORD", "--------------------------------");
 
                 }
                 else if (activity.getAttributeValue(XMLConstants.CLASS) != null

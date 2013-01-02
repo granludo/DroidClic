@@ -19,6 +19,7 @@ public class XMLConstants {
     public static final String TEXT = "text";
     public static final String ID = "id";
     public static final String INVERSE = "inverse";
+    public static final String TEXTGRID = "textGrid";
 
     // Valors dins dels tag
     public static final String EXCHANGEPUZZ = "@puzzles.ExchangePuzzle";

@@ -39,7 +39,7 @@ public class Puzzle extends Activity{
 	    //Mirem la seguent activitat de quin tipus es per saber on anar
 	    
 		if(Parser.getActivitats().size() == CO.activitatActual+1){
-			String missatge = "Ja no queden m��s activitats.";
+			String missatge = "Ja no queden m������s activitats.";
 			Toast missatgeTemporal = Toast.makeText(this, missatge,Toast.LENGTH_LONG);
 	        missatgeTemporal.setGravity(Gravity.CENTER, 0, 0);
 	        missatgeTemporal.show();
@@ -116,6 +116,13 @@ public class Puzzle extends Activity{
 				startActivity(i);
 				finish();
 			}
+			else if(Parser.getActivitats().elementAt(CO.activitatActual+1).getClas()
+					.equals(XMLConstants.TGRIDCROSSWORD)) {
+				CO.activitatActual++;
+				Intent i = new Intent(this, CrossWord.class);
+				startActivity(i);
+				finish();
+			}
 			
 			else if(Parser.getActivitats().elementAt(CO.activitatActual+1).
 				    getClas().equals(XMLConstants.TXTWRITEANSWER)) { // Written Answer
@@ -186,9 +193,9 @@ public class Puzzle extends Activity{
 		} else{
 			Dialog finalitzat = new AlertDialog.Builder(Puzzle.this)
 	        .setIcon(R.drawable.jclic_aqua)
-	        .setTitle("Atenci��!")
+	        .setTitle("Atenci������!")
 	        .setPositiveButton("D'acord", null)
-	        .setMessage("Ja no queden m��s activitats.")
+	        .setMessage("Ja no queden m������s activitats.")
 	        .create();
 			finalitzat.show();
 		}
@@ -292,7 +299,7 @@ public class Puzzle extends Activity{
         	c = Integer.parseInt(color.substring(2), 16);
         	c |= 0xff000000;
         }
-        else Log.d("Error","Color no comen��a per 0x!");
+        else Log.d("Error","Color no comen������a per 0x!");
 		return c;
 	}
 	
