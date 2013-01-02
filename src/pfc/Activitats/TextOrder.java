@@ -118,79 +118,6 @@ public class TextOrder extends Activity {
 
     private ProgressBar tiempo;
 
-    private void agafarDadesParser() {
-        if (CO.activitatActual < Parser.getActivitats().size() - 1) {
-            // podem agafar l'activitat
-            CO.activitatActual++;
-            CO.solucioVisible = false;
-
-            this.arrayDades = (ArrayList<Dades.Info>) Parser.getActivitats()
-                .elementAt(CO.activitatActual).getArrayFillInBlanks();
-
-            CO.InfoArray = Parser.getActivitats().elementAt(CO.activitatActual)
-                .getArrayFillInBlanks();
-
-            int maxTime = Parser.getActivitats().elementAt(CO.activitatActual)
-                .getTempsMax();
-            maxTime = 60;
-            tiempo = (ProgressBar) findViewById(R.id.progressTime);
-            tiempo.setMax(maxTime);
-            tiempo.setProgress(0);
-            if (maxTime != 0) {
-                timer = new CountDownTimer(maxTime * 1000, 1000) {
-
-                    @Override
-                    public void onFinish() {
-                        contadorTemps++;
-                        /* tiempo.setText(Integer .toString(maxTime -
-                         * contadorTemps)); */
-                        tiempo.setProgress(contadorTemps);
-                        Log.d("id", "acaba el temporizador");
-
-                        Dialog finalitzat = new AlertDialog.Builder(
-                            TextOrder.this)
-                            .setIcon(R.drawable.jclic_aqua)
-                            .setTitle("Atenci—")
-                            .setPositiveButton("D'acord",
-                                new OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                        int which) {
-                                        Intent i = new Intent(TextOrder.this,
-                                            Jclic.class);
-                                        startActivity(i);
-                                        finish();
-                                    }
-                                }).setMessage("S'acabat el temps.").create();
-                        finalitzat.show();
-
-                        // setMissatges();
-                    }
-
-                    @Override
-                    public void onTick(long arg0) {
-                        contadorTemps++;
-                        /* tiempo.setText(Integer .toString(maxTime -
-                         * contadorTemps)); */
-                        tiempo.setProgress(contadorTemps);
-
-                        // setMissatges();
-                    }
-                }.start();
-            }
-
-        }
-        else {
-            Dialog finalitzat = new AlertDialog.Builder(this)
-                .setIcon(R.drawable.jclic_aqua).setTitle("Atenci—")
-                .setPositiveButton("D'acord", null)
-                .setMessage("Ja no queden mŽs activitats.").create();
-            finalitzat.show();
-        }
-
-    }
-
     private void reiniciarMenu() {
         if (CO.menu != null) {
             CO.menu.clear();
@@ -331,7 +258,7 @@ public class TextOrder extends Activity {
                 if (Parser.getActivitats().elementAt(CO.activitatActual)
                     .getMissatgeIni() != null)
                     CO.miss.setText(Parser.getActivitats()
-                       .elementAt(CO.activitatActual).getMissatgeIni());
+                        .elementAt(CO.activitatActual).getMissatgeIni());
                 else
                     CO.miss.setText("Comença el joc!");
                 int displayedIntents;
@@ -421,21 +348,8 @@ public class TextOrder extends Activity {
                     /* tiempo.setText(Integer .toString(maxTime -
                      * contadorTemps)); */
                     tiempo.setProgress(contadorTemps);
-                    Dialog finalitzat = new AlertDialog.Builder(TextOrder.this)
-                        .setIcon(R.drawable.jclic_aqua).setTitle("Atenció")
-                        .setPositiveButton("D'acord", new OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                int which) {
-                                Intent i = new Intent(TextOrder.this,
-                                    Jclic.class);
-                                startActivity(i);
-                                finish();
-                            }
-                        }).setMessage("S'acabat el temps.").create();
-                    finalitzat.show();
-
+                    fesDialeg("Atenció", "S'ha acabat el temps");
+                    openOptionsMenu();
                     // setMissatges();
 
                     // setMissatges();
@@ -492,18 +406,32 @@ public class TextOrder extends Activity {
             public void onClick(View v) {
                 String textCorrecte = converteixAString(textOriginal);
                 Spannable spans = (Spannable) textView.getText();
-                if (spans.toString().contentEquals(textCorrecte)) {
-                    Log.d("OkButton", "Correct");
-                    Toast.makeText(getApplicationContext(), "¡Respuesta correcta!",
-                        Toast.LENGTH_LONG).show();
+                String textActual = spans.toString();
+                TextView aciertos = (TextView) findViewById(R.id.editAciertos);
+                int nTargets = getNTargets();
+                if (textActual.contentEquals(textCorrecte)) {
                     timer.cancel();
                     textView.setText(textCorrecte);
                     textView.setTextColor(Color.BLACK);
-                    TextView aciertos = (TextView) findViewById(R.id.editAciertos);
-                    aciertos.setText(String.valueOf(encerts + 1));
+                    fesDialeg("Resultat", "Resposta correcta!");                    
+                    aciertos.setText(String.valueOf(nTargets));
+                    openOptionsMenu();
                 }
-                else
-                    Log.d("OkButton", "Wrong");
+                else {
+                    int encerts = nTargets;
+                    String [] correctes = textCorrecte.split("\\s+");
+                    String [] actuals = textActual.split("\\s+");
+                    int posicio = 0;
+                    for (int i = 0; i < correctes.length; ++i) {
+                        if (!correctes[i].contentEquals(actuals[i]))
+                            spans.setSpan(new ForegroundColorSpan(Color.RED),
+                                posicio, posicio + actuals[i].length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        posicio += actuals[i].length() + 1;
+                        
+                    }
+                    aciertos.setText(String.valueOf(encerts));
+                    fesDialeg("Resultat", "Resposta incorrecta!");
+                }
             }
         });
         // inicialitzaTemporitzador();
@@ -654,8 +582,6 @@ public class TextOrder extends Activity {
                     poss.set(indexInicial, pIni);
                     for (int i = indexInicial + 1; i < indexFinal; ++i) {
                         Posicio p = poss.get(i);
-                        System.out.println("MIDA1: " + sizePrimeraParaula);
-                        System.out.println("MIDA2: " + sizeSegonaParaula);
                         p.posicioInicial += sizePrimeraParaula
                             - sizeSegonaParaula;
                         p.posicioFinal += sizePrimeraParaula
@@ -787,6 +713,33 @@ public class TextOrder extends Activity {
                 posicio = posEspai;
         }
         return indices.toArray(new Integer[0]);
+    }
+
+    /** Obté el número de targets del text.
+     * 
+     * @return el número de targets. */
+    public int getNTargets() {
+        int nTargets = 0;
+        for (int i = 0; i < tipusText.size(); ++i)
+            if (tipusText.get(i))
+                ++nTargets;
+        return nTargets;
+    }
+    
+    public void fesDialeg(String titol, String missatge) {
+        Dialog dialeg = new AlertDialog.Builder(TextOrder.this)
+            .setIcon(R.drawable.jclic_aqua).setTitle(titol)
+            .setPositiveButton("D'acord", new OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    /* Es pot passar a la següent activitat a través del
+                     * menú. així que aquí no cal fer res. */
+
+                }
+            }).setMessage(missatge).create();
+        dialeg.show();
+
     }
 
     /* final Runnable handler = new Runnable() {
