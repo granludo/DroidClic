@@ -36,6 +36,7 @@ import android.widget.Chronometer;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
+import android.widget.Toast;
 import pfc.Parser.Dades;
 import pfc.Parser.Parser;
 
@@ -330,7 +331,7 @@ public class TextOrder extends Activity {
                 if (Parser.getActivitats().elementAt(CO.activitatActual)
                     .getMissatgeIni() != null)
                     CO.miss.setText(Parser.getActivitats()
-                        .elementAt(CO.activitatActual).getMissatgeIni());
+                       .elementAt(CO.activitatActual).getMissatgeIni());
                 else
                     CO.miss.setText("Comença el joc!");
                 int displayedIntents;
@@ -421,7 +422,7 @@ public class TextOrder extends Activity {
                      * contadorTemps)); */
                     tiempo.setProgress(contadorTemps);
                     Dialog finalitzat = new AlertDialog.Builder(TextOrder.this)
-                        .setIcon(R.drawable.jclic_aqua).setTitle("Atenci—")
+                        .setIcon(R.drawable.jclic_aqua).setTitle("Atenció")
                         .setPositiveButton("D'acord", new OnClickListener() {
 
                             @Override
@@ -462,7 +463,7 @@ public class TextOrder extends Activity {
                 openOptionsMenu();
             }
         });
-                
+
         TextView intentos = (TextView) findViewById(R.id.editIntentos);
         TextView aciertos = (TextView) findViewById(R.id.editAciertos);
         intentos.setText(String.valueOf(contador));
@@ -491,9 +492,16 @@ public class TextOrder extends Activity {
             public void onClick(View v) {
                 String textCorrecte = converteixAString(textOriginal);
                 Spannable spans = (Spannable) textView.getText();
-                System.out.println(spans.toString());
-                if (spans.toString().contentEquals(textCorrecte))
+                if (spans.toString().contentEquals(textCorrecte)) {
                     Log.d("OkButton", "Correct");
+                    Toast.makeText(getApplicationContext(), "¡Respuesta correcta!",
+                        Toast.LENGTH_LONG).show();
+                    timer.cancel();
+                    textView.setText(textCorrecte);
+                    textView.setTextColor(Color.BLACK);
+                    TextView aciertos = (TextView) findViewById(R.id.editAciertos);
+                    aciertos.setText(String.valueOf(encerts + 1));
+                }
                 else
                     Log.d("OkButton", "Wrong");
             }
