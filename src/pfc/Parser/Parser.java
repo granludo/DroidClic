@@ -676,13 +676,13 @@ public class Parser {
                                     }
                                 }
                                 if (iterp.hasNext()) {
-                                tt.add("\n");
-                                quees.add(false);
+                                    tt.add("\n");
+                                    quees.add(false);
                                 }
                             }
                         }
-                      //tt.setSize(tt.size()-1);
-                       // quees.setSize(quees.size()-1);
+                        // tt.setSize(tt.size()-1);
+                        // quees.setSize(quees.size()-1);
                         dades.setT(tt);
                         dades.setbool(quees);
                         // dades.setTextos(textos);
