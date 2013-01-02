@@ -7,10 +7,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
+import pfc.Jclic.Jclic;
 import pfc.Jclic.R;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.Spannable;
@@ -19,10 +27,16 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
+import pfc.Parser.Dades;
 import pfc.Parser.Parser;
 
 public class TextOrder extends Activity {
@@ -41,7 +55,7 @@ public class TextOrder extends Activity {
 
     private int time;
 
-    private Timer timer;
+    //private Timer timer;
 
     Chronometer cr;
 
@@ -64,11 +78,302 @@ public class TextOrder extends Activity {
     ArrayList<Posicio> poss = new ArrayList<Posicio>();
 
     Paraules paraules;
+    private static final int MENU_ANT = 0;
+	private static final int MENU_SEG = 1;
+	private static final int MENU_SOLUCIO = 2;
+	private static final int MENU_AJUDA = 3;
+	private static final int MENU_INICI = 4;
+	private static final int MENU_SORTIR = 5;
+
+
+
+	private ArrayList<Dades.Info> arrayDades;
+
+	Sounds sound;
+	private int maxTime = 0;
+	private int maxIntents =  0;
+	private boolean TimeCountDown = false;
+	private boolean IntentCountDown = false;
+	int encerts = 0;
+	int contador = 10; //Comptador per als intents.
+	int contadorTemps = 0; //Comptador per al temps.
+	private CountDownTimer timer;
+	private ProgressBar tiempo;
+	
+	private void agafarDadesParser(){		
+		if(CO.activitatActual < Parser.getActivitats().size()-1){
+			//podem agafar l'activitat
+			CO.activitatActual++;
+			CO.solucioVisible = false;
+
+
+			this.arrayDades = (ArrayList<Dades.Info>) Parser.getActivitats().elementAt(CO.activitatActual).getArrayFillInBlanks();
+
+			CO.InfoArray = Parser.getActivitats().elementAt(CO.activitatActual).getArrayFillInBlanks();
+
+
+			int maxTime = Parser.getActivitats().elementAt(CO.activitatActual).getTempsMax();
+			maxTime = 60;
+			tiempo = (ProgressBar) findViewById(R.id.progressTime);
+			tiempo.setMax(maxTime);
+			tiempo.setProgress(0);
+			if (maxTime != 0) {
+				timer = new CountDownTimer(maxTime * 1000, 1000) {
+					@Override
+					public void onFinish() {
+						contadorTemps++;
+						/*tiempo.setText(Integer
+								.toString(maxTime - contadorTemps));*/
+						tiempo.setProgress(contadorTemps);
+						Log.d("id","acaba el temporizador");
+						
+						Dialog finalitzat = new AlertDialog.Builder(TextOrder.this)
+						.setIcon(R.drawable.jclic_aqua)
+						.setTitle("Atenci—")
+						.setPositiveButton("D'acord", new OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// TODO Auto-generated method stub
+								Intent i = new Intent(TextOrder.this, Jclic.class);
+								startActivity(i);
+								finish();
+							}
+						})
+						.setMessage("S'acabat el temps.")
+						.create();
+						finalitzat.show();
+						
+						//setMissatges();
+					}
+
+					@Override
+					public void onTick(long arg0) {
+						contadorTemps++;
+						/*tiempo.setText(Integer
+								.toString(maxTime - contadorTemps));*/
+						tiempo.setProgress(contadorTemps);
+
+						//setMissatges();
+					}
+				}.start();
+			}
+
+
+
+		} else{
+			Dialog finalitzat = new AlertDialog.Builder(this)
+			.setIcon(R.drawable.jclic_aqua)
+			.setTitle("Atenci—")
+			.setPositiveButton("D'acord", null)
+			.setMessage("Ja no queden mŽs activitats.")
+			.create();
+			finalitzat.show();
+		}
+
+	}
+	
+	private void reiniciarMenu(){			
+		if(CO.menu != null){
+			CO.menu.clear();
+			CO.menu.add(0, MENU_ANT, 0, R.string.menu_ant);
+			CO.menu.add(0, MENU_SEG, 0, R.string.menu_seg);
+			CO.menu.add(0, MENU_SOLUCIO, 0, R.string.menu_solucio);
+			CO.menu.add(0, MENU_AJUDA, 0, R.string.menu_ajuda);
+			CO.menu.add(0, MENU_INICI, 0, R.string.menu_inici);
+			CO.menu.add(0, MENU_SORTIR, 0, R.string.menu_sortir);
+
+			CO.menu.getItem(MENU_ANT).setIcon(android.R.drawable.ic_media_rew);
+			CO.menu.getItem(MENU_SEG).setIcon(android.R.drawable.ic_media_ff);
+			CO.menu.getItem(MENU_SOLUCIO).setIcon(android.R.drawable.btn_star_big_off);
+			CO.menu.getItem(MENU_AJUDA).setIcon(android.R.drawable.ic_menu_help);
+			CO.menu.getItem(MENU_INICI).setIcon(android.R.drawable.ic_menu_revert);
+			CO.menu.getItem(MENU_SORTIR).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+
+			//Configuracio del menu per mostrarSolucio-> es un boolean
+			if(CO.mostrarSolucio) CO.menu.getItem(MENU_SOLUCIO).setEnabled(true);
+			else CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
+			CO.menu.getItem(MENU_SOLUCIO).setTitle(R.string.menu_solucio);
+
+			//Configuracio del menu per ant i seguent
+			CO.menu.getItem(MENU_SEG).setEnabled(true);
+			CO.menu.getItem(MENU_ANT).setEnabled(true);
+
+			if(CO.activitatActual < 1){
+				//estem a la primera activitat, pel que no podem habilitar l'anterior
+				CO.menu.getItem(MENU_ANT).setEnabled(false);
+			}
+			if(CO.activitatActual == Parser.getActivitats().size() - 1){
+				//estem a l'ultima activitat, pel que no podem habilitar el seguent
+				CO.menu.getItem(MENU_SEG).setEnabled(false);
+			}
+		}
+	}
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		CO.menu = menu;
+		CO.menu.clear();
+		CO.menu.add(0, MENU_ANT, 0, R.string.menu_ant);
+		CO.menu.add(0, MENU_SEG, 0, R.string.menu_seg);
+		CO.menu.add(0, MENU_SOLUCIO, 0, R.string.menu_solucio);
+		CO.menu.add(0, MENU_AJUDA, 0, R.string.menu_ajuda);
+		CO.menu.add(0, MENU_INICI, 0, R.string.menu_inici);
+		CO.menu.add(0, MENU_SORTIR, 0, R.string.menu_sortir);
+
+		//Configuro els botons d'anterior i seguent
+		CO.menu.getItem(MENU_SEG).setEnabled(true);
+		CO.menu.getItem(MENU_ANT).setEnabled(true);
+
+		CO.menu.getItem(MENU_ANT).setIcon(android.R.drawable.ic_media_rew);
+		CO.menu.getItem(MENU_SEG).setIcon(android.R.drawable.ic_media_ff);
+		CO.menu.getItem(MENU_SOLUCIO).setIcon(android.R.drawable.btn_star_big_off);
+		CO.menu.getItem(MENU_AJUDA).setIcon(android.R.drawable.ic_menu_help);
+		CO.menu.getItem(MENU_INICI).setIcon(android.R.drawable.ic_menu_revert);
+		CO.menu.getItem(MENU_SORTIR).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+
+		if(CO.activitatActual<1){
+			//estem a la primera activitat, pel que no podem habilitar l'anterior
+			CO.menu.getItem(MENU_ANT).setEnabled(false);
+		}
+		if(CO.activitatActual == Parser.getActivitats().size() - 1){
+			//estem a l'ultima activitat, pel que no podem habilitar el seguent
+			CO.menu.getItem(MENU_SEG).setEnabled(false);
+		}
+
+		if(CO.mostrarSolucio) CO.menu.getItem(MENU_SOLUCIO).setEnabled(true);
+		else CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
+		return true;
+	}
+	
+	private void setMissatges() {
+		if(CO.solucioVisible){
+			CO.miss.setText("");
+			CO.missCorrectes.setText("");
+			CO.cas1.setText("");
+			CO.p1 = "<buit>";
+			CO.p2 = "<buit>";
+		} else {
+			if((maxIntents != 0 && maxIntents == contador && CO.correcte!=CO.casIni)||contadorTemps == maxTime && maxTime!=0){
+				//fallem per intents o per temps
+				sound.playFinished_error();
+				if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi() != null)
+					CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
+				else CO.miss.setText("Superat els intents màxims");
+				if(maxTime!=0)timer.cancel();
+				CO.missCorrectes.setText("Prem aquí per continuar.");
+				CO.missCorrectes.setBackgroundColor(Color.WHITE);
+				CO.missCorrectes.setTextColor(Color.BLACK);
+
+				//bloquejarJoc(true);
+				if(CO.menu != null) CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
+			}
+			else if(CO.correcte == CO.vecCaselles.size()){
+				//Hem acabat el joc
+				if(maxTime!=0)timer.cancel();
+				sound.playFinished_ok();
+				if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi() != null)
+					CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
+				else CO.miss.setText("Joc finalitzat!");
+
+				CO.missCorrectes.setText("Prem aquí per continuar.");
+				CO.missCorrectes.setBackgroundColor(Color.WHITE);
+				CO.missCorrectes.setTextColor(Color.BLACK);
+
+				//bloquejarJoc(true);
+				if(CO.menu != null) CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
+
+			} 
+			else {
+				if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeIni() != null)
+					CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeIni());
+				else CO.miss.setText("Comença el joc!");
+				int displayedIntents;
+				if(IntentCountDown && maxIntents != 0){
+					displayedIntents = maxIntents - contador;
+				}
+				else displayedIntents=contador;
+				int displayedTime;
+				if(TimeCountDown && maxTime != 0){
+					displayedTime = maxTime - contadorTemps;
+				}
+				else displayedTime=contadorTemps;
+				CO.missCorrectes.setText("C = " + CO.correcte + ", In ="+displayedIntents + ", T ="+displayedTime);
+
+			}
+		}
+	}
+
+	@SuppressLint({ "NewApi", "NewApi", "NewApi", "NewApi", "NewApi" })
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case MENU_ANT:
+			CO.activitatActual = CO.activitatActual - 2;
+			Intent iAnt = new Intent(this, Puzzle.class);
+			startActivity(iAnt);
+			finish();
+			return true;
+		case MENU_SEG:
+			Intent iSeg = new Intent(this, Puzzle.class);
+			startActivity(iSeg);
+			finish();
+			return true;
+		case MENU_AJUDA:
+			Dialog ajuda = new AlertDialog.Builder(TextOrder.this)
+			.setIcon(R.drawable.jclic_aqua)
+			.setTitle("Ajuda")
+			.setPositiveButton("D'acord", null)
+			.setMessage("Posa les paraules en l'ordre correcte")
+			.create();
+			ajuda.show();
+			return true;
+		case MENU_SORTIR:
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setIcon(R.drawable.jclic_aqua);
+			builder.setMessage("Estàs segur de que vols sortir?")
+			.setCancelable(false)
+			.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					TextOrder.this.finish();
+				}
+			})
+			.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+				}
+			});
+			AlertDialog alert = builder.create();
+			alert.show();
+			return true;
+		case MENU_INICI:
+			Intent i = new Intent(this, Jclic.class);
+			startActivity(i);
+			finish();
+			return true;
+		}
+		return false;
+	}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.textorder);
+        Button b1 = (Button) findViewById(R.id.buttonMenu);
+		b1.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				openOptionsMenu();
+			}
+		});
+		TextView intentos = (TextView) findViewById(R.id.editIntentos);
+		TextView aciertos = (TextView) findViewById(R.id.editAciertos);
+		intentos.setText(String.valueOf(contador));
+		aciertos.setText(String.valueOf(encerts));
+		this.agafarDadesParser();
+
+		maxTime = Parser.getActivitats().get(CO.activitatActual).getTempsMax();
+		maxIntents =  Parser.getActivitats().get(CO.activitatActual).getIntentMax();
+		TimeCountDown =  Parser.getActivitats().get(CO.activitatActual).getTimeCutDown();
+		IntentCountDown =  Parser.getActivitats().get(CO.activitatActual).getIntentCutdown();
         primeraParaulaTrobada = false;
         paraules = new Paraules();
         textView = (TextView) findViewById(R.id.textView1);
@@ -85,7 +390,7 @@ public class TextOrder extends Activity {
         String text = converteixAString(textBarrejat);
         inicialitzaPosicioTargets(textBarrejat);
         inicialitzaTextView(text);
-        inicialitzaTemporitzador();
+        //inicialitzaTemporitzador();
     }
 
     private void inicialitzaPosicioTargets(Vector<String> textBarrejat) {
@@ -266,7 +571,7 @@ public class TextOrder extends Activity {
         }
     }
 
-    private void inicialitzaTemporitzador() {
+    /*private void inicialitzaTemporitzador() {
         cr = (Chronometer) findViewById(R.id.chronometer1);
         cr.start();
 
@@ -279,7 +584,7 @@ public class TextOrder extends Activity {
                 mHandler.post(handler);
             }
         }, 30 * 1000);
-    }
+    }*/
 
     /** Barreja els targets del text original.
      * 
