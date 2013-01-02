@@ -90,12 +90,12 @@ public class TextOrder extends Activity {
 	private ArrayList<Dades.Info> arrayDades;
 
 	Sounds sound;
-	private int maxTime = 0;
-	private int maxIntents =  0;
-	private boolean TimeCountDown = false;
-	private boolean IntentCountDown = false;
+	private int maxTime = Parser.getActivitats().get(CO.activitatActual).getTempsMax();
+	private int maxIntents =  Parser.getActivitats().get(CO.activitatActual).getIntentMax();
+	private boolean TimeCountDown =  Parser.getActivitats().get(CO.activitatActual).getTimeCutDown();
+	private boolean IntentCountDown =  Parser.getActivitats().get(CO.activitatActual).getIntentCutdown();
 	int encerts = 0;
-	int contador = 10; //Comptador per als intents.
+	int contador = 0; //Comptador per als intents.
 	int contadorTemps = 0; //Comptador per al temps.
 	private CountDownTimer timer;
 	private ProgressBar tiempo;
@@ -357,7 +357,57 @@ public class TextOrder extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.textorder);
+        //maxTime = 20;
+        maxTime = 60;
+        tiempo = (ProgressBar) findViewById(R.id.progressTime);
+	    tiempo.setMax(maxTime);
+	    tiempo.setProgress(0);
+		if (maxTime != 0) {
+			timer = new CountDownTimer(maxTime * 1000, 1000) {
+				@Override
+				public void onFinish() {
+					contadorTemps++;
+					/*tiempo.setText(Integer
+							.toString(maxTime - contadorTemps));*/
+					tiempo.setProgress(contadorTemps);
+					Dialog finalitzat = new AlertDialog.Builder(TextOrder.this)
+					.setIcon(R.drawable.jclic_aqua)
+					.setTitle("Atenci—")
+					.setPositiveButton("D'acord", new OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							Intent i = new Intent(TextOrder.this, Jclic.class);
+							startActivity(i);
+							finish();
+						}
+					})
+					.setMessage("S'acabat el temps.")
+					.create();
+					finalitzat.show();
+					
+					//setMissatges();
+				
+
+					//setMissatges();
+				}
+
+				@Override
+				public void onTick(long arg0) {
+					contadorTemps++;
+					/*tiempo.setText(Integer
+							.toString(maxTime - contadorTemps));*/
+					tiempo.setProgress(contadorTemps);
+
+					//setMissatges();
+				}
+			}.start();
+		}
+
         Button b1 = (Button) findViewById(R.id.buttonMenu);
+        Button b2 = (Button) findViewById(R.id.button1);
+       b2.setBackgroundColor(Color.GREEN);
 		b1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -368,20 +418,20 @@ public class TextOrder extends Activity {
 		TextView aciertos = (TextView) findViewById(R.id.editAciertos);
 		intentos.setText(String.valueOf(contador));
 		aciertos.setText(String.valueOf(encerts));
-		this.agafarDadesParser();
+		
+		
 
-		maxTime = Parser.getActivitats().get(CO.activitatActual).getTempsMax();
-		maxIntents =  Parser.getActivitats().get(CO.activitatActual).getIntentMax();
-		TimeCountDown =  Parser.getActivitats().get(CO.activitatActual).getTimeCutDown();
-		IntentCountDown =  Parser.getActivitats().get(CO.activitatActual).getIntentCutdown();
-        primeraParaulaTrobada = false;
+		
+		//this.agafarDadesParser();
+		
+		primeraParaulaTrobada = false;
         paraules = new Paraules();
         textView = (TextView) findViewById(R.id.textView1);
         textOriginal = Parser.getActivitats().elementAt(CO.activitatActual)
             .getT();
         tipusText = Parser.getActivitats().elementAt(CO.activitatActual)
             .getbool();
-
+         
         // Eliminem possibles espais al principi i al final de cada element
         for (int i = 0; i < textOriginal.size(); ++i)
             textOriginal.set(i, textOriginal.get(i).trim());
@@ -508,6 +558,11 @@ public class TextOrder extends Activity {
                                     primeraParaula.length(), text.length());
 
                             inicialitzaTextView(nouText);
+                            ++contador;
+                            TextView intentos = (TextView) findViewById(R.id.editIntentos);
+                    		TextView aciertos = (TextView) findViewById(R.id.editAciertos);
+                    		intentos.setText(String.valueOf(contador));
+                    		aciertos.setText(String.valueOf(encerts));
                         }
                     }
                 }
@@ -554,7 +609,7 @@ public class TextOrder extends Activity {
 
                 @Override
                 public void updateDrawState(TextPaint ds) {
-                    ds.setColor(Color.WHITE); // Aquest es el color per les
+                    ds.setColor(Color.BLACK); // Aquest es el color per les
                     // paraules que no siguin target.
                     ds.setUnderlineText(false);
                 }
@@ -663,7 +718,7 @@ public class TextOrder extends Activity {
         return indices.toArray(new Integer[0]);
     }
 
-    final Runnable handler = new Runnable() {
+    /*final Runnable handler = new Runnable() {
 
         @Override
         public void run() {
@@ -671,7 +726,7 @@ public class TextOrder extends Activity {
             cr.stop();
             System.out.println("S'HA ACABAT EL TEMPS");
         }
-    };
+    };*/
 
     class Posicio {
 
