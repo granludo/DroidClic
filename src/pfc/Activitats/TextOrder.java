@@ -3,23 +3,21 @@ package pfc.Activitats;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
 
 import pfc.Jclic.Jclic;
 import pfc.Jclic.R;
+import pfc.Parser.Parser;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.Spanned;
@@ -27,19 +25,25 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Chronometer;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
-import android.widget.Toast;
-import pfc.Parser.Dades;
-import pfc.Parser.Parser;
 
+/**
+ * Aquesta activitat mostra un text en el qual hi ha paraules desordenades, les
+ * quals estan pintades de color blau. Si es fa clic damunt d'una d'aquestes
+ * paraules i després clic damunt d'una altra d'aquestes paraules, ambdues
+ * paraules s'intercanvien. Després, es pot fer clic al botó Ok per a comprovar
+ * si el text ha quedat ordenat o no. En cas que hi hagi paraules que no hagin
+ * quedat ordenades, aquestes es mostraran de color vermell.
+ * 
+ * @author Xavier García García i Xavier Álvarez Juste
+ * 
+ */
 public class TextOrder extends Activity {
 
     /** Contants rellevants per a poder utilitzar el parser. */
@@ -48,34 +52,49 @@ public class TextOrder extends Activity {
     /** Text provinent del parser. */
     Vector<String> textOriginal = new Vector<String>();
 
-    /** Vector que indica si un element de textOriginal es un target (true) o no
-     * (false). */
+    /**
+     * Vector que indica si un element de textOriginal es un target (true) o no
+     * (false).
+     */
     Vector<Boolean> tipusText = new Vector<Boolean>();
 
+    /**
+     * TextView on es mostren les paraules de l'activitat en sí.
+     */
     TextView textView;
 
-    private int time;
-
-    // private Timer timer;
-
-    private pfc.Parser.Dades dades = new pfc.Parser.Dades();
-
-    final Handler mHandler = new Handler();
-
-    // int posicioTargets[];
-
-    // int posicioFinalTargets[];
-
+    /**
+     * Posició al text de l'inici de la primera de dues paraules que
+     * s'intercanviïn.
+     */
     int iniciPrimeraParaula;
 
+    /**
+     * Posició al text del final de la primera de dues paraules que
+     * s'intercanviïn.
+     */
     int finalPrimeraParaula;
 
+    /**
+     * Cert si ja s'ha fet clic a un target i s'està esperant a què es faci clic
+     * a un altre, fals altrament.
+     */
     boolean primeraParaulaTrobada;
 
+    /**
+     * Primer dels dos targets que s'han d'intercanviar.
+     */
     String primeraParaula;
 
+    /**
+     * Posició inicial i final al text cada de una de les paraules que formen el
+     * text.
+     */
     ArrayList<Posicio> poss = new ArrayList<Posicio>();
 
+    /**
+     * Índex al text de l'inici de les dues paraules que s'han d'intercanviar.
+     */
     Paraules paraules;
 
     private static final int MENU_ANT = 0;
@@ -89,8 +108,6 @@ public class TextOrder extends Activity {
     private static final int MENU_INICI = 4;
 
     private static final int MENU_SORTIR = 5;
-
-    private ArrayList<Dades.Info> arrayDades;
 
     Sounds sound;
 
@@ -108,59 +125,21 @@ public class TextOrder extends Activity {
 
     int encerts = 0;
 
-    int contador = 0; // Comptador per als intents.
+    /**
+     * Comptador d'intents.
+     */
+    int contador = 0;
 
-    int contadorTemps = 0; // Comptador per al temps.
+    /**
+     * Comptador de temps.
+     */
+    int contadorTemps = 0;
 
     private CountDownTimer timer;
 
     private ProgressBar tiempo;
 
-    private void reiniciarMenu() {
-        if (CO.menu != null) {
-            CO.menu.clear();
-            CO.menu.add(0, MENU_ANT, 0, R.string.menu_ant);
-            CO.menu.add(0, MENU_SEG, 0, R.string.menu_seg);
-            CO.menu.add(0, MENU_SOLUCIO, 0, R.string.menu_solucio);
-            CO.menu.add(0, MENU_AJUDA, 0, R.string.menu_ajuda);
-            CO.menu.add(0, MENU_INICI, 0, R.string.menu_inici);
-            CO.menu.add(0, MENU_SORTIR, 0, R.string.menu_sortir);
-
-            CO.menu.getItem(MENU_ANT).setIcon(android.R.drawable.ic_media_rew);
-            CO.menu.getItem(MENU_SEG).setIcon(android.R.drawable.ic_media_ff);
-            CO.menu.getItem(MENU_SOLUCIO).setIcon(
-                android.R.drawable.btn_star_big_off);
-            CO.menu.getItem(MENU_AJUDA)
-                .setIcon(android.R.drawable.ic_menu_help);
-            CO.menu.getItem(MENU_INICI).setIcon(
-                android.R.drawable.ic_menu_revert);
-            CO.menu.getItem(MENU_SORTIR).setIcon(
-                android.R.drawable.ic_menu_close_clear_cancel);
-
-            // Configuracio del menu per mostrarSolucio-> es un boolean
-            if (CO.mostrarSolucio)
-                CO.menu.getItem(MENU_SOLUCIO).setEnabled(true);
-            else
-                CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
-            CO.menu.getItem(MENU_SOLUCIO).setTitle(R.string.menu_solucio);
-
-            // Configuracio del menu per ant i seguent
-            CO.menu.getItem(MENU_SEG).setEnabled(true);
-            CO.menu.getItem(MENU_ANT).setEnabled(true);
-
-            if (CO.activitatActual < 1) {
-                // estem a la primera activitat, pel que no podem habilitar
-                // l'anterior
-                CO.menu.getItem(MENU_ANT).setEnabled(false);
-            }
-            if (CO.activitatActual == Parser.getActivitats().size() - 1) {
-                // estem a l'ultima activitat, pel que no podem habilitar el
-                // seguent
-                CO.menu.getItem(MENU_SEG).setEnabled(false);
-            }
-        }
-    }
-
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         CO.menu = menu;
@@ -172,7 +151,7 @@ public class TextOrder extends Activity {
         CO.menu.add(0, MENU_INICI, 0, R.string.menu_inici);
         CO.menu.add(0, MENU_SORTIR, 0, R.string.menu_sortir);
 
-        // Configuro els botons d'anterior i seguent
+        // Configuro els botons d'anterior i següent.
         CO.menu.getItem(MENU_SEG).setEnabled(true);
         CO.menu.getItem(MENU_ANT).setEnabled(true);
 
@@ -186,12 +165,17 @@ public class TextOrder extends Activity {
             android.R.drawable.ic_menu_close_clear_cancel);
 
         if (CO.activitatActual < 1) {
-            // estem a la primera activitat, pel que no podem habilitar
-            // l'anterior
+            /*
+             * Estem a la primera activitat així que no podem habilitar
+             * l'anterior.
+             */
             CO.menu.getItem(MENU_ANT).setEnabled(false);
         }
         if (CO.activitatActual == Parser.getActivitats().size() - 1) {
-            // estem a l'ultima activitat, pel que no podem habilitar el seguent
+            /*
+             * Estem a l'íltima activitat així que no podem habilitar el
+             * següent.
+             */
             CO.menu.getItem(MENU_SEG).setEnabled(false);
         }
 
@@ -202,6 +186,7 @@ public class TextOrder extends Activity {
         return true;
     }
 
+    @SuppressWarnings("unused")
     private void setMissatges() {
         if (CO.solucioVisible) {
             CO.miss.setText("");
@@ -213,7 +198,7 @@ public class TextOrder extends Activity {
         else {
             if ((maxIntents != 0 && maxIntents == contador && CO.correcte != CO.casIni)
                 || contadorTemps == maxTime && maxTime != 0) {
-                // fallem per intents o per temps
+                // Fallem per intents o per temps.
                 sound.playFinished_error();
                 if (Parser.getActivitats().elementAt(CO.activitatActual)
                     .getMissatgeFi() != null)
@@ -232,7 +217,7 @@ public class TextOrder extends Activity {
                     CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
             }
             else if (CO.correcte == CO.vecCaselles.size()) {
-                // Hem acabat el joc
+                // Hem acabat el joc.
                 if (maxTime != 0)
                     timer.cancel();
                 sound.playFinished_ok();
@@ -278,6 +263,7 @@ public class TextOrder extends Activity {
         }
     }
 
+    @Override
     @SuppressLint({ "NewApi", "NewApi", "NewApi", "NewApi", "NewApi" })
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -306,12 +292,14 @@ public class TextOrder extends Activity {
                 .setCancelable(false)
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
 
+                    @Override
                     public void onClick(DialogInterface dialog, int id) {
                         TextOrder.this.finish();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
 
+                    @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
@@ -343,8 +331,10 @@ public class TextOrder extends Activity {
                 @Override
                 public void onFinish() {
                     contadorTemps++;
-                    /* tiempo.setText(Integer .toString(maxTime -
-                     * contadorTemps)); */
+                    /*
+                     * tiempo.setText(Integer .toString(maxTime -
+                     * contadorTemps));
+                     */
                     tiempo.setProgress(contadorTemps);
                     fesDialeg("Atenció", "S'ha acabat el temps");
                     openOptionsMenu();
@@ -356,8 +346,10 @@ public class TextOrder extends Activity {
                 @Override
                 public void onTick(long arg0) {
                     contadorTemps++;
-                    /* tiempo.setText(Integer .toString(maxTime -
-                     * contadorTemps)); */
+                    /*
+                     * tiempo.setText(Integer .toString(maxTime -
+                     * contadorTemps));
+                     */
                     tiempo.setProgress(contadorTemps);
 
                     // setMissatges();
@@ -391,7 +383,7 @@ public class TextOrder extends Activity {
         tipusText = Parser.getActivitats().elementAt(CO.activitatActual)
             .getbool();
 
-        // Eliminem possibles espais al principi i al final de cada element
+        // Eliminem possibles espais al principi i al final de cada element.
         for (int i = 0; i < textOriginal.size(); ++i)
             textOriginal.set(i, textOriginal.get(i).trim());
 
@@ -401,6 +393,7 @@ public class TextOrder extends Activity {
         inicialitzaTextView(text);
         buttonOk.setOnClickListener(new View.OnClickListener() {
 
+            @Override
             public void onClick(View v) {
                 String textCorrecte = converteixAString(textOriginal);
                 Spannable spans = (Spannable) textView.getText();
@@ -441,21 +434,21 @@ public class TextOrder extends Activity {
                 }
             }
         });
-        // inicialitzaTemporitzador();
     }
 
+    /**
+     * Guarda la posició inicial i final dels targets.
+     * 
+     * @param textBarrejat Text que es mostra inicialment al TextView.
+     */
     private void inicialitzaPosicioTargets(Vector<String> textBarrejat) {
         int sum = 0;
-        int j = 0;
         for (int i = 0; i < tipusText.size(); ++i) {
             if (tipusText.get(i)) {
                 Posicio p = new Posicio();
                 p.posicioInicial = sum;
                 p.posicioFinal = sum + textBarrejat.get(i).length() - 1;
                 poss.add(p);
-                // posicioTargets[j] = sum;
-                // posicioFinalTargets[j] = sum + textBarrejat.get(i).length();
-                ++j;
             }
             sum += textBarrejat.get(i).length();
             if (textBarrejat.get(i).length() != 0)
@@ -464,10 +457,16 @@ public class TextOrder extends Activity {
 
     }
 
+    /**
+     * Converteix un Vector de String a String.
+     * 
+     * @param textBarrejat Vector de String.
+     * @return String que representa el Vector de String.
+     */
     private String converteixAString(Vector<String> textBarrejat) {
         StringBuffer convertidor = new StringBuffer();
         int ntargets = 0;
-        int i, j, k;
+        int i, j;
         for (j = 0; j < tipusText.size(); j++) {
             if (tipusText.elementAt(j) == true)
                 ntargets++;
@@ -499,6 +498,12 @@ public class TextOrder extends Activity {
         return convertidor.toString();
     }
 
+    /**
+     * Inicialitza el TextView amb el text que s'ha de mostrar i el prepara per
+     * a què es pugui fer clic a cada una de les paraules que el formen.
+     * 
+     * @param text Text que es mostra al TextView.
+     */
     private void inicialitzaTextView(String text) {
         Editable str = Editable.Factory.getInstance().newEditable(text);
         textView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -528,7 +533,6 @@ public class TextOrder extends Activity {
                         else {
                             primeraParaulaTrobada = false;
                             String nouText = "";
-                            int targets = 0;
                             for (int i = 0; i < textComplet.length(); ++i) {
                                 if (i != iniciPrimeraParaula) {
                                     if (i == textView.getSelectionStart()) {
@@ -568,18 +572,18 @@ public class TextOrder extends Activity {
                     }
                 }
 
-                /** Actualitza les posicions dels targets.
+                /**
+                 * Actualitza les posicions dels targets.
                  * 
-                 * @param indexInicial
-                 *            Index del primer target a partir del qual s'han
+                 * @param indexInicial Índex del primer target a partir del qual
+                 *            s'han d'actualitzar les posicions.
+                 * @param indexFinal Índex del segon target fins al qual s'han
                  *            d'actualitzar les posicions.
-                 * @param indexFinal
-                 *            Index del segon target fins al qual s'han
-                 *            d'actualitzar les posicions.
-                 * @param sizePrimeraParaula
-                 *            Mida de la paraula que va al primer index.
-                 * @param sizeSegonaParaula
-                 *            Mida de la paraula que va al segon index. */
+                 * @param sizePrimeraParaula Mida de la paraula que va al primer
+                 *            índex.
+                 * @param sizeSegonaParaula Mida de la paraula que va al segon
+                 *            índex.
+                 */
                 private void actualitzaPosicions(int indexInicial,
                     int indexFinal, int sizePrimeraParaula,
                     int sizeSegonaParaula) {
@@ -603,6 +607,14 @@ public class TextOrder extends Activity {
                     poss.set(indexFinal, pFi);
                 }
 
+                /**
+                 * Determina si una paraula és o no target.
+                 * 
+                 * @param selectionStart Índex del text que apunta a l'inici de
+                 *            la paraula en qüestió.
+                 * @param text Text on apareix la paraula en qüestió.
+                 * @return Cert si la paraula és un target, false altrament.
+                 */
                 private boolean esTarget(int selectionStart, String text) {
                     for (int i = 0; i < poss.size(); ++i) {
                         if (selectionStart == poss.get(i).posicioInicial) {
@@ -618,8 +630,10 @@ public class TextOrder extends Activity {
 
                 @Override
                 public void updateDrawState(TextPaint ds) {
-                    ds.setColor(Color.BLACK); // Aquest es el color per les
-                    // paraules que no siguin target.
+                    ds.setColor(Color.BLACK); /*
+                                               * BLACK és el color per les
+                                               * paraules que no són target.
+                                               */
                     ds.setUnderlineText(false);
                 }
             };
@@ -629,16 +643,22 @@ public class TextOrder extends Activity {
             for (int j = 0; j < poss.size(); ++j) {
                 spans.setSpan(new ForegroundColorSpan(Color.BLUE),
                     poss.get(j).posicioInicial, poss.get(j).posicioFinal + 1,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); /*
+                                                        * BLUE és el color per
+                                                        * paraules que són
+                                                        * target.
+                                                        */
             }
             start = end + 1;
         }
     }
 
-    /** Barreja els targets del text original.
+    /**
+     * Barreja els targets del text original.
      * 
-     * @return Un vector que representa el text amb els targets ens posicions
-     *         aleatories. */
+     * @return Vector que representa el text amb els targets ens posicions
+     *         aleatories.
+     */
     private Vector<String> barrejaTargets() {
         int nTargets = 0;
         for (int i = 0; i < textOriginal.size(); i++) {
@@ -696,6 +716,12 @@ public class TextOrder extends Activity {
         return fin;
     }
 
+    /**
+     * Calcula on comença i on acaba cada paraula.
+     * 
+     * @param s Text complet.
+     * @return Array que indica les posicions de cada una de les paraules.
+     */
     public static Integer[] getSpaceIndices(String s) {
         int posEspai = s.indexOf(' ', 0);
         int posLinia = s.indexOf('\n', 0);
@@ -714,9 +740,11 @@ public class TextOrder extends Activity {
         return indices.toArray(new Integer[0]);
     }
 
-    /** Obté el número de targets del text.
+    /**
+     * Obté el número de targets del text.
      * 
-     * @return el número de targets. */
+     * @return Número de targets.
+     */
     public int getNTargets() {
         int nTargets = 0;
         for (int i = 0; i < tipusText.size(); ++i)
@@ -725,6 +753,12 @@ public class TextOrder extends Activity {
         return nTargets;
     }
 
+    /**
+     * Construeix i mostra un diàleg.
+     * 
+     * @param titol Títol del diàleg.
+     * @param missatge Missatge del diàleg.
+     */
     public void fesDialeg(String titol, String missatge) {
         Dialog dialeg = new AlertDialog.Builder(TextOrder.this)
             .setIcon(R.drawable.jclic_aqua).setTitle(titol)
@@ -732,19 +766,16 @@ public class TextOrder extends Activity {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    /* Es pot passar a la següent activitat a través del menú.
-                     * així que aquí no cal fer res. */
+                    /*
+                     * Es pot passar a la següent activitat a través del menú.
+                     * així que aquí no cal fer res.
+                     */
 
                 }
             }).setMessage(missatge).create();
         dialeg.show();
 
     }
-
-    /* final Runnable handler = new Runnable() {
-     * 
-     * @Override public void run() { time = -1; cr.stop();
-     * System.out.println("S'HA ACABAT EL TEMPS"); } }; */
 
     class Posicio {
 
