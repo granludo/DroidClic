@@ -727,6 +727,8 @@ public class TextOrder extends Activity {
         int posLinia = s.indexOf('\n', 0);
         List<Integer> indices = new ArrayList<Integer>();
         int posicio = Math.min(posEspai, posLinia);
+        if (posicio == -1)
+            posicio = posEspai;
         while (posicio != -1) {
             indices.add(posicio);
             if (posicio == posLinia)
