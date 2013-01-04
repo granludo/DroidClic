@@ -478,7 +478,7 @@ public class Memory extends Activity {
 		TextView aux2 = (TextView) findViewById(R.id.correcte);
 		if(aciertos == casillasCorrectas) {
 			String s = Parser.getActivitats().get(CO.activitatActual).getMissatgeFi();
-			if (s.isEmpty()) s = "Molt bé, l'has resolt!";
+			if (s.length() == 0) s = "Molt bé, l'has resolt!";
 			textFinal.setText(s);
 		}
 		else if((contadorIntents == maxIntents && !IntentCountDown) || (contadorIntents == 0 && IntentCountDown)) {
