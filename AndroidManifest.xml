@@ -24,7 +24,7 @@
 		<activity android:name="pfc.Activitats.HolePuzzle" android:screenOrientation="landscape"></activity>
 		<activity android:name="pfc.Activitats.ExchangePuzzle" android:screenOrientation="landscape"></activity>
 		<activity android:name="pfc.Activitats.SimpleAssociation" android:screenOrientation="landscape"></activity>
-		<activity android:name="pfc.Activitats.Memory" android:screenOrientation="portrait"></activity>
+		<activity android:name="pfc.Activitats.Memory" android:screenOrientation="landscape"></activity>
 		<activity android:name="pfc.Activitats.PanelsIdentify" android:screenOrientation="landscape"></activity>
 		<activity android:name="pfc.Activitats.ComplexAssociation"></activity>
 		<activity android:name="pfc.Activitats.WrittenAnswer"></activity>
