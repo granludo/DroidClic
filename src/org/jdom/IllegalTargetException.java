@@ -57,41 +57,42 @@
 package org.jdom;
 
 /**
- * Thrown when a target is supplied in construction of a JDOM {@link
- * ProcessingInstruction}, and that name breaks XML naming conventions.
+ * Thrown when a target is supplied in construction of a JDOM
+ * {@link ProcessingInstruction}, and that name breaks XML naming conventions.
  * 
  * @version $Revision: 1.15 $, $Date: 2007/11/10 05:28:59 $
- * @author  Brett McLaughlin
+ * @author Brett McLaughlin
  */
 public class IllegalTargetException extends IllegalArgumentException {
 
-    private static final String CVS_ID = 
-      "@(#) $RCSfile: IllegalTargetException.java,v $ $Revision: 1.15 $ $Date: 2007/11/10 05:28:59 $ $Name: jdom_1_1 $";
+	private static final String CVS_ID = "@(#) $RCSfile: IllegalTargetException.java,v $ $Revision: 1.15 $ $Date: 2007/11/10 05:28:59 $ $Name: jdom_1_1 $";
 
-    /**
-     * This will create an <code>Exception</code> indicating
-     * that the specified target is illegal for the
-     * <code>{@link ProcessingInstruction}</code> it was supplied to.
-     *
-     * @param target <code>String</code> target that breaks rules.
-     * @param reason <code>String</code> message or reason target is illegal.
-     */
-    IllegalTargetException(String target, String reason) {
-        super(new StringBuffer()
-              .append("The target \"")
-              .append(target)
-              .append("\" is not legal for JDOM/XML Processing Instructions: ")
-              .append(reason)
-              .append(".")
-              .toString());
-    }
+	/**
+	 * This will create an <code>Exception</code> indicating that the specified
+	 * target is illegal for the <code>{@link ProcessingInstruction}</code> it
+	 * was supplied to.
+	 * 
+	 * @param target
+	 *            <code>String</code> target that breaks rules.
+	 * @param reason
+	 *            <code>String</code> message or reason target is illegal.
+	 */
+	IllegalTargetException(String target, String reason) {
+		super(
+				new StringBuffer()
+						.append("The target \"")
+						.append(target)
+						.append("\" is not legal for JDOM/XML Processing Instructions: ")
+						.append(reason).append(".").toString());
+	}
 
-    /**
-     * Creates an exception with the specified error message.
-     *
-     * @param reason cause of the problem
-     */
-    public IllegalTargetException(String reason) {
-        super(reason);
-    }
+	/**
+	 * Creates an exception with the specified error message.
+	 * 
+	 * @param reason
+	 *            cause of the problem
+	 */
+	public IllegalTargetException(String reason) {
+		super(reason);
+	}
 }

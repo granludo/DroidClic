@@ -8,4 +8,3 @@ public class DadesText {
 	public boolean polsat;
 
 }
-

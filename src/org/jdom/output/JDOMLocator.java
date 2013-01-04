@@ -60,59 +60,57 @@ import org.xml.sax.Locator;
 import org.xml.sax.helpers.LocatorImpl;
 
 /**
- * An implementation of the SAX {@link Locator} interface that
- * exposes the JDOM node being processed by SAXOutputter.
- *
+ * An implementation of the SAX {@link Locator} interface that exposes the JDOM
+ * node being processed by SAXOutputter.
+ * 
  * @author Laurent Bihanic
- *
+ * 
  * @version $Revision: 1.4 $, $Date: 2007/11/10 05:29:01 $
  */
 public class JDOMLocator extends LocatorImpl {
-   
-    private static final String CVS_ID = 
-      "@(#) $RCSfile: JDOMLocator.java,v $ $Revision: 1.4 $ $Date: 2007/11/10 05:29:01 $ $Name: jdom_1_1 $";
 
-    /** The JDOM node being processed by SAXOutputter. */
-    private Object node;
+	private static final String CVS_ID = "@(#) $RCSfile: JDOMLocator.java,v $ $Revision: 1.4 $ $Date: 2007/11/10 05:29:01 $ $Name: jdom_1_1 $";
 
-    /**
-     * Default no-arg constructor.
-     */
-    JDOMLocator() {                             // package protected
-        super();
-    }
+	/** The JDOM node being processed by SAXOutputter. */
+	private Object node;
 
-    /**
-     * Copy contructor.
-     *
-     * @param locator <code>Locator</code> to copy location
-     *                information from.
-     */
-    JDOMLocator(Locator locator) {              // package protected
-        super(locator);
+	/**
+	 * Default no-arg constructor.
+	 */
+	JDOMLocator() { // package protected
+		super();
+	}
 
-        if (locator instanceof JDOMLocator) {
-            this.setNode(((JDOMLocator)locator).getNode());
-        }
-    }
+	/**
+	 * Copy contructor.
+	 * 
+	 * @param locator
+	 *            <code>Locator</code> to copy location information from.
+	 */
+	JDOMLocator(Locator locator) { // package protected
+		super(locator);
 
-    /**
-     * Returns the JDOM node being processed by SAXOutputter.
-     *
-     * @return the JDOM node being processed by SAXOutputter.
-     */
-    public Object getNode() {
-        return this.node;
-    }
+		if (locator instanceof JDOMLocator) {
+			this.setNode(((JDOMLocator) locator).getNode());
+		}
+	}
 
-    /**
-     * Sets the being-processed node.
-     *
-     * @param node <code>Object</code> node currently processed
-     *             by SAXOutputter.
-     */
-    void setNode(Object node) {                 // package protected
-        this.node = node;
-    }
+	/**
+	 * Returns the JDOM node being processed by SAXOutputter.
+	 * 
+	 * @return the JDOM node being processed by SAXOutputter.
+	 */
+	public Object getNode() {
+		return this.node;
+	}
+
+	/**
+	 * Sets the being-processed node.
+	 * 
+	 * @param node
+	 *            <code>Object</code> node currently processed by SAXOutputter.
+	 */
+	void setNode(Object node) { // package protected
+		this.node = node;
+	}
 }
-

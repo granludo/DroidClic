@@ -92,11 +92,11 @@ public class DoublePuzzle extends Activity {
 		aciertos = (TextView) findViewById(R.id.editAciertos);
 		intentos = (TextView) findViewById(R.id.editIntentos);
 		tiempo = (ProgressBar) findViewById(R.id.progressTime);
-	    tiempo.setMax(maxTime);
-	    tiempo.setProgress(0);
+		tiempo.setMax(maxTime);
+		tiempo.setProgress(0);
 		bMenu = (Button) findViewById(R.id.menu);
 		try {
-			//reiniciarMenu();
+			// reiniciarMenu();
 			agafarDades();
 
 			if (CO.imatge != null) {
@@ -133,8 +133,10 @@ public class DoublePuzzle extends Activity {
 					@Override
 					public void onFinish() {
 						contadorTemps++;
-						/*tiempo.setText(Integer
-								.toString(maxTime - contadorTemps));*/
+						/*
+						 * tiempo.setText(Integer .toString(maxTime -
+						 * contadorTemps));
+						 */
 						tiempo.setProgress(contadorTemps);
 
 						setMissatges();
@@ -143,8 +145,10 @@ public class DoublePuzzle extends Activity {
 					@Override
 					public void onTick(long arg0) {
 						contadorTemps++;
-						/*tiempo.setText(Integer
-								.toString(maxTime - contadorTemps));*/
+						/*
+						 * tiempo.setText(Integer .toString(maxTime -
+						 * contadorTemps));
+						 */
 						tiempo.setProgress(contadorTemps);
 
 						setMissatges();
@@ -154,8 +158,8 @@ public class DoublePuzzle extends Activity {
 		} catch (Exception e) {
 			Log.d("Error", "catch DoublePuzzle: " + e);
 		}
-		
-		//Insertar esto en una actividad para el uso del menu.
+
+		// Insertar esto en una actividad para el uso del menu.
 		final Context aC = this;
 		bMenu.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -176,52 +180,40 @@ public class DoublePuzzle extends Activity {
 		super.onDestroy();
 		sound.unloadAll();
 	}
-/*
-	private void reiniciarMenu() {
-		if (CO.menu != null) {
-			CO.menu.clear();
-			CO.menu.add(0, MENU_ANT, 0, R.string.menu_ant);
-			CO.menu.add(0, MENU_SEG, 0, R.string.menu_seg);
-			CO.menu.add(0, MENU_SOLUCIO, 0, R.string.menu_solucio);
-			CO.menu.add(0, MENU_AJUDA, 0, R.string.menu_ajuda);
-			CO.menu.add(0, MENU_INICI, 0, R.string.menu_inici);
-			CO.menu.add(0, MENU_SORTIR, 0, R.string.menu_sortir);
 
-			CO.menu.getItem(MENU_ANT).setIcon(android.R.drawable.ic_media_rew);
-			CO.menu.getItem(MENU_SEG).setIcon(android.R.drawable.ic_media_ff);
-			CO.menu.getItem(MENU_SOLUCIO).setIcon(
-					android.R.drawable.btn_star_big_off);
-			CO.menu.getItem(MENU_AJUDA)
-					.setIcon(android.R.drawable.ic_menu_help);
-			CO.menu.getItem(MENU_INICI).setIcon(
-					android.R.drawable.ic_menu_revert);
-			CO.menu.getItem(MENU_SORTIR).setIcon(
-					android.R.drawable.ic_menu_close_clear_cancel);
-
-			// Configuracio del menu per mostrarSolucio
-			if (CO.mostrarSolucio)
-				CO.menu.getItem(MENU_SOLUCIO).setEnabled(true);
-			else
-				CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
-			CO.menu.getItem(MENU_SOLUCIO).setTitle(R.string.menu_solucio);
-
-			// Configuracio del menu per ant i seguent
-			CO.menu.getItem(MENU_SEG).setEnabled(true);
-			CO.menu.getItem(MENU_ANT).setEnabled(true);
-
-			if (CO.activitatActual < 1) {
-				// estem a la primera activitat, pel que no podem habilitar
-				// l'anterior
-				CO.menu.getItem(MENU_ANT).setEnabled(false);
-			}
-			if (CO.activitatActual == Parser.getActivitats().size() - 1) {
-				// estem a l'ultima activitat, pel que no podem habilitar el
-				// seguent
-				CO.menu.getItem(MENU_SEG).setEnabled(false);
-			}
-		}
-	}
-*/
+	/*
+	 * private void reiniciarMenu() { if (CO.menu != null) { CO.menu.clear();
+	 * CO.menu.add(0, MENU_ANT, 0, R.string.menu_ant); CO.menu.add(0, MENU_SEG,
+	 * 0, R.string.menu_seg); CO.menu.add(0, MENU_SOLUCIO, 0,
+	 * R.string.menu_solucio); CO.menu.add(0, MENU_AJUDA, 0,
+	 * R.string.menu_ajuda); CO.menu.add(0, MENU_INICI, 0, R.string.menu_inici);
+	 * CO.menu.add(0, MENU_SORTIR, 0, R.string.menu_sortir);
+	 * 
+	 * CO.menu.getItem(MENU_ANT).setIcon(android.R.drawable.ic_media_rew);
+	 * CO.menu.getItem(MENU_SEG).setIcon(android.R.drawable.ic_media_ff);
+	 * CO.menu.getItem(MENU_SOLUCIO).setIcon(
+	 * android.R.drawable.btn_star_big_off); CO.menu.getItem(MENU_AJUDA)
+	 * .setIcon(android.R.drawable.ic_menu_help);
+	 * CO.menu.getItem(MENU_INICI).setIcon( android.R.drawable.ic_menu_revert);
+	 * CO.menu.getItem(MENU_SORTIR).setIcon(
+	 * android.R.drawable.ic_menu_close_clear_cancel);
+	 * 
+	 * // Configuracio del menu per mostrarSolucio if (CO.mostrarSolucio)
+	 * CO.menu.getItem(MENU_SOLUCIO).setEnabled(true); else
+	 * CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
+	 * CO.menu.getItem(MENU_SOLUCIO).setTitle(R.string.menu_solucio);
+	 * 
+	 * // Configuracio del menu per ant i seguent
+	 * CO.menu.getItem(MENU_SEG).setEnabled(true);
+	 * CO.menu.getItem(MENU_ANT).setEnabled(true);
+	 * 
+	 * if (CO.activitatActual < 1) { // estem a la primera activitat, pel que no
+	 * podem habilitar // l'anterior
+	 * CO.menu.getItem(MENU_ANT).setEnabled(false); } if (CO.activitatActual ==
+	 * Parser.getActivitats().size() - 1) { // estem a l'ultima activitat, pel
+	 * que no podem habilitar el // seguent
+	 * CO.menu.getItem(MENU_SEG).setEnabled(false); } } }
+	 */
 	private void agafarDades() {
 		CO.tr1 = (TableRow) findViewById(R.id.tr1);
 		CO.tr2 = (TableRow) findViewById(R.id.tr2);
@@ -235,9 +227,9 @@ public class DoublePuzzle extends Activity {
 		CO.tr10 = (TableRow) findViewById(R.id.tr10);
 		CO.tl = (TableLayout) findViewById(R.id.tl);
 		CO.tl2 = (TableLayout) findViewById(R.id.tl2);
-		// CO.sv = (ScrollView)findViewById(R.id.sv);  // NO fa falta scroll ja
-		//CO.bdown = (ImageView) findViewById(R.id.bdown);
-		//CO.bup = (ImageView) findViewById(R.id.bup);
+		// CO.sv = (ScrollView)findViewById(R.id.sv); // NO fa falta scroll ja
+		// CO.bdown = (ImageView) findViewById(R.id.bdown);
+		// CO.bup = (ImageView) findViewById(R.id.bup);
 
 		CO.tr1.setPadding(30, 0, 0, 0);
 		CO.tr2.setPadding(30, 0, 0, 0);
@@ -781,7 +773,7 @@ public class DoublePuzzle extends Activity {
 		Display display = getWindowManager().getDefaultDisplay();
 
 		CO.cMaxHor = (display.getWidth() / 2);
-		CO.cMaxVert = display.getHeight() - display.getHeight()/5;
+		CO.cMaxVert = display.getHeight() - display.getHeight() / 5;
 
 		if (CO.cols == 1) {
 			pos.setWidth(CO.cMaxHor); // cMaxHor es la distancia horitzontal
@@ -1065,8 +1057,10 @@ public class DoublePuzzle extends Activity {
 						.getMissatgeFi() != null) {
 					textFinal.setText(Parser.getActivitats()
 							.elementAt(CO.activitatActual).getMissatgeFi());
-					/*CO.miss2.setText(Parser.getActivitats()
-							.elementAt(CO.activitatActual).getMissatgeFi());*/
+					/*
+					 * CO.miss2.setText(Parser.getActivitats()
+					 * .elementAt(CO.activitatActual).getMissatgeFi());
+					 */
 				} else {
 					textFinal.setText("Joc finalitzat!");
 					CO.miss2.setText("Joc finalitzat!");
@@ -1098,7 +1092,7 @@ public class DoublePuzzle extends Activity {
 				 * (Parser.getActivitats().elementAt(CO.activitatActual
 				 * ).getMissatgeFi()); } else {
 				 */
-				if (maxTime !=0 && contadorTemps == maxTime) {
+				if (maxTime != 0 && contadorTemps == maxTime) {
 					textFinal.setText("S'ha acabat el temps!");
 					CO.miss2.setText("S'ha acabat el temps!");
 				} else {
@@ -1232,183 +1226,108 @@ public class DoublePuzzle extends Activity {
 	}
 
 	/*
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		CO.menu = menu;
-		CO.menu.clear();
-		CO.menu.add(0, MENU_ANT, 0, R.string.menu_ant);
-		CO.menu.add(0, MENU_SEG, 0, R.string.menu_seg);
-		CO.menu.add(0, MENU_SOLUCIO, 0, R.string.menu_solucio);
-		CO.menu.add(0, MENU_AJUDA, 0, R.string.menu_ajuda);
-		CO.menu.add(0, MENU_INICI, 0, R.string.menu_inici);
-		CO.menu.add(0, MENU_SORTIR, 0, R.string.menu_sortir);
-
-		CO.menu.getItem(MENU_ANT).setIcon(android.R.drawable.ic_media_rew);
-		CO.menu.getItem(MENU_SEG).setIcon(android.R.drawable.ic_media_ff);
-		CO.menu.getItem(MENU_SOLUCIO).setIcon(
-				android.R.drawable.btn_star_big_off);
-		CO.menu.getItem(MENU_AJUDA).setIcon(android.R.drawable.ic_menu_help);
-		CO.menu.getItem(MENU_INICI).setIcon(android.R.drawable.ic_menu_revert);
-		CO.menu.getItem(MENU_SORTIR).setIcon(
-				android.R.drawable.ic_menu_close_clear_cancel);
-
-		// Configuro els botons d'anterior i seguent
-		CO.menu.getItem(MENU_SEG).setEnabled(true);
-		CO.menu.getItem(MENU_ANT).setEnabled(true);
-
-		if (CO.activitatActual < 1) {
-			// estem a la primera activitat, pel que no podem habilitar
-			// l'anterior
-			CO.menu.getItem(MENU_ANT).setEnabled(false);
-		}
-		if (CO.activitatActual == Parser.getActivitats().size() - 1) {
-			// estem a l'ultima activitat, pel que no podem habilitar el seguent
-			CO.menu.getItem(MENU_SEG).setEnabled(false);
-		}
-
-		if (CO.mostrarSolucio)
-			CO.menu.getItem(MENU_SOLUCIO).setEnabled(true);
-		else
-			CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
-		return true;
-	}
-
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case MENU_ANT:
-			CO.activitatActual = CO.activitatActual - 2;
-			Intent iAnt = new Intent(this, Puzzle.class);
-			startActivity(iAnt);
-			finish();
-			return true;
-		case MENU_SEG:
-			Intent iSeg = new Intent(this, Puzzle.class);
-			startActivity(iSeg);
-			finish();
-			return true;
-		case MENU_AJUDA:
-			Dialog ajuda = new AlertDialog.Builder(DoublePuzzle.this)
-					.setIcon(R.drawable.jclic_aqua)
-					.setTitle("Ajuda")
-					.setPositiveButton("D'acord", null)
-					.setMessage(
-							"Col·loca les caselles al seu lloc corresponent del panell de sota.\n"
-									+ "Pots canviar de panell prement la fletxa, o bé desplaçan-te per la pantalla.")
-					.create();
-			ajuda.show();
-			return true;
-		case MENU_SOLUCIO:
-			if (!CO.solucioVisible) {
-				// Vull mostrar la solucio
-				CO.vecActual = new Vector<CharSequence>();
-				for (int i = 0; i < CO.vecCaselles.size(); i++) {
-					if (CO.vecCaselles.elementAt(i) != null) {
-						CO.vecActual.addElement(CO.vecCaselles.elementAt(i)
-								.getText());
-						CO.vecCaselles.elementAt(i).setText(
-								CO.sortida.elementAt(i));
-						CO.vecCaselles.elementAt(i).setBackgroundColor(CO.bg);
-						CO.vecCaselles.elementAt(i).setTextColor(CO.fg);
-
-						if (CO.imatge != null) {
-							int indexSort = CO.sortida.indexOf(CO.vecCaselles
-									.elementAt(i).getText());
-
-							CO.vecCaselles.elementAt(i).setBackgroundColor(
-									Color.TRANSPARENT);
-							CO.vecCaselles.elementAt(i).setTextColor(
-									Color.TRANSPARENT);
-
-							vecDraw.elementAt(indexSort).setAlpha(250);
-
-							CO.vecCaselles.elementAt(i).setBackgroundDrawable(
-									vecDraw.elementAt(indexSort));
-						}
-					} else
-						CO.vecActual.addElement(null);
-				}
-				bloquejarJoc(true);
-				CO.solucioVisible = true;
-				posAgafada = null;
-				setMissatges();
-				CO.menu.getItem(MENU_SOLUCIO)
-						.setTitle(R.string.menu_in_solucio);
-				CO.menu.getItem(MENU_ANT).setEnabled(false);
-				CO.menu.getItem(MENU_SEG).setEnabled(false);
-			} else {
-				// Estic mostrant la solucio i vull continuar
-				for (int i = 0; i < CO.vecCaselles.size(); i++) {
-					if (CO.vecCaselles.elementAt(i) != null) {
-						CO.vecCaselles.elementAt(i).setText(
-								CO.vecActual.elementAt(i));
-						CO.vecCaselles.elementAt(i).setTextColor(CO.fg);
-						CO.vecCaselles.elementAt(i).setBackgroundColor(CO.bg);
-
-						if (CO.imatge != null) {
-							int indexSort = CO.sortida.indexOf(CO.vecCaselles
-									.elementAt(i).getText());
-
-							CO.vecCaselles.elementAt(i).setBackgroundColor(
-									Color.TRANSPARENT);
-							CO.vecCaselles.elementAt(i).setTextColor(
-									Color.TRANSPARENT);
-
-							vecDraw.elementAt(indexSort).setAlpha(250);
-
-							CO.vecCaselles.elementAt(i).setBackgroundDrawable(
-									vecDraw.elementAt(indexSort));
-						}
-					}
-				}
-				bloquejarJoc(false);
-				CO.solucioVisible = false;
-				setMissatges();
-				CO.menu.getItem(MENU_SOLUCIO).setTitle(R.string.menu_solucio);
-
-				// Configuracio del menu per ant i seguent
-				if (CO.activitatActual < 1) {
-					// estem a la primera activitat, pel que nomes habilitem
-					// seguent
-					CO.menu.getItem(MENU_SEG).setEnabled(true);
-				} else if (CO.activitatActual == Parser.getActivitats().size() - 1) {
-					// estem a l'ultima activitat, pel que no podem habilitar el
-					// seguent
-					CO.menu.getItem(MENU_ANT).setEnabled(true);
-				} else {
-					CO.menu.getItem(MENU_SEG).setEnabled(true);
-					CO.menu.getItem(MENU_ANT).setEnabled(true);
-				}
-			}
-			return true;
-		case MENU_SORTIR:
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setIcon(R.drawable.jclic_aqua);
-			builder.setMessage("Estàs segur de que vols sortir?")
-					.setCancelable(false)
-					.setPositiveButton("Sí",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int id) {
-									DoublePuzzle.this.finish();
-								}
-							})
-					.setNegativeButton("No",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int id) {
-									dialog.cancel();
-								}
-							});
-			AlertDialog alert = builder.create();
-			alert.show();
-			return true;
-		case MENU_INICI:
-			Intent i = new Intent(this, Jclic.class);
-			startActivity(i);
-			finish();
-			return true;
-		}
-		return false;
-	}
-	*/
+	 * public boolean onCreateOptionsMenu(Menu menu) {
+	 * super.onCreateOptionsMenu(menu); CO.menu = menu; CO.menu.clear();
+	 * CO.menu.add(0, MENU_ANT, 0, R.string.menu_ant); CO.menu.add(0, MENU_SEG,
+	 * 0, R.string.menu_seg); CO.menu.add(0, MENU_SOLUCIO, 0,
+	 * R.string.menu_solucio); CO.menu.add(0, MENU_AJUDA, 0,
+	 * R.string.menu_ajuda); CO.menu.add(0, MENU_INICI, 0, R.string.menu_inici);
+	 * CO.menu.add(0, MENU_SORTIR, 0, R.string.menu_sortir);
+	 * 
+	 * CO.menu.getItem(MENU_ANT).setIcon(android.R.drawable.ic_media_rew);
+	 * CO.menu.getItem(MENU_SEG).setIcon(android.R.drawable.ic_media_ff);
+	 * CO.menu.getItem(MENU_SOLUCIO).setIcon(
+	 * android.R.drawable.btn_star_big_off);
+	 * CO.menu.getItem(MENU_AJUDA).setIcon(android.R.drawable.ic_menu_help);
+	 * CO.menu.getItem(MENU_INICI).setIcon(android.R.drawable.ic_menu_revert);
+	 * CO.menu.getItem(MENU_SORTIR).setIcon(
+	 * android.R.drawable.ic_menu_close_clear_cancel);
+	 * 
+	 * // Configuro els botons d'anterior i seguent
+	 * CO.menu.getItem(MENU_SEG).setEnabled(true);
+	 * CO.menu.getItem(MENU_ANT).setEnabled(true);
+	 * 
+	 * if (CO.activitatActual < 1) { // estem a la primera activitat, pel que no
+	 * podem habilitar // l'anterior
+	 * CO.menu.getItem(MENU_ANT).setEnabled(false); } if (CO.activitatActual ==
+	 * Parser.getActivitats().size() - 1) { // estem a l'ultima activitat, pel
+	 * que no podem habilitar el seguent
+	 * CO.menu.getItem(MENU_SEG).setEnabled(false); }
+	 * 
+	 * if (CO.mostrarSolucio) CO.menu.getItem(MENU_SOLUCIO).setEnabled(true);
+	 * else CO.menu.getItem(MENU_SOLUCIO).setEnabled(false); return true; }
+	 * 
+	 * public boolean onOptionsItemSelected(MenuItem item) { switch
+	 * (item.getItemId()) { case MENU_ANT: CO.activitatActual =
+	 * CO.activitatActual - 2; Intent iAnt = new Intent(this, Puzzle.class);
+	 * startActivity(iAnt); finish(); return true; case MENU_SEG: Intent iSeg =
+	 * new Intent(this, Puzzle.class); startActivity(iSeg); finish(); return
+	 * true; case MENU_AJUDA: Dialog ajuda = new
+	 * AlertDialog.Builder(DoublePuzzle.this) .setIcon(R.drawable.jclic_aqua)
+	 * .setTitle("Ajuda") .setPositiveButton("D'acord", null) .setMessage(
+	 * "Col·loca les caselles al seu lloc corresponent del panell de sota.\n" +
+	 * "Pots canviar de panell prement la fletxa, o bé desplaçan-te per la pantalla."
+	 * ) .create(); ajuda.show(); return true; case MENU_SOLUCIO: if
+	 * (!CO.solucioVisible) { // Vull mostrar la solucio CO.vecActual = new
+	 * Vector<CharSequence>(); for (int i = 0; i < CO.vecCaselles.size(); i++) {
+	 * if (CO.vecCaselles.elementAt(i) != null) {
+	 * CO.vecActual.addElement(CO.vecCaselles.elementAt(i) .getText());
+	 * CO.vecCaselles.elementAt(i).setText( CO.sortida.elementAt(i));
+	 * CO.vecCaselles.elementAt(i).setBackgroundColor(CO.bg);
+	 * CO.vecCaselles.elementAt(i).setTextColor(CO.fg);
+	 * 
+	 * if (CO.imatge != null) { int indexSort =
+	 * CO.sortida.indexOf(CO.vecCaselles .elementAt(i).getText());
+	 * 
+	 * CO.vecCaselles.elementAt(i).setBackgroundColor( Color.TRANSPARENT);
+	 * CO.vecCaselles.elementAt(i).setTextColor( Color.TRANSPARENT);
+	 * 
+	 * vecDraw.elementAt(indexSort).setAlpha(250);
+	 * 
+	 * CO.vecCaselles.elementAt(i).setBackgroundDrawable(
+	 * vecDraw.elementAt(indexSort)); } } else CO.vecActual.addElement(null); }
+	 * bloquejarJoc(true); CO.solucioVisible = true; posAgafada = null;
+	 * setMissatges(); CO.menu.getItem(MENU_SOLUCIO)
+	 * .setTitle(R.string.menu_in_solucio);
+	 * CO.menu.getItem(MENU_ANT).setEnabled(false);
+	 * CO.menu.getItem(MENU_SEG).setEnabled(false); } else { // Estic mostrant
+	 * la solucio i vull continuar for (int i = 0; i < CO.vecCaselles.size();
+	 * i++) { if (CO.vecCaselles.elementAt(i) != null) {
+	 * CO.vecCaselles.elementAt(i).setText( CO.vecActual.elementAt(i));
+	 * CO.vecCaselles.elementAt(i).setTextColor(CO.fg);
+	 * CO.vecCaselles.elementAt(i).setBackgroundColor(CO.bg);
+	 * 
+	 * if (CO.imatge != null) { int indexSort =
+	 * CO.sortida.indexOf(CO.vecCaselles .elementAt(i).getText());
+	 * 
+	 * CO.vecCaselles.elementAt(i).setBackgroundColor( Color.TRANSPARENT);
+	 * CO.vecCaselles.elementAt(i).setTextColor( Color.TRANSPARENT);
+	 * 
+	 * vecDraw.elementAt(indexSort).setAlpha(250);
+	 * 
+	 * CO.vecCaselles.elementAt(i).setBackgroundDrawable(
+	 * vecDraw.elementAt(indexSort)); } } } bloquejarJoc(false);
+	 * CO.solucioVisible = false; setMissatges();
+	 * CO.menu.getItem(MENU_SOLUCIO).setTitle(R.string.menu_solucio);
+	 * 
+	 * // Configuracio del menu per ant i seguent if (CO.activitatActual < 1) {
+	 * // estem a la primera activitat, pel que nomes habilitem // seguent
+	 * CO.menu.getItem(MENU_SEG).setEnabled(true); } else if (CO.activitatActual
+	 * == Parser.getActivitats().size() - 1) { // estem a l'ultima activitat,
+	 * pel que no podem habilitar el // seguent
+	 * CO.menu.getItem(MENU_ANT).setEnabled(true); } else {
+	 * CO.menu.getItem(MENU_SEG).setEnabled(true);
+	 * CO.menu.getItem(MENU_ANT).setEnabled(true); } } return true; case
+	 * MENU_SORTIR: AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	 * builder.setIcon(R.drawable.jclic_aqua);
+	 * builder.setMessage("Estàs segur de que vols sortir?")
+	 * .setCancelable(false) .setPositiveButton("Sí", new
+	 * DialogInterface.OnClickListener() { public void onClick(DialogInterface
+	 * dialog, int id) { DoublePuzzle.this.finish(); } })
+	 * .setNegativeButton("No", new DialogInterface.OnClickListener() { public
+	 * void onClick(DialogInterface dialog, int id) { dialog.cancel(); } });
+	 * AlertDialog alert = builder.create(); alert.show(); return true; case
+	 * MENU_INICI: Intent i = new Intent(this, Jclic.class); startActivity(i);
+	 * finish(); return true; } return false; }
+	 */
 }

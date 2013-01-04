@@ -58,56 +58,53 @@ package org.jdom.filter;
 
 /**
  * Filter that is the logical <b>negation</b> operation of another filter.
- *
- *
+ * 
+ * 
  * @author Bradley S. Huffman
  * @version $Revision: 1.4 $, $Date: 2007/11/10 05:29:00 $
  */
 final class NegateFilter extends AbstractFilter {
 
-    private static final String CVS_ID = 
-      "@(#) $RCSfile: NegateFilter.java,v $ $Revision: 1.4 $ $Date: 2007/11/10 05:29:00 $";
+	private static final String CVS_ID = "@(#) $RCSfile: NegateFilter.java,v $ $Revision: 1.4 $ $Date: 2007/11/10 05:29:00 $";
 
-    // Underlying filter.
-    private Filter filter;
+	// Underlying filter.
+	private Filter filter;
 
-    /**
-     * Match if the supplied filter <b>does not</b> match.
-     *
-     * @param filter filter to use.
-     */
-    public NegateFilter(Filter filter) {
-        this.filter = filter;
-    }
+	/**
+	 * Match if the supplied filter <b>does not</b> match.
+	 * 
+	 * @param filter
+	 *            filter to use.
+	 */
+	public NegateFilter(Filter filter) {
+		this.filter = filter;
+	}
 
-    public boolean matches(Object obj) {
-        return !filter.matches(obj);
-    }
+	public boolean matches(Object obj) {
+		return !filter.matches(obj);
+	}
 
-    public Filter negate() {
-        return filter;
-    }
+	public Filter negate() {
+		return filter;
+	}
 
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
 
-        if (obj instanceof NegateFilter) {
-            return filter.equals(((NegateFilter) obj).filter);
-        }
-        return false;
-    }
+		if (obj instanceof NegateFilter) {
+			return filter.equals(((NegateFilter) obj).filter);
+		}
+		return false;
+	}
 
-    public int hashCode() {
-        return ~filter.hashCode();
-    }
+	public int hashCode() {
+		return ~filter.hashCode();
+	}
 
-    public String toString() {
-        return new StringBuffer(64)
-                   .append("[NegateFilter: ")
-                   .append(filter.toString())
-                   .append("]")
-                   .toString();
-    }
+	public String toString() {
+		return new StringBuffer(64).append("[NegateFilter: ")
+				.append(filter.toString()).append("]").toString();
+	}
 }

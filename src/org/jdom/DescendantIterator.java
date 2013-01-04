@@ -66,112 +66,114 @@ import org.jdom.Element;
 import org.jdom.Parent;
 
 /**
- * Traverse all a parent's descendants (all children at any level below
- * the parent).
- *
+ * Traverse all a parent's descendants (all children at any level below the
+ * parent).
+ * 
  * @author Bradley S. Huffman
  * @author Jason Hunter
  * @version $Revision: 1.6 $, $Date: 2007/11/10 05:28:58 $
  */
 class DescendantIterator implements Iterator {
 
-    private Iterator iterator;
-    private Iterator nextIterator;
-    private List stack = new ArrayList();
+	private Iterator iterator;
+	private Iterator nextIterator;
+	private List stack = new ArrayList();
 
-    private static final String CVS_ID =
-            "@(#) $RCSfile: DescendantIterator.java,v $ $Revision: 1.6 $ $Date: 2007/11/10 05:28:58 $ $Name: jdom_1_1 $";
+	private static final String CVS_ID = "@(#) $RCSfile: DescendantIterator.java,v $ $Revision: 1.6 $ $Date: 2007/11/10 05:28:58 $ $Name: jdom_1_1 $";
 
-    /**
-     * Iterator for the descendants of the supplied object.
-     *
-     * @param parent document or element whose descendants will be iterated
-     */
-    DescendantIterator(Parent parent) {
-        if (parent == null) {
-            throw new IllegalArgumentException("parent parameter was null");
-        }
-        this.iterator = parent.getContent().iterator();
-    }
+	/**
+	 * Iterator for the descendants of the supplied object.
+	 * 
+	 * @param parent
+	 *            document or element whose descendants will be iterated
+	 */
+	DescendantIterator(Parent parent) {
+		if (parent == null) {
+			throw new IllegalArgumentException("parent parameter was null");
+		}
+		this.iterator = parent.getContent().iterator();
+	}
 
-    /**
-     * Returns true> if the iteration has more {@link Content} descendants.
-     *
-     * @return true is the iterator has more descendants
-     */
-    public boolean hasNext() {
-        if (iterator != null && iterator.hasNext()) return true;
-        if (nextIterator != null && nextIterator.hasNext()) return true;
-        if (stackHasAnyNext()) return true;
-        return false;
-    }
+	/**
+	 * Returns true> if the iteration has more {@link Content} descendants.
+	 * 
+	 * @return true is the iterator has more descendants
+	 */
+	public boolean hasNext() {
+		if (iterator != null && iterator.hasNext())
+			return true;
+		if (nextIterator != null && nextIterator.hasNext())
+			return true;
+		if (stackHasAnyNext())
+			return true;
+		return false;
+	}
 
-    /**
-     * Returns the next {@link Content} descendant.
-     *
-     * @return the next descendant
-     */
-    public Object next() {
-        if (!hasNext()) {
-            throw new NoSuchElementException();
-        }
+	/**
+	 * Returns the next {@link Content} descendant.
+	 * 
+	 * @return the next descendant
+	 */
+	public Object next() {
+		if (!hasNext()) {
+			throw new NoSuchElementException();
+		}
 
-        // If we need to descend, go for it and record where we are.
-        // We do the shuffle here on the next next() call so remove() is easy
-        // to code up.
-        if (nextIterator != null) {
-            push(iterator);
-            iterator = nextIterator;
-            nextIterator = null;
-        }
+		// If we need to descend, go for it and record where we are.
+		// We do the shuffle here on the next next() call so remove() is easy
+		// to code up.
+		if (nextIterator != null) {
+			push(iterator);
+			iterator = nextIterator;
+			nextIterator = null;
+		}
 
-        // If this iterator is finished, try moving up the stack
-        while (!iterator.hasNext()) {
-            if (stack.size() > 0) {
-                iterator = pop();
-            }
-            else {
-              throw new NoSuchElementException("Somehow we lost our iterator");
-            }
-        }
+		// If this iterator is finished, try moving up the stack
+		while (!iterator.hasNext()) {
+			if (stack.size() > 0) {
+				iterator = pop();
+			} else {
+				throw new NoSuchElementException("Somehow we lost our iterator");
+			}
+		}
 
-        Content child = (Content) iterator.next();
-        if (child instanceof Element) {
-            nextIterator = ((Element)child).getContent().iterator();
-        }
-        return child;
-    }
+		Content child = (Content) iterator.next();
+		if (child instanceof Element) {
+			nextIterator = ((Element) child).getContent().iterator();
+		}
+		return child;
+	}
 
-    /**
-     * Detaches the last {@link org.jdom.Content} returned by the last call to
-     * next from it's parent.  <b>Note</b>: this <b>does not</b> affect
-     * iteration and all children, siblings, and any node following the
-     * removed node (in document order) will be visited.
-     */
-    public void remove() {
-        iterator.remove();
-    }
+	/**
+	 * Detaches the last {@link org.jdom.Content} returned by the last call to
+	 * next from it's parent. <b>Note</b>: this <b>does not</b> affect iteration
+	 * and all children, siblings, and any node following the removed node (in
+	 * document order) will be visited.
+	 */
+	public void remove() {
+		iterator.remove();
+	}
 
-    private Iterator pop() {
-        int stackSize = stack.size();
-        if (stackSize == 0) {
-            throw new NoSuchElementException("empty stack");
-        }
-        return (Iterator) stack.remove(stackSize - 1);
-    }
+	private Iterator pop() {
+		int stackSize = stack.size();
+		if (stackSize == 0) {
+			throw new NoSuchElementException("empty stack");
+		}
+		return (Iterator) stack.remove(stackSize - 1);
+	}
 
-    private void push(Iterator itr) {
-        stack.add(itr);
-    }
+	private void push(Iterator itr) {
+		stack.add(itr);
+	}
 
-    private boolean stackHasAnyNext() {
-        int size = stack.size();
-        for (int i = 0; i < size; i++) {
-            Iterator itr = (Iterator) stack.get(i);
-            if (itr.hasNext()) {
-                return true;
-            }
-        }
-        return false;
-    }
+	private boolean stackHasAnyNext() {
+		int size = stack.size();
+		for (int i = 0; i < size; i++) {
+			Iterator itr = (Iterator) stack.get(i);
+			if (itr.hasNext()) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

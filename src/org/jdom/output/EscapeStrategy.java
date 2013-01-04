@@ -59,7 +59,7 @@ package org.jdom.output;
 /**
  * Logic to determine which characters should be formatted as character
  * entities.
- *
+ * 
  * @version $Revision: 1.4 $, $Date: 2007/11/10 05:29:01 $
  * @author Alex Rosen
  * @author Bradley S. Huffman
@@ -67,10 +67,9 @@ package org.jdom.output;
  */
 public interface EscapeStrategy {
 
-    /**
-     * Test whether the supplied character should be formatted literally
-     * or as a character entity.
-     */
-    public boolean shouldEscape(char ch);
+	/**
+	 * Test whether the supplied character should be formatted literally or as a
+	 * character entity.
+	 */
+	public boolean shouldEscape(char ch);
 }
-
