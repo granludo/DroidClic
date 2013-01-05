@@ -66,14 +66,31 @@ public class Parser {
 		try{
 			activitats = new Vector<Dades>();
 			Element projecte = doc.getRootElement();
-			
+
+			Element auxElem;
 			String title = projecte.getChild(XMLConstants.SETTINGS).getChildText(XMLConstants.TITLE);
-			String author = projecte.getChild(XMLConstants.SETTINGS).getChild(XMLConstants.AUTHOR).getAttributeValue(XMLConstants.NAME);
+			auxElem = projecte.getChild(XMLConstants.SETTINGS).getChild(XMLConstants.AUTHOR);
+			String author = "";
+			if (auxElem != null) {
+				author = auxElem.getAttributeValue(XMLConstants.NAME);
+			}
 			String language = projecte.getChild(XMLConstants.SETTINGS).getChildText(XMLConstants.LANGUAGE);
-			String description = projecte.getChild(XMLConstants.SETTINGS).getChild(XMLConstants.DESCRIPTION).getChildText(XMLConstants.P);
+			String description = "";
+			auxElem = projecte.getChild(XMLConstants.SETTINGS).getChild(XMLConstants.DESCRIPTION);
+			if (auxElem != null) {
+				description = auxElem.getChildText(XMLConstants.P);
+			}
 			String keywords = projecte.getChild(XMLConstants.SETTINGS).getChildText(XMLConstants.DESCRIPTORS);
-			String category = projecte.getChild(XMLConstants.SETTINGS).getChild(XMLConstants.DESCRIPTORS).getAttributeValue(XMLConstants.AREA);
-			String age = projecte.getChild(XMLConstants.SETTINGS).getChild(XMLConstants.DESCRIPTORS).getAttributeValue(XMLConstants.LEVEL);
+			String category = "";
+			auxElem = projecte.getChild(XMLConstants.SETTINGS).getChild(XMLConstants.DESCRIPTORS);
+			if (auxElem != null) {
+				category = auxElem.getAttributeValue(XMLConstants.AREA);
+			}
+			String age = "";
+			auxElem = projecte.getChild(XMLConstants.SETTINGS).getChild(XMLConstants.DESCRIPTORS);
+			if (auxElem != null) {
+				age = auxElem.getAttributeValue(XMLConstants.LEVEL);
+			}
 			if (title == null) title = "";
 			if (author == null) author = "";
 			if (language == null) language = "";
@@ -89,8 +106,8 @@ public class Parser {
 			clicSettings.setKeywords(keywords);
 			clicSettings.setCategory(category);
 			clicSettings.setAge(age);
-			// en el xml no sale el nombre del icono, se mostrara el por defecto
-//			clicSettings.setIconName();
+
+			
 			
 			List activities = projecte.getChild(XMLConstants.ACTIVITIES).getChildren();
 			Iterator itr = activities.iterator();
