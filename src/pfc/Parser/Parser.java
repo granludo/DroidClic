@@ -74,6 +74,13 @@ public class Parser {
 			String keywords = projecte.getChild(XMLConstants.SETTINGS).getChildText(XMLConstants.DESCRIPTORS);
 			String category = projecte.getChild(XMLConstants.SETTINGS).getChild(XMLConstants.DESCRIPTORS).getAttributeValue(XMLConstants.AREA);
 			String age = projecte.getChild(XMLConstants.SETTINGS).getChild(XMLConstants.DESCRIPTORS).getAttributeValue(XMLConstants.LEVEL);
+			if (title == null) title = "";
+			if (author == null) author = "";
+			if (language == null) language = "";
+			if (description == null) description = "";
+			if (keywords == null) keywords = "";
+			if (category == null) category = "";
+			if (age == null) age = "";
 			clicSettings = new ClicSettings();
 			clicSettings.setTitle(title);
 			clicSettings.setAuthor(author);
