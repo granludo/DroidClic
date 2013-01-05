@@ -11,6 +11,7 @@ import pfc.ConnectionLayer.ClicMetaData;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -115,24 +116,31 @@ public class LlibreriaSimpleAdapter extends SimpleAdapter {
 			public void onClick(View v) {
 				mDescView.setText(data.getBody());
 				Toast.makeText(mContext, "Descarregant clic...", Toast.LENGTH_LONG).show();
-				Inici.jclicDir.mkdirs();
-
-				byte[] fileBytes;
-				File file;
-				try {
-					// download clic file to sd card
-					fileBytes = (byte[]) data.getClic();
-					file = new File(Inici.jclicDir, data.getFileName() + ".jclic.zip");
-					writeFile(fileBytes, file);
-					
-					// download icon file to sd card
-					fileBytes = (byte[]) data.getImage();
-					file = new File(Inici.jclicDir, data.getFileName() + ".ico");
-					writeFile(fileBytes, file);
-					mDescView.setText("S'ha descarregat el clic");
-				} catch (Exception e) {
-					mDescView.setText("No es pot descarregar el clic");
-					e.printStackTrace();
+				
+				String state = Environment.getExternalStorageState();
+				if ((Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) && Inici.jclicDir != null) {
+					Inici.jclicDir.mkdirs();
+	
+					byte[] fileBytes;
+					File file;
+					try {
+						// download clic file to sd card
+						fileBytes = (byte[]) data.getClic();
+						file = new File(Inici.jclicDir, data.getFileName() + ".jclic.zip");
+						writeFile(fileBytes, file);
+						
+						// download icon file to sd card
+						fileBytes = (byte[]) data.getImage();
+						file = new File(Inici.jclicDir, data.getFileName() + ".ico");
+						writeFile(fileBytes, file);
+						mDescView.setText("S'ha descarregat el clic");
+					} catch (Exception e) {
+						mDescView.setText("No es pot descarregar el clic");
+						e.printStackTrace();
+					}
+				} else {
+				    // Something is wrong, cannot read form SDcard
+					Toast.makeText(mContext, "The device is not mounted", Toast.LENGTH_LONG).show();		
 				}
 			}
 			
