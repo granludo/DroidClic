@@ -6,44 +6,23 @@
 
 package pfc.Activitats;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Vector;
 
-import pfc.Descompressor.Descompressor;
-import pfc.Jclic.Jclic;
+import pfc.Jclic.Inici;
 import pfc.Jclic.R;
 import pfc.Parser.Parser;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.PendingIntent.OnFinished;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.SoundPool;
-import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
-import android.view.Display;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ScrollView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 @TargetApi(3)
@@ -128,7 +107,7 @@ public class MenuActivitats extends Activity {
 			public void onClick(View v) {
 				if (ultimaActivitat) {
 					if (maxTime1 != 0) timer.cancel();
-						Intent i = new Intent(aC, Jclic.class);
+						Intent i = new Intent(aC, Inici.class);
 						aC.startActivity(i);
 						((Activity) aC).finish();
 				}
@@ -252,7 +231,7 @@ public class MenuActivitats extends Activity {
 			public void onClick(View v) {
 				if (maxTime1 != 0)
 				timer.cancel();
-				Intent i = new Intent(aC, Jclic.class);
+				Intent i = new Intent(aC, Inici.class);
 				aC.startActivity(i);
 				((Activity) aC).finish();
 			}
