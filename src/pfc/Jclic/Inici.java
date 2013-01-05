@@ -136,8 +136,11 @@ public class Inici extends Activity {
 
 				// get clics metadata
 				String title = Parser.getClicSettings().getTitle();
+				if (title == null) title = "";
 				String description = Parser.getClicSettings().getDescription();
+				if (description == null) description = "";
 				String author = Parser.getClicSettings().getAuthor();
+				if (author == null) author = "";
 				int age = ageToInt(Parser.getClicSettings().getAge());
 				int language = languageToInt(Parser.getClicSettings().getLanguage());
 				int category = categoryToInt(Parser.getClicSettings().getCategory());
