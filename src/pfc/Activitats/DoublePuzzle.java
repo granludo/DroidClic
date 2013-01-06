@@ -59,6 +59,7 @@ public class DoublePuzzle extends Activity {
 	private TextView posAgafada = null;
 	private TextView aciertos = null;
 	private TextView intentos = null;
+	private TextView ttiempo = null;
 	private ProgressBar tiempo = null;
 	private Button bMenu = null;
 	private int newWidth;
@@ -91,10 +92,15 @@ public class DoublePuzzle extends Activity {
 		sound = new Sounds(getApplicationContext());
 		aciertos = (TextView) findViewById(R.id.editAciertos);
 		intentos = (TextView) findViewById(R.id.editIntentos);
+	    ttiempo = (TextView)findViewById(R.id.tiempo);
 		tiempo = (ProgressBar) findViewById(R.id.progressTime);
 	    tiempo.setMax(maxTime);
 	    tiempo.setProgress(0);
 		bMenu = (Button) findViewById(R.id.menu);
+		if (maxTime == 0) {
+			tiempo.setVisibility(tiempo.INVISIBLE);
+			ttiempo.setVisibility(ttiempo.INVISIBLE);
+		}
 		try {
 			//reiniciarMenu();
 			agafarDades();
@@ -172,9 +178,13 @@ public class DoublePuzzle extends Activity {
 	// @Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-
+		if (maxTime != 0) timer.cancel();
 		super.onDestroy();
 		sound.unloadAll();
+	}
+	
+	@Override
+	public void onBackPressed() {
 	}
 /*
 	private void reiniciarMenu() {
@@ -972,10 +982,7 @@ public class DoublePuzzle extends Activity {
 					public void onClick(View view) {
 						if (!CO.p1.equalsIgnoreCase("<buit>")) {
 							// tinc un valor agafat, miro si va aqui
-							if (contador < maxIntents) {
-								contador++;
-							}
-
+							contador++;
 							if (CO.p1.equalsIgnoreCase((String) pos.getText())) {
 								// el valor es el correcte
 								// intercanvio les posicions
@@ -1138,7 +1145,7 @@ public class DoublePuzzle extends Activity {
 				} else
 					displayedTime = contadorTemps;
 				aciertos.setText(Integer.toString(CO.correcte));
-				intentos.setText(Integer.toString(contador));
+				intentos.setText(Integer.toString(displayedIntents));
 			}
 		}
 	}

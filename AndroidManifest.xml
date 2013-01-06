@@ -8,7 +8,7 @@
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   
 	<!-- Nuevo menú -->
-	<application android:label="@string/app_name" android:debuggable="true" android:icon="@drawable/jclic_aqua" android:theme="@android:style/Theme.NoTitleBar">
+	<application android:label="@string/app_name" android:debuggable="true" android:icon="@drawable/jclic_aqua" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
     	<activity android:label="@string/app_name" android:screenOrientation="landscape" android:name="pfc.Jclic.Inici">
         	<intent-filter>
                 <action android:name="android.intent.action.MAIN" />

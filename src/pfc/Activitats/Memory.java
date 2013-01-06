@@ -46,6 +46,7 @@ public class Memory extends Activity {
 	
 	private TextView aciertos2=null;
 	private TextView intentos=null;
+	private TextView ttiempo = null;
     private Button bMenu = null;
 	private ProgressBar tiempo = null;
 	private Vector<BitmapDrawable> vecDraw = null;
@@ -90,10 +91,17 @@ public class Memory extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.panels_identify);
 		aciertos2 = (TextView)findViewById(R.id.editAciertos);
+		ttiempo = (TextView)findViewById(R.id.tiempo);
 	    tiempo = (ProgressBar) findViewById(R.id.progressTime);
 	    intentos = (TextView) findViewById(R.id.editIntentos);
 	    tiempo.setMax(maxTime);
 	    tiempo.setProgress(0);
+	    
+	    if (maxTime == 0) {
+			tiempo.setVisibility(tiempo.INVISIBLE);
+			ttiempo.setVisibility(ttiempo.INVISIBLE);
+		}
+	    
 	    bMenu = (Button) findViewById(R.id.menu);
 		sound = new Sounds(getApplicationContext());
 		if (maxIntents == 0) maxIntents = -1;
@@ -510,8 +518,13 @@ public class Memory extends Activity {
 	}
 	
 	protected void onDestroy() {
+		if (maxTime != 0) timer.cancel();
 		sound.unloadAll();
 		super.onDestroy();
+	}
+	
+	@Override
+	public void onBackPressed() {
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {

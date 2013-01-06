@@ -77,6 +77,7 @@ public class HolePuzzle extends Activity {
 	private CountDownTimer timer;
 	
 	//Interface
+	private TextView ttiempo = null;
 	private TextView aciertos = null;
 	private TextView intentos = null;
 	private Button bMenu = null;
@@ -88,13 +89,20 @@ public class HolePuzzle extends Activity {
 	    
 	    aciertos = (TextView) findViewById(R.id.editAciertos);
 	    intentos = (TextView) findViewById(R.id.editIntentos);
+	    ttiempo = (TextView)findViewById(R.id.tiempo);
 	    tiempo = (ProgressBar) findViewById(R.id.progressTime);
 	    bMenu = (Button) findViewById(R.id.menu);
 	    tiempo.setMax(maxTime);
 	    tiempo.setProgress(0);
 	    
+	    if (maxTime == 0) {
+			tiempo.setVisibility(tiempo.INVISIBLE);
+			ttiempo.setVisibility(ttiempo.INVISIBLE);
+		}
+	    
 	    try{
 	    	reiniciarMenu();
+	    	
 	    	
 	    	if(TimeCountDown)
 				contadorTime = maxTime;
@@ -133,7 +141,7 @@ public class HolePuzzle extends Activity {
 					}
 		    	}
 		    }
-			//so començar partida
+			//so comenÔøΩar partida
 			sounds.playStart();
 			comprobarInicial();
 		    
@@ -187,6 +195,9 @@ public class HolePuzzle extends Activity {
 		super.onDestroy();
 	}
 	
+	@Override
+	public void onBackPressed() {
+	}
 
 	private void reiniciarMenu(){			
 		if(CO.menu != null){
@@ -230,7 +241,7 @@ public class HolePuzzle extends Activity {
 private void agafarDades() {
 	CO.tl = (TableLayout)findViewById(R.id.tl);
     
-	//Si hi ha intents màxims
+	//Si hi ha intents mÀÜxims
     
 	
 	//CANVIAR CO.entrada 
@@ -294,7 +305,7 @@ private void agafarDades() {
 }
 
 private int generarEntrada(int rand) {
-	//creo el vector on generaré el puzzle on cada posició indica la posició a prendre del CO.sortida
+	//creo el vector on generar≈Ω el puzzle on cada posici‚Äî indica la posici‚Äî a prendre del CO.sortida
 	int[] gen = new int[CO.sortida.size()];
 	int[] nul = new int[CO.sortida.size()];
 	for (int i = 0; i < CO.sortida.size(); ++i) {
@@ -302,10 +313,10 @@ private int generarEntrada(int rand) {
 		nul[i] = 0;
 		if (CO.sortida.elementAt(i)==null) nul[i]=1;
 	}
-	//posició buida del puzzle
+	//posici‚Äî buida del puzzle
 	int buit = rand;
 	
-	int moviments_MAX = 40; // Dificultat-> 40 dóna un nivell moderat-fàcil
+	int moviments_MAX = 40; // Dificultat-> 40 d‚Äîna un nivell moderat-fÀÜcil
 	
 	int auxiliar = (gen.length-(CO.cols*CO.rows))/CO.rows; //casillas nulas dividido por fila
 	int tamColAmbNuls=CO.cols+auxiliar;
@@ -317,7 +328,7 @@ private int generarEntrada(int rand) {
 	//pasAnterior == 3 Abaix
 	while (pas < moviments_MAX) {  //canvia quan es crei la constant de dificultat: pas < MOVIMENTS_DIFICULTAT
 		Random r = new Random();
-		int direccio = r.nextInt(4); //direcció random
+		int direccio = r.nextInt(4); //direcci‚Äî random
 		while (direccio == pasAnterior) direccio = r.nextInt(4); //comprova casos de CO.rows == 1 i CO.cols == 1????
 		pasAnterior = direccio;
 		switch(direccio) {
@@ -367,13 +378,13 @@ private int generarEntrada(int rand) {
 				break;
 		}
 	}
-	//els valors en el vector gen són les posicions d'un puzzle generat vàlid
+	//els valors en el vector gen s‚Äîn les posicions d'un puzzle generat vÀÜlid
 	//assignem els valors de CO.sortida en l'ordre que indiqui gen a CO.entrada
 	CO.entrada.removeAllElements();
 	for (int i = 0; i < CO.sortida.size(); ++i) {
 		CO.entrada.addElement(CO.sortida.elementAt(gen[i]));
 	}
-	//retorna quina és la posició buida del puzzle generat
+	//retorna quina ≈Ωs la posici‚Äî buida del puzzle generat
 	return buit;
 }
 
@@ -776,7 +787,7 @@ private int generarEntrada(int rand) {
 	}
 	
 	private void swapCaselles(){
-		//Incrementar intents, si esta activat intents sempre serà més gran que 0
+		//Incrementar intents, si esta activat intents sempre serÀÜ m≈Ωs gran que 0
 		if(IntentCountDown)
 			contadorIntent--;
 		else
@@ -912,7 +923,7 @@ private int generarEntrada(int rand) {
 			} else {
 				if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeIni() != null)
 					CO.miss.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeIni());
-				else CO.miss.setText("Comença el joc!");
+				else CO.miss.setText("ComenÔøΩa el joc!");
 				/*int displayedIntents;
 				if(IntentCountDown && maxIntents != 0){
 					displayedIntents = maxIntents - contadorIntent;
@@ -1233,9 +1244,9 @@ private int generarEntrada(int rand) {
             case MENU_SORTIR:
             	AlertDialog.Builder builder = new AlertDialog.Builder(this);
             	builder.setIcon(R.drawable.jclic_aqua);
-            	builder.setMessage("Estàs segur de que vols sortir?")
+            	builder.setMessage("EstÀÜs segur de que vols sortir?")
             	       .setCancelable(false)
-            	       .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            	       .setPositiveButton("S‚Äô", new DialogInterface.OnClickListener() {
             	           public void onClick(DialogInterface dialog, int id) {
             	                HolePuzzle.this.finish();
             	           }

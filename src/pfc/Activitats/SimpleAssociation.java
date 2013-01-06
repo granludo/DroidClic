@@ -52,6 +52,7 @@ public class SimpleAssociation extends Activity {
 	private static final int MENU_INICI = 4;
 	private static final int MENU_SORTIR = 5;
 	Sounds sound;
+	private TextView ttiempo = null;
 	private TextView aciertos = null;
 	private TextView intentos = null;
 	private ProgressBar tiempo = null;
@@ -101,9 +102,15 @@ public class SimpleAssociation extends Activity {
 	    sound = new Sounds(getApplicationContext());
 		aciertos = (TextView) findViewById(R.id.editAciertos);
 		intentos = (TextView) findViewById(R.id.editIntentos);
+		ttiempo = (TextView)findViewById(R.id.tiempo);
 		tiempo = (ProgressBar) findViewById(R.id.progressTime);
 	    tiempo.setMax(maxTime);
 	    tiempo.setProgress(0);
+	    
+	    if (maxTime == 0) {
+			tiempo.setVisibility(tiempo.INVISIBLE);
+			ttiempo.setVisibility(ttiempo.INVISIBLE);
+		}
 	    
 	    Button bMenu = (Button) findViewById(R.id.menu);
 		final Context aC = this;
@@ -716,6 +723,10 @@ public class SimpleAssociation extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		sound.unloadAll();	
+	}
+	
+	@Override
+	public void onBackPressed() {
 	}
 	
 	private void reiniciarMenu(){		

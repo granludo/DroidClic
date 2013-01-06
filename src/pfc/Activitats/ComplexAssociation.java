@@ -73,6 +73,7 @@ public class ComplexAssociation extends Activity {
 	private CountDownTimer timer;
 	private TextView aciertos = null;
 	private TextView intentos = null;
+	private TextView ttiempo = null;
 	private ProgressBar tiempo = null;
 	private Vector<BitmapDrawable> vecDraw = null;
 	
@@ -85,9 +86,15 @@ public class ComplexAssociation extends Activity {
 	    sound = new Sounds(getApplicationContext());
 		aciertos = (TextView) findViewById(R.id.editAciertos);
 		intentos = (TextView) findViewById(R.id.editIntentos);
+		ttiempo = (TextView)findViewById(R.id.tiempo);
 		tiempo = (ProgressBar) findViewById(R.id.progressTime);
 	    tiempo.setMax(maxTime);
 	    tiempo.setProgress(0);
+	    
+	    if (maxTime == 0) {
+			tiempo.setVisibility(tiempo.INVISIBLE);
+			ttiempo.setVisibility(ttiempo.INVISIBLE);
+		}
 	    
 	    Button bMenu = (Button) findViewById(R.id.menu);
 		final Context aC = this;
@@ -908,10 +915,15 @@ public class ComplexAssociation extends Activity {
 	
 	//@Override
 	protected void onDestroy() {
+		if (maxTime != 0) timer.cancel();
 		sound.unloadAll();	
 		if (dialog != null) dialog.dismiss();
 		super.onDestroy();
 
+	}
+	
+	@Override
+	public void onBackPressed() {
 	}
 		
 	@Override

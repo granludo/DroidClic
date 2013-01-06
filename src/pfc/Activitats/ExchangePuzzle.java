@@ -66,6 +66,7 @@ public class ExchangePuzzle extends Activity{
 	private TextView posAgafada2 = null;
 	private TextView aciertos=null;
 	private TextView intentos=null;
+	private TextView ttiempo = null;
     private Button bMenu = null;
     private Button bInici = null;
 	//private  menu = null;
@@ -109,11 +110,16 @@ public class ExchangePuzzle extends Activity{
 	    //aciertos = (EditText)findViewById(R.id.editAciertos);
 	    intentos = (TextView) findViewById(R.id.editIntentos);
 	    //tiempo.setText(Integer.toString(maxTime));
+	    ttiempo = (TextView)findViewById(R.id.tiempo);
 	    tiempo = (ProgressBar) findViewById(R.id.progressTime);
 	    
-	    //maxTime = 30; 
+	    maxTime = 10; 
 	    tiempo.setMax(maxTime);
 	    tiempo.setProgress(0);
+	    if (maxTime == 0) {
+			tiempo.setVisibility(tiempo.INVISIBLE);
+			ttiempo.setVisibility(ttiempo.INVISIBLE);
+		}
 	    bMenu = (Button) findViewById(R.id.menu);
 	    
 
@@ -789,17 +795,13 @@ public class ExchangePuzzle extends Activity{
 
 		
 		if(CO.correcte>correcte && cont == 2){
-			if(maxIntents!=0){
-				contador++;
-			}
+			contador++;
 			//contador++;
 			sounds.playAction_ok();
 			cont =0;
 		}
 		else if(cont == 2 || CO.p1.equals(CO.p2)){
-			if(maxIntents!=0){
-				contador++;
-			}
+			contador++;
 			//contador++;
 			sounds.playActionError();
 			cont =0;
@@ -823,11 +825,24 @@ public class ExchangePuzzle extends Activity{
 			MenuActivitats ma = new MenuActivitats(timer);
 			ma.butsMenu(dialog, aC, vecDraw);
 			TextView textFinal = (TextView) dialog.findViewById(R.id.tMenuClic);
-			if((maxIntents != 0 && maxIntents == contador && CO.correcte!=CO.casIni)||contadorT == maxTime && maxTime!=0){
+			if((maxIntents != 0 && maxIntents == contador && CO.correcte!=CO.casIni)){
 				sounds.playFinished_error();
 				if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi() != null)
 					textFinal.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
-				else textFinal.setText("Superat els intents mï¿½xims");
+				else textFinal.setText("Superat els intents màxims");
+				if(maxTime!=0)timer.cancel();
+				//CO.missCorrectes.setText("Prem aquï¿½ per continuar.");
+				//CO.missCorrectes.setBackgroundColor(Color.WHITE);
+				//CO.missCorrectes.setTextColor(Color.BLACK);
+				dialog.show();
+				bloquejarJoc(true);
+				if(CO.menu != null) CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
+			}
+			if (contadorT == maxTime && maxTime!=0){
+				sounds.playFinished_error();
+				if(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi() != null)
+					textFinal.setText(Parser.getActivitats().elementAt(CO.activitatActual).getMissatgeFi());
+				else textFinal.setText("Superat el temps màxims");
 				if(maxTime!=0)timer.cancel();
 				//CO.missCorrectes.setText("Prem aquï¿½ per continuar.");
 				//CO.missCorrectes.setBackgroundColor(Color.WHITE);
@@ -1107,8 +1122,13 @@ public class ExchangePuzzle extends Activity{
         return false;
     }*/
     protected void onDestroy(){
+    	if (maxTime != 0) timer.cancel();
     	sounds.unloadAll();
     	super.onDestroy();
     }
+    
+    @Override
+	public void onBackPressed() {
+	}
 }
 

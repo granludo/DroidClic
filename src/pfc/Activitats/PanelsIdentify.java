@@ -42,6 +42,7 @@ public class PanelsIdentify extends Activity {
 	private int width;
 	private int height;
 	
+	private TextView ttiempo = null;
 	private TextView aciertos2=null;
 	private TextView intentos=null;
     private Button bMenu = null;
@@ -86,14 +87,18 @@ public class PanelsIdentify extends Activity {
 		setContentView(R.layout.panels_identify);
 		aciertos2 = (TextView)findViewById(R.id.editAciertos);
 	    intentos = (TextView) findViewById(R.id.editIntentos);
+	    ttiempo = (TextView)findViewById(R.id.tiempo);
 	    //tiempo.setText(Integer.toString(maxTime));
 	    tiempo = (ProgressBar) findViewById(R.id.progressTime);
 	    
-	    //maxTime = 30; 
 	    tiempo.setMax(maxTime);
 	    tiempo.setProgress(0);
 	    bMenu = (Button) findViewById(R.id.menu);
-		sound = new Sounds(getApplicationContext());		
+		sound = new Sounds(getApplicationContext());
+		if (maxTime == 0) {
+			tiempo.setVisibility(tiempo.INVISIBLE);
+			ttiempo.setVisibility(ttiempo.INVISIBLE);
+		}
 		
 		try {
 			
@@ -436,7 +441,7 @@ public class PanelsIdentify extends Activity {
 		
 		TextView miss2 = (TextView) findViewById(R.id.correcte);
 		aciertos2.setText(Integer.toString(aciertos));
-		intentos.setText(Integer.toString(fallos));
+		intentos.setText(Integer.toString(contadorIntents));
 		//miss2.setText("Aciertos: "+aciertos+" Fallos: "+fallos);
 		
 		//TextView info = (TextView) findViewById(R.id.cas1);
@@ -524,10 +529,15 @@ public class PanelsIdentify extends Activity {
 	}
 	
 	protected void onDestroy() {
+		if (maxTime != 0) timer.cancel();
 		sound.unloadAll();
 		super.onDestroy();
 	}
 	
+	@Override
+	public void onBackPressed() {
+	}
+	/*
 	public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         CO.menu = menu;
@@ -659,7 +669,7 @@ public class PanelsIdentify extends Activity {
     					CO.menu.getItem(MENU_ANT).setEnabled(true);
     				}
             	}*/
-                return true;
+           /*     return true;
             case MENU_SORTIR:
             	AlertDialog.Builder builder = new AlertDialog.Builder(this);
             	builder.setIcon(R.drawable.jclic_aqua);
@@ -686,7 +696,7 @@ public class PanelsIdentify extends Activity {
         }
         return false;
     }
-	
+	*/
 	public class Celda
 	{
 		String celda;
