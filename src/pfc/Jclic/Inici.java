@@ -46,7 +46,7 @@ public class Inici extends Activity {
 	private int categoria = -1;
 	private int idioma = -1;
 	
-	public static File jclicDir = new File(Environment.getExternalStorageDirectory(), "JClic");
+	public static File jclicDir;
 	
 	private FuncionsBD FDB;
 	
@@ -59,6 +59,13 @@ public class Inici extends Activity {
 	    CO.exemple = false;
 	    DadesServidor.keyword = "";
 	    DadesServidor.all = true;
+	    String state = Environment.getExternalStorageState();
+	    if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+	    jclicDir = new File(Environment.getExternalStorageDirectory(), "JClic"); 	
+	    } else {
+	    // Something is wrong, cannot read form SDcard
+	    Toast.makeText(getApplicationContext(), "The device is not mounted", Toast.LENGTH_LONG).show();    
+	    }
 	    
 	    bLlibreria = (ImageButton)findViewById(R.id.bLlibreria);
 	    bCategoria = (ImageButton)findViewById(R.id.bCategoria);
@@ -136,8 +143,11 @@ public class Inici extends Activity {
 
 				// get clics metadata
 				String title = Parser.getClicSettings().getTitle();
+				if (title == null) title = "";
 				String description = Parser.getClicSettings().getDescription();
+				if (description == null) description = "";
 				String author = Parser.getClicSettings().getAuthor();
+				if (author == null) author = "";
 				int age = ageToInt(Parser.getClicSettings().getAge());
 				int language = languageToInt(Parser.getClicSettings().getLanguage());
 				int category = categoryToInt(Parser.getClicSettings().getCategory());
