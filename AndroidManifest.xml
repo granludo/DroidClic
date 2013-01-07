@@ -17,18 +17,23 @@
         </activity>
 
 		<!-- Cambiar todo a landscape -->
-		<activity android:name="pfc.Jclic.Llibreria" android:screenOrientation="landscape"></activity>-->
-		<activity android:name="pfc.NavegadorArxius.NavegadorArxius" android:screenOrientation="portrait"></activity>
-		<activity android:name="pfc.Activitats.Puzzle" android:screenOrientation="landscape"></activity>
-		<activity android:name="pfc.Activitats.DoublePuzzle" android:screenOrientation="landscape"></activity>
-		<activity android:name="pfc.Activitats.HolePuzzle" android:screenOrientation="landscape"></activity>
-		<activity android:name="pfc.Activitats.ExchangePuzzle" android:screenOrientation="landscape"></activity>
-		<activity android:name="pfc.Activitats.SimpleAssociation" android:screenOrientation="landscape"></activity>
-		<activity android:name="pfc.Activitats.Memory" android:screenOrientation="landscape"></activity>
-		<activity android:name="pfc.Activitats.PanelsIdentify" android:screenOrientation="landscape"></activity>
-		<activity android:name="pfc.Activitats.ComplexAssociation"></activity>
-		<activity android:name="pfc.Activitats.WrittenAnswer"></activity>
-
+		<activity android:name="pfc.Jclic.Llibreria" android:screenOrientation="landscape" />
+		<activity android:name="pfc.NavegadorArxius.NavegadorArxius" android:screenOrientation="portrait" />
+		<activity android:name="pfc.Activitats.Puzzle" android:screenOrientation="landscape" />
+		<activity android:name="pfc.Activitats.DoublePuzzle" android:screenOrientation="landscape" />
+		<activity android:name="pfc.Activitats.HolePuzzle" android:screenOrientation="landscape" />
+		<activity android:name="pfc.Activitats.ExchangePuzzle" android:screenOrientation="landscape" />
+		<activity android:name="pfc.Activitats.SimpleAssociation" android:screenOrientation="landscape" />
+		<activity android:name="pfc.Activitats.Memory" android:screenOrientation="landscape" />
+		<activity android:name="pfc.Activitats.PanelsIdentify" android:screenOrientation="landscape" />
+		<activity android:name="pfc.Activitats.ComplexAssociation" />
+		<activity android:name="pfc.Activitats.WrittenAnswer" />
+		<activity android:name="pfc.Activitats.Text" android:screenOrientation="landscape" />
+        <activity android:name="pfc.Activitats.FillinBlanks" android:screenOrientation="landscape" />
+        <activity android:name="pfc.Activitats.Identify" android:screenOrientation="landscape" />
+        <activity android:name="pfc.Repositori.LlistatProjectes" android:screenOrientation="landscape" />
+        <activity android:name="pfc.Activitats.TextOrder" android:screenOrientation="landscape" />
+		
 	</application>
 
-</manifest> 
+</manifest>

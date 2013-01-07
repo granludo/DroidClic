@@ -72,106 +72,115 @@ import org.w3c.dom.DocumentType;
  * A DOMAdapter utility abstract base class.
  * 
  * @version $Revision: 1.21 $, $Date: 2007/11/10 05:28:59 $
- * @author  Brett McLaughlin
- * @author  Jason Hunter
+ * @author Brett McLaughlin
+ * @author Jason Hunter
  */
 public abstract class AbstractDOMAdapter implements DOMAdapter {
 
-    private static final String CVS_ID = 
-      "@(#) $RCSfile: AbstractDOMAdapter.java,v $ $Revision: 1.21 $ $Date: 2007/11/10 05:28:59 $ $Name: jdom_1_1 $";
+	private static final String CVS_ID = "@(#) $RCSfile: AbstractDOMAdapter.java,v $ $Revision: 1.21 $ $Date: 2007/11/10 05:28:59 $ $Name: jdom_1_1 $";
 
-    /**
-     * This creates a new <code>{@link Document}</code> from an
-     * existing <code>InputStream</code> by letting a DOM
-     * parser handle parsing using the supplied stream.
-     *
-     * @param filename file to parse.
-     * @param validate <code>boolean</code> to indicate if validation should occur.
-     * @return <code>Document</code> - instance ready for use.
-     * @throws IOException when I/O error occurs.
-     * @throws JDOMException when errors occur in parsing.
-     */
-    public Document getDocument(File filename, boolean validate)
-        throws IOException, JDOMException {
+	/**
+	 * This creates a new <code>{@link Document}</code> from an existing
+	 * <code>InputStream</code> by letting a DOM parser handle parsing using the
+	 * supplied stream.
+	 * 
+	 * @param filename
+	 *            file to parse.
+	 * @param validate
+	 *            <code>boolean</code> to indicate if validation should occur.
+	 * @return <code>Document</code> - instance ready for use.
+	 * @throws IOException
+	 *             when I/O error occurs.
+	 * @throws JDOMException
+	 *             when errors occur in parsing.
+	 */
+	public Document getDocument(File filename, boolean validate)
+			throws IOException, JDOMException {
 
-        return getDocument(new FileInputStream(filename), validate);
-    }
+		return getDocument(new FileInputStream(filename), validate);
+	}
 
-    /**
-     * This creates a new <code>{@link Document}</code> from an
-     * existing <code>InputStream</code> by letting a DOM
-     * parser handle parsing using the supplied stream.
-     *
-     * @param in <code>InputStream</code> to parse.
-     * @param validate <code>boolean</code> to indicate if validation should occur.
-     * @return <code>Document</code> - instance ready for use.
-     * @throws IOException when I/O error occurs.
-     * @throws JDOMException when errors occur in parsing.
-     */
-    public abstract Document getDocument(InputStream in, boolean validate)
-        throws IOException, JDOMException;
+	/**
+	 * This creates a new <code>{@link Document}</code> from an existing
+	 * <code>InputStream</code> by letting a DOM parser handle parsing using the
+	 * supplied stream.
+	 * 
+	 * @param in
+	 *            <code>InputStream</code> to parse.
+	 * @param validate
+	 *            <code>boolean</code> to indicate if validation should occur.
+	 * @return <code>Document</code> - instance ready for use.
+	 * @throws IOException
+	 *             when I/O error occurs.
+	 * @throws JDOMException
+	 *             when errors occur in parsing.
+	 */
+	public abstract Document getDocument(InputStream in, boolean validate)
+			throws IOException, JDOMException;
 
-    /**
-     * This creates an empty <code>Document</code> object based
-     * on a specific parser implementation.
-     *
-     * @return <code>Document</code> - created DOM Document.
-     * @throws JDOMException when errors occur.
-     */
-    public abstract Document createDocument() throws JDOMException;
+	/**
+	 * This creates an empty <code>Document</code> object based on a specific
+	 * parser implementation.
+	 * 
+	 * @return <code>Document</code> - created DOM Document.
+	 * @throws JDOMException
+	 *             when errors occur.
+	 */
+	public abstract Document createDocument() throws JDOMException;
 
-    /**
-     * This creates an empty <code>Document</code> object based
-     * on a specific parser implementation with the given DOCTYPE.
-     * If the doctype parameter is null, the behavior is the same as
-     * calling <code>createDocument()</code>.
-     *
-     * @param doctype Initial <code>DocType</code> of the document.
-     * @return <code>Document</code> - created DOM Document.
-     * @throws JDOMException when errors occur.
-     */
-    public Document createDocument(DocType doctype) throws JDOMException {
-        if (doctype == null) {
-            return createDocument();
-        }
-  
-        DOMImplementation domImpl = createDocument().getImplementation();
-        DocumentType domDocType = domImpl.createDocumentType(
-                                      doctype.getElementName(),
-                                      doctype.getPublicID(),
-                                      doctype.getSystemID());
+	/**
+	 * This creates an empty <code>Document</code> object based on a specific
+	 * parser implementation with the given DOCTYPE. If the doctype parameter is
+	 * null, the behavior is the same as calling <code>createDocument()</code>.
+	 * 
+	 * @param doctype
+	 *            Initial <code>DocType</code> of the document.
+	 * @return <code>Document</code> - created DOM Document.
+	 * @throws JDOMException
+	 *             when errors occur.
+	 */
+	public Document createDocument(DocType doctype) throws JDOMException {
+		if (doctype == null) {
+			return createDocument();
+		}
 
-        // Set the internal subset if possible
-        setInternalSubset(domDocType, doctype.getInternalSubset());
+		DOMImplementation domImpl = createDocument().getImplementation();
+		DocumentType domDocType = domImpl.createDocumentType(
+				doctype.getElementName(), doctype.getPublicID(),
+				doctype.getSystemID());
 
-        return domImpl.createDocument("http://temporary",
-                                      doctype.getElementName(),
-                                      domDocType);
-    }
+		// Set the internal subset if possible
+		setInternalSubset(domDocType, doctype.getInternalSubset());
 
-    /**
-     * This attempts to change the DocumentType to have the given internal DTD 
-     * subset value.  This is not a standard ability in DOM, so it's only
-     * available with some parsers.  Subclasses can alter the mechanism by
-     * which the attempt is made to set the value.
-     *
-     * @param dt DocumentType to be altered
-     * @param s String to use as the internal DTD subset
-     */
-    protected void setInternalSubset(DocumentType dt, String s) {
-        if (dt == null || s == null) return;
+		return domImpl.createDocument("http://temporary",
+				doctype.getElementName(), domDocType);
+	}
 
-        // Default behavior is to attempt a setInternalSubset() call using
-        // reflection.  This method is not part of the DOM spec, but it's
-        // available on Xerces 1.4.4+.  It's not currently in Crimson.
-        try {
-            Class dtclass = dt.getClass();
-            Method setInternalSubset = dtclass.getMethod(
-                "setInternalSubset", new Class[] {java.lang.String.class});
-            setInternalSubset.invoke(dt, new Object[] {s});
-        }
-        catch (Exception e) {
-            // ignore
-        }
-    }
+	/**
+	 * This attempts to change the DocumentType to have the given internal DTD
+	 * subset value. This is not a standard ability in DOM, so it's only
+	 * available with some parsers. Subclasses can alter the mechanism by which
+	 * the attempt is made to set the value.
+	 * 
+	 * @param dt
+	 *            DocumentType to be altered
+	 * @param s
+	 *            String to use as the internal DTD subset
+	 */
+	protected void setInternalSubset(DocumentType dt, String s) {
+		if (dt == null || s == null)
+			return;
+
+		// Default behavior is to attempt a setInternalSubset() call using
+		// reflection. This method is not part of the DOM spec, but it's
+		// available on Xerces 1.4.4+. It's not currently in Crimson.
+		try {
+			Class dtclass = dt.getClass();
+			Method setInternalSubset = dtclass.getMethod("setInternalSubset",
+					new Class[] { java.lang.String.class });
+			setInternalSubset.invoke(dt, new Object[] { s });
+		} catch (Exception e) {
+			// ignore
+		}
+	}
 }

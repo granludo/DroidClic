@@ -13,6 +13,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import pfc.Parser.Dades;
+
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -139,6 +141,7 @@ public class Constants {
 	public URL url;
 	public File file;
 	public String path;
+	public ArrayList<Dades.Info> InfoArray;
 	
 	private static Constants INSTANCE = null;
 	

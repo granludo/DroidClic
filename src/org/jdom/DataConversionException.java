@@ -57,31 +57,29 @@
 package org.jdom;
 
 /**
- * Thrown when a data conversion from a string to value type fails, such as
- * can happen with the {@link Attribute} convenience getter functions.
- *
+ * Thrown when a data conversion from a string to value type fails, such as can
+ * happen with the {@link Attribute} convenience getter functions.
+ * 
  * @version $Revision: 1.14 $, $Date: 2007/11/10 05:28:58 $
- * @author  Brett McLaughlin
- * @author  Jason Hunter
+ * @author Brett McLaughlin
+ * @author Jason Hunter
  */
 public class DataConversionException extends JDOMException {
 
-    private static final String CVS_ID = 
-      "@(#) $RCSfile: DataConversionException.java,v $ $Revision: 1.14 $ $Date: 2007/11/10 05:28:58 $ $Name: jdom_1_1 $";
+	private static final String CVS_ID = "@(#) $RCSfile: DataConversionException.java,v $ $Revision: 1.14 $ $Date: 2007/11/10 05:28:58 $ $Name: jdom_1_1 $";
 
-    /**
-     * Constructs an exception where the named construct couldn't be converted
-     * to the named data type.
-     *
-     * @param name name of the construct whose value failed conversion
-     * @param dataType type the conversion was attempting to create
-     */
-    public DataConversionException(String name, String dataType) {
-        super(new StringBuffer()
-              .append("The XML construct ")
-              .append(name)
-              .append(" could not be converted to a ")
-              .append(dataType)
-              .toString());
-    }
+	/**
+	 * Constructs an exception where the named construct couldn't be converted
+	 * to the named data type.
+	 * 
+	 * @param name
+	 *            name of the construct whose value failed conversion
+	 * @param dataType
+	 *            type the conversion was attempting to create
+	 */
+	public DataConversionException(String name, String dataType) {
+		super(new StringBuffer().append("The XML construct ").append(name)
+				.append(" could not be converted to a ").append(dataType)
+				.toString());
+	}
 }

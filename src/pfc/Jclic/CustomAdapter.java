@@ -35,8 +35,9 @@ public class CustomAdapter extends CursorAdapter {
 	private Context mContext;
 	private final LayoutInflater mInflater;
 	public int id = 0;
-	public ListView lista = null;  
+	public ListView lista = null;
 	TextView tvDesc;
+
 	public CustomAdapter(Context context, Cursor c, ListView list, TextView text) {
 		super(context, c);
 		lista = list;
@@ -44,7 +45,7 @@ public class CustomAdapter extends CursorAdapter {
 		mContext = context;
 		tvDesc = text;
 	}
-	
+
 	public static Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
 		int width = bm.getWidth();
 		int height = bm.getHeight();
@@ -55,13 +56,16 @@ public class CustomAdapter extends CursorAdapter {
 		// RESIZE THE BIT MAP
 		matrix.postScale(scaleWidth, scaleHeight);
 		// RECREATE THE NEW BITMAP
-		Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+		Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
+				matrix, false);
 		return resizedBitmap;
 	}
-	@Override
-	public void bindView(final View view, final Context context, final Cursor cursor) {
 
-		ImageView icona = (ImageView)view.findViewById(R.id.iconClic);
+	@Override
+	public void bindView(final View view, final Context context,
+			final Cursor cursor) {
+
+		ImageView icona = (ImageView) view.findViewById(R.id.iconClic);
 		// el tag es per guardar la posicio dins la llista
 		icona.setTag(cursor.getPosition());
 		
@@ -84,36 +88,37 @@ public class CustomAdapter extends CursorAdapter {
 			icona.setBackgroundResource(R.drawable.jclic_aqua);
 		}
 
-		TextView titol = (TextView)view.findViewById(R.id.titulo);
+		TextView titol = (TextView) view.findViewById(R.id.titulo);
 		titol.setText(cursor.getString(cursor.getColumnIndex("titulo")));
 		titol.setTag(cursor.getPosition());
-		
-		ImageButton play = (ImageButton)view.findViewById(R.id.bplay);
+
+		ImageButton play = (ImageButton) view.findViewById(R.id.bplay);
 		play.setImageResource(R.drawable.ico_go);
 		play.setTag(cursor.getPosition());
 
-
-		titol.setOnClickListener(new OnClickListener() {			
+		titol.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				cursor.moveToPosition((Integer) v.getTag());
-				tvDesc.setText(Html.fromHtml(cursor.getString(cursor.getColumnIndex("descripcion"))));
+				tvDesc.setText(Html.fromHtml(cursor.getString(cursor
+						.getColumnIndex("descripcion"))));
 			}
 		});
 
-		icona.setOnClickListener(new OnClickListener() {			
+		icona.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				cursor.moveToPosition((Integer) v.getTag());
-				tvDesc.setText(cursor.getString(cursor.getColumnIndex("descripcion")));
+				tvDesc.setText(cursor.getString(cursor
+						.getColumnIndex("descripcion")));
 			}
 		});
 
 		play.setOnClickListener(new OnClickListener() {
-			public void onClick(View v){
-				
+			public void onClick(View v) {
+
 				cursor.moveToPosition((Integer) v.getTag());
-				tvDesc.setText(cursor.getString(cursor.getColumnIndex("descripcion")));
+				tvDesc.setText(cursor.getString(cursor
+						.getColumnIndex("descripcion")));
 				String s = cursor.getString(cursor.getColumnIndex("nombre"));
-				
 				
 				String state = Environment.getExternalStorageState();
 				if ((Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) && Inici.jclicDir != null) {
@@ -177,17 +182,16 @@ public class CustomAdapter extends CursorAdapter {
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		final View view = mInflater.inflate(R.layout.element_clic, parent,false); 
+		final View view = mInflater.inflate(R.layout.element_clic, parent,
+				false);
 		return view;
 	}
 
 	private void creaMissatgeTemporal(String missatge, boolean curt) {
-		Toast missatgeTemporal = Toast.makeText(mContext, missatge, curt ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG);	
+		Toast missatgeTemporal = Toast.makeText(mContext, missatge,
+				curt ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG);
 		missatgeTemporal.setGravity(Gravity.CENTER, 0, 0);
 		missatgeTemporal.show();
 	}
 
 }
-
-
-

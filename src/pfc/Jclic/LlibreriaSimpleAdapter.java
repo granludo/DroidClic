@@ -23,21 +23,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class LlibreriaSimpleAdapter extends SimpleAdapter {
-	
+
 	private TextView mDescView;
 	private int mResource;
 	private LayoutInflater mInflater;
 	private List<? extends Map<String, ?>> mData;
 	private int[] mTo;
-    private String[] mFrom;
-    private Context mContext;
+	private String[] mFrom;
+	private Context mContext;
 
 	public LlibreriaSimpleAdapter(Context context,
-					List<? extends Map<String, ?>> data,
-					int resource,
-					String[] from,
-					int[] to,
-					TextView descView) {
+			List<? extends Map<String, ?>> data, int resource, String[] from,
+			int[] to, TextView descView) {
 		super(context, data, resource, from, to);
 		mDescView = descView;
 		mData = data;
@@ -45,9 +42,10 @@ public class LlibreriaSimpleAdapter extends SimpleAdapter {
 		mFrom = from;
 		mResource = resource;
 		mContext = context;
-		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		mInflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v;
@@ -64,57 +62,60 @@ public class LlibreriaSimpleAdapter extends SimpleAdapter {
 		}
 		return v;
 	}
-	
-	
+
 	private void bindView(int position, View view) throws IOException {
-	    final Map<String, ?> dataSet = mData.get(position);
-        if (dataSet == null) {
-            return;
-        }
+		final Map<String, ?> dataSet = mData.get(position);
+		if (dataSet == null) {
+			return;
+		}
 
-        final String[] from = mFrom;
-        final int[] to = mTo;
-    	final ClicMetaData data = (ClicMetaData) dataSet.get(from[0]);
-    	
-        if (dataSet.get(from[0]) == null) {
-            return;
-        }
+		final String[] from = mFrom;
+		final int[] to = mTo;
+		final ClicMetaData data = (ClicMetaData) dataSet.get(from[0]);
 
-        
-        for (int i=0; i<2; i++) {
-        	final View v = view.findViewById(to[i]);
-        	if (v != null && v instanceof ImageView) {
-                // image view for clic icons
-            	byte[] imageBytes = data.getImage();
-            	Bitmap imageBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-            	imageBitmap = CustomAdapter.getResizedBitmap(imageBitmap, 50, 50);
-                ((ImageView) v).setImageBitmap(imageBitmap);
-        	} else if (v != null && v instanceof TextView) {
-                // text view for clic title
-            	String title = data.getTitle() == null ? "" : data.getTitle();
-            	setViewText((TextView) v, title);
-            } else {
-                throw new IllegalStateException(v.getClass().getName() + " is not a " +
-                        " view that can be bounds by this SimpleAdapter");
-            }
+		if (dataSet.get(from[0]) == null) {
+			return;
+		}
 
-        	// shows clic description on description text view when clicking on icon or title views
-            v.setOnClickListener(new OnClickListener() {
-            	@Override
-    			public void onClick(View v) {
-            		String description = data.getBody() == null ? "" : data.getBody();
-    				mDescView.setText(description);
-    			}
-    		});
-        }
-        
-        
-        ImageButton addButton = (ImageButton) view.findViewById(to[2]);
-        addButton.setImageResource(R.drawable.ico_addclic);
-        addButton.setOnClickListener(new OnClickListener() {
+		for (int i = 0; i < 2; i++) {
+			final View v = view.findViewById(to[i]);
+			if (v != null && v instanceof ImageView) {
+				// image view for clic icons
+				byte[] imageBytes = data.getImage();
+				Bitmap imageBitmap = BitmapFactory.decodeByteArray(imageBytes,
+						0, imageBytes.length);
+				imageBitmap = CustomAdapter.getResizedBitmap(imageBitmap, 50,
+						50);
+				((ImageView) v).setImageBitmap(imageBitmap);
+			} else if (v != null && v instanceof TextView) {
+				// text view for clic title
+				String title = data.getTitle() == null ? "" : data.getTitle();
+				setViewText((TextView) v, title);
+			} else {
+				throw new IllegalStateException(v.getClass().getName()
+						+ " is not a "
+						+ " view that can be bounds by this SimpleAdapter");
+			}
+
+			// shows clic description on description text view when clicking on
+			// icon or title views
+			v.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					String description = data.getBody() == null ? "" : data
+							.getBody();
+					mDescView.setText(description);
+				}
+			});
+		}
+
+		ImageButton addButton = (ImageButton) view.findViewById(to[2]);
+		addButton.setImageResource(R.drawable.ico_addclic);
+		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				mDescView.setText(data.getBody());
+
 				Toast.makeText(mContext, "Descarregant clic...", Toast.LENGTH_LONG).show();
 				
 				String state = Environment.getExternalStorageState();
@@ -143,16 +144,16 @@ public class LlibreriaSimpleAdapter extends SimpleAdapter {
 					Toast.makeText(mContext, "The device is not mounted", Toast.LENGTH_LONG).show();		
 				}
 			}
-			
-			private void writeFile (byte[] fileBytes, File file) throws IOException {
+
+			private void writeFile(byte[] fileBytes, File file)
+					throws IOException {
 				BufferedOutputStream bos;
 				bos = new BufferedOutputStream(new FileOutputStream(file));
 				bos.write(fileBytes);
 				bos.flush();
 				bos.close();
 			}
-        });
+		});
 	}
-	
 
 }

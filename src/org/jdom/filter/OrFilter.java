@@ -57,69 +57,65 @@
 package org.jdom.filter;
 
 /**
- * Allow two filters to be chained together with a logical
- * <b>or</b> operation.
- *
+ * Allow two filters to be chained together with a logical <b>or</b> operation.
+ * 
  * @author Bradley S. Huffman
  * @version $Revision: 1.5 $, $Date: 2007/11/10 05:29:00 $
  */
 final class OrFilter extends AbstractFilter {
 
-    private static final String CVS_ID = 
-      "@(#) $RCSfile: OrFilter.java,v $ $Revision: 1.5 $ $Date: 2007/11/10 05:29:00 $";
+	private static final String CVS_ID = "@(#) $RCSfile: OrFilter.java,v $ $Revision: 1.5 $ $Date: 2007/11/10 05:29:00 $";
 
-    /** Filter for left side of logical <b>or</b> */
-    private Filter left;
+	/** Filter for left side of logical <b>or</b> */
+	private Filter left;
 
-    /** Filter for right side of logical <b>or</b> */
-    private Filter right;
+	/** Filter for right side of logical <b>or</b> */
+	private Filter right;
 
-    /**
-     * Match if either of the supplied filters.
-     *
-     * @param left left side of logical <b>or</b>
-     * @param right right side of logical <b>or</b>
-     * @throws IllegalArgumentException if either supplied filter is null
-     */
-    public OrFilter(Filter left, Filter right) {
-        if ((left == null) || (right == null)) {
-            throw new IllegalArgumentException("null filter not allowed");
-        }
-        this.left = left;
-        this.right = right;
-    }
+	/**
+	 * Match if either of the supplied filters.
+	 * 
+	 * @param left
+	 *            left side of logical <b>or</b>
+	 * @param right
+	 *            right side of logical <b>or</b>
+	 * @throws IllegalArgumentException
+	 *             if either supplied filter is null
+	 */
+	public OrFilter(Filter left, Filter right) {
+		if ((left == null) || (right == null)) {
+			throw new IllegalArgumentException("null filter not allowed");
+		}
+		this.left = left;
+		this.right = right;
+	}
 
-    public boolean matches(Object obj) {
-        return left.matches(obj) || right.matches(obj);
-    }
+	public boolean matches(Object obj) {
+		return left.matches(obj) || right.matches(obj);
+	}
 
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
 
-        if (obj instanceof OrFilter) {
-            OrFilter filter = (OrFilter) obj;
-            if ((left.equals(filter.left)  && right.equals(filter.right)) ||
-                (left.equals(filter.right) && right.equals(filter.left))) {
-                    return true;
-            }
-        }
-        return false;
-    }
+		if (obj instanceof OrFilter) {
+			OrFilter filter = (OrFilter) obj;
+			if ((left.equals(filter.left) && right.equals(filter.right))
+					|| (left.equals(filter.right) && right.equals(filter.left))) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    public int hashCode() {
-        return (31 * left.hashCode()) + right.hashCode();
-    }
+	public int hashCode() {
+		return (31 * left.hashCode()) + right.hashCode();
+	}
 
-    public String toString() {
-        return new StringBuffer(64)
-                   .append("[OrFilter: ")
-                   .append(left.toString())
-                   .append(",\n")
-                   .append("           ")
-                   .append(right.toString())
-                   .append("]")
-                   .toString();
-    }
+	public String toString() {
+		return new StringBuffer(64).append("[OrFilter: ")
+				.append(left.toString()).append(",\n").append("           ")
+				.append(right.toString()).append("]").toString();
+	}
 }

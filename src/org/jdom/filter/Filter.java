@@ -56,21 +56,20 @@
 
 package org.jdom.filter;
 
-
 /**
  * A generalized filter to restrict visibility or mutability on a list.
- *
+ * 
  * @version $Revision: 1.10 $, $Date: 2007/11/10 05:29:00 $
- * @author  Jools Enticknap
- * @author  Bradley S. Huffman
+ * @author Jools Enticknap
+ * @author Bradley S. Huffman
  */
 public interface Filter extends java.io.Serializable {
-    /**
-     * Check to see if the object matches a predefined set of rules.
-     *
-     * @param obj The object to verify.
-     * @return <code>true</code> if the object matches a predfined 
-     *           set of rules.
-     */
-    public boolean matches(Object obj);
+	/**
+	 * Check to see if the object matches a predefined set of rules.
+	 * 
+	 * @param obj
+	 *            The object to verify.
+	 * @return <code>true</code> if the object matches a predfined set of rules.
+	 */
+	public boolean matches(Object obj);
 }

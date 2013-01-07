@@ -5,7 +5,10 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Vector;
 
-import android.annotation.TargetApi;
+import pfc.Descompressor.Descompressor;
+import pfc.Jclic.Jclic;
+import pfc.Jclic.R;
+import pfc.Parser.Parser;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -26,24 +29,18 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import pfc.Parser.Parser;
-import pfc.Descompressor.Descompressor;
-import pfc.Jclic.Jclic;
-import pfc.Jclic.R;
 
 
-@TargetApi(8)
 public class Memory extends Activity {
 	private Constants CO = Constants.getInstance();
 	private String path = "/sdcard/tmp/jclic/";
-	
 	private int newWidth;
 	private int newHeight;
 	private int width;
 	private int height;
-	
+
 	int fil, col;
-	
+
 	private TextView aciertos2=null;
 	private TextView intentos=null;
 	private TextView ttiempo = null;
@@ -51,31 +48,31 @@ public class Memory extends Activity {
 	private ProgressBar tiempo = null;
 	private Vector<BitmapDrawable> vecDraw = null;
 
-	
 	private static final int MENU_ANT = 0;
 	private static final int MENU_SEG = 1;
 	private static final int MENU_SOLUCIO = 2;
 	private static final int MENU_AJUDA = 3;
 	private static final int MENU_INICI = 4;
 	private static final int MENU_SORTIR = 5;
-	
+
 	private Vector<TextView> textViews = new Vector<TextView>(CO.cols*CO.rows);
-	
+
 	private int maxTime = Parser.getActivitats().get(CO.activitatActual).getTempsMax();
 	private int maxIntents = Parser.getActivitats().get(CO.activitatActual).getIntentMax();
 	private boolean TimeCountDown = Parser.getActivitats().get(CO.activitatActual).getTimeCutDown();
 	private boolean IntentCountDown = Parser.getActivitats().get(CO.activitatActual).getIntentCutdown();
-	
+
 	Sounds sound;
 //	private ArrayList<Integer> ids = Parser.getActivitats().get(CO.activitatActual).getRelacions();
 	private ArrayList<String> imagenes = Parser.getActivitats().get(CO.activitatActual).getImages();
 	private Vector<String> textos = Parser.getActivitats().get(CO.activitatActual).getCeles();
-	
+
 	private ArrayList<Celda> celdas = new ArrayList<Celda>();
-	
+
 	private ArrayList<ArrayList<Integer>> idPos = new ArrayList<ArrayList<Integer>>();
-	
+
 	int contadorIntents = 0;
+
 	int contadorTemps = 0;
 	int aciertos = 0;
 	int fallos = 0;
@@ -96,27 +93,27 @@ public class Memory extends Activity {
 	    intentos = (TextView) findViewById(R.id.editIntentos);
 	    tiempo.setMax(maxTime);
 	    tiempo.setProgress(0);
-	    
+
 	    if (maxTime == 0) {
 			tiempo.setVisibility(tiempo.INVISIBLE);
 			ttiempo.setVisibility(ttiempo.INVISIBLE);
 		}
-	    
+
 	    bMenu = (Button) findViewById(R.id.menu);
 		sound = new Sounds(getApplicationContext());
 		if (maxIntents == 0) maxIntents = -1;
-		
+
 		try {
 			TextView titulo = (TextView) findViewById(R.id.titulo);
 			titulo.setText(missatgeInicial);
 	        if(Parser.getActivitats().elementAt(CO.activitatActual).getName() != null)
 	        	titulo.setText(Parser.getActivitats().elementAt(CO.activitatActual).getName());
 	        else titulo.setText("Activitat JClic");
-	        
+
 	        tAnt2 = null; // inicialment no hem seleccionat res
 	        tAnt = null;
-	        
-			
+
+
 			for(int i = 0; i < sizeNoAlt; ++i) {
 				Celda aux = new Celda();
 				if(textos.elementAt(i) != "") aux.celda = textos.elementAt(i);
@@ -131,7 +128,7 @@ public class Memory extends Activity {
 				celdas.add(aux);
 				if (sizeNoAlt == textos.size()) celdas.add(aux); // tornem a afegir la mateixa cel·la si no ens donen les parelles
 			}
-			
+
 			if (sizeNoAlt < textos.size()) // si ens donen les parelles, les afegim
 			for(int i = sizeNoAlt; i < textos.size(); ++i) {
 				Celda aux = new Celda();
@@ -147,13 +144,13 @@ public class Memory extends Activity {
 				celdas.add(aux);
 			}
 
-		
+
 			long seed = System.nanoTime();
 			Random random = new Random(seed);
 			Collections.shuffle(celdas, random);
-			
+
 			for(int i = 0; i < sizeNoAlt; i++) casillasCorrectas++;
-			
+
 			ArrayList<Integer> row = new ArrayList<Integer>();
 		    row.add(R.id.pos1);
 		    row.add(R.id.pos2);
@@ -184,16 +181,13 @@ public class Memory extends Activity {
 		    row.add(R.id.pos19);
 		    row.add(R.id.pos20);
 		    idPos.add(row);
-				
+
 			reiniciarMenu();
-			
+
 			if(TimeCountDown)
 				contadorTemps = maxTime;		
-			
 			if(IntentCountDown)
 				contadorIntents = maxIntents;
-			
-					
 			if(maxTime != 0) {
 				timer = new CountDownTimer(maxTime*1000, 1000) {
 					@Override
@@ -209,7 +203,7 @@ public class Memory extends Activity {
 						sound.playFinished_error();
 						finalizarJuego();
 					}
-					
+
 					@Override
 					public void onTick(long arg0) {
 						if(TimeCountDown) {
@@ -224,15 +218,13 @@ public class Memory extends Activity {
 					}
 				}.start();
 			}
-			
+
 			iniciarCasillas();		
 		    sound.playStart();
 
 			imprimirInfo();
-
-			
 			//sound.playFinished_error();
-			
+
 		} catch(Exception e) {
 			Log.d("Error", "catch Memory: "+e);
 			e.printStackTrace();
@@ -248,40 +240,34 @@ public class Memory extends Activity {
 				ma.butsMenu(dialog, aC, vecDraw);
 			}
 		});	
-		
 	}
-	
+
 	private void iniciarCasillas() {
-		
-		
 		fil = CO.rows;
 		col = CO.cols;
 		if (col > fil) fil += fil;
 		else col += col;
-
 		for(int i = 0; i < fil; ++i) {
 			for(int j = 0; j < col; ++j) {
 				TextView aux = (TextView) findViewById(idPos.get(i).get(j));
 				textViews.add(aux);
 			}
 		}
-		
 		for(int i = fil; i < 5; ++i) {
 			for(int j = col; j < 4; ++j) {
 				TextView aux = (TextView) findViewById(idPos.get(i).get(j));
-				
 				resizeTextViewsUseless(aux);
 			}
 		}
-		
+
 		for(int i = 0; i < fil; ++i) {
 			for(int j = 0; j < col; ++j) {
 				TextView aux = textViews.elementAt(col*i+j);
-				
 				resizeCaselles(aux);
 				Celda aux2 = celdas.get(col*i+j);				
 				aux.setText(aux2.celda);
 				aux.setTextColor(Color.GRAY);
+
 				if (aux2.img != null){
 					aux2.img = resizeImg(aux2.img);
 					aux.setBackgroundDrawable(aux2.img);
@@ -289,20 +275,17 @@ public class Memory extends Activity {
 				aux.setBackgroundColor(Color.GRAY);
 				aux.setClickable(true);
 				aux.setOnClickListener(new View.OnClickListener() {
-					
+
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
 						click(v);
 					}
 				});
 			}
-			
 		}
-		
 	}
-	
+
 	private void click(View v) {
-		
 		if (tAnt2 != null){	// si al fer el clic hi havia una parella errònia a la vista, l'ocultem de nou
 			tAnt.setBackgroundColor(Color.GRAY);
 			tAnt.setTextColor(Color.GRAY);
@@ -310,7 +293,7 @@ public class Memory extends Activity {
 			tAnt2.setTextColor(Color.GRAY);
 			tAnt = tAnt2 = null;
 		}
-				
+
 		TextView t = (TextView) v;
 		int id = t.getId();
 		for(int i = 0; i < fil; ++i) {
@@ -340,9 +323,8 @@ public class Memory extends Activity {
 							tAnt2 = t; // guardem la casella per a ocultar-la al pròxim clic
 							sound.playActionError();
 						}
-						
+
 						idPar = -1;
-						
 						if(IntentCountDown)
 							contadorIntents--;
 						else
@@ -351,9 +333,9 @@ public class Memory extends Activity {
 				}
 			}
 		}
-		
+
 		imprimirInfo();
-		
+
 		if(aciertos == casillasCorrectas) {
 			sound.playFinished_ok();
 			finalizarJuego();
@@ -368,26 +350,21 @@ public class Memory extends Activity {
 			finalizarJuego();
 		}
 	}
-	
+
 	private BitmapDrawable resizeImg(BitmapDrawable bitmapd) {
 		Bitmap bitmapOrg = bitmapd.getBitmap();
 		int widthImage = bitmapOrg.getWidth();
 		int heightImage = bitmapOrg.getHeight();
-		
 		newWidth = width*col*2;
 		newHeight = height*fil*2;
-		
 		float scaleWidth = ((float) newWidth) / widthImage;
 		float scaleHeight = ((float) newHeight) / heightImage;
-		
 		Matrix matrix = new Matrix();
 		matrix.postScale(scaleWidth, scaleHeight);
-		
 		Bitmap resizedBitmap = Bitmap.createBitmap(bitmapOrg,  0, 0, widthImage, heightImage, matrix, true);
-		
 		return new BitmapDrawable(resizedBitmap);
 	}
-	
+
 	private void resizeCaselles(TextView pos) {
 		if(col == 1) {
 			pos.setWidth(300);
@@ -402,7 +379,7 @@ public class Memory extends Activity {
 			pos.setWidth(75);
 			width = 75;
 		}
-		
+
 		if(fil == 1 || col == 2) {
 			pos.setHeight(75);
 			pos.setMaxLines(4);
@@ -423,21 +400,20 @@ public class Memory extends Activity {
 		width /= 10;
 		height /= 10;
 	}
-	
+
 	private void resizeTextViewsUseless(TextView pos)
 	{
 		pos.setWidth(0);
 		pos.setHeight(0);
 	}
-	
+
 	private void imprimirInfo() {
 		TextView missIni = (TextView) findViewById(R.id.missatge);
 		missIni.setText(missatgeInicial);
 		aciertos2.setText(Integer.toString(aciertos));
 		intentos.setText(Integer.toString(contadorIntents));
-
 	}
-	
+
 	private void reiniciarMenu() {
 		if(CO.menu != null) {
 			CO.menu.clear();
@@ -447,21 +423,19 @@ public class Memory extends Activity {
 			CO.menu.add(0, MENU_AJUDA, 0, R.string.menu_ajuda);
 			CO.menu.add(0, MENU_INICI, 0, R.string.menu_inici);
 			CO.menu.add(0, MENU_SORTIR, 0, R.string.menu_sortir);
-			
 			CO.menu.getItem(MENU_ANT).setIcon(android.R.drawable.ic_media_rew);
 			CO.menu.getItem(MENU_SEG).setIcon(android.R.drawable.ic_media_ff);
 			CO.menu.getItem(MENU_SOLUCIO).setIcon(android.R.drawable.btn_star_big_off);
 			CO.menu.getItem(MENU_AJUDA).setIcon(android.R.drawable.ic_menu_help);
 			CO.menu.getItem(MENU_INICI).setIcon(android.R.drawable.ic_menu_revert);
 			CO.menu.getItem(MENU_SORTIR).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
-			
+
 			if(CO.mostrarSolucio) CO.menu.getItem(MENU_SOLUCIO).setEnabled(true);
 			else CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
 			CO.menu.getItem(MENU_SOLUCIO).setTitle(R.string.menu_solucio);
-			
 			CO.menu.getItem(MENU_SEG).setEnabled(true);
 			CO.menu.getItem(MENU_ANT).setEnabled(true);
-			
+
 			if(CO.activitatActual<1) {
 				CO.menu.getItem(MENU_ANT).setEnabled(false);
 			}
@@ -470,9 +444,8 @@ public class Memory extends Activity {
 			}
 		}
 	}
-	
-	private void finalizarJuego()
-	{
+
+	private void finalizarJuego() {
 		for(int i = 0; i < textViews.size(); ++i)
 			textViews.get(i).setClickable(false);
 		final Context aC = this;
@@ -496,37 +469,34 @@ public class Memory extends Activity {
 			textFinal.setText("S'ha acabat el temps!");
 		}
 
-	
 		if(maxTime != 0)
 			timer.cancel();
 		dialog.show();
 		aux.setOnClickListener(new View.OnClickListener() {
-			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				finalClick(v);
 			}
 		});
-		
 	}
-	
-	private void finalClick(View v)
-	{
+
+	private void finalClick(View v)	{
 		Intent iSeg = new Intent(this, Puzzle.class);
     	startActivity(iSeg);
 		this.finish();
 	}
-	
+
 	protected void onDestroy() {
 		if (maxTime != 0) timer.cancel();
 		sound.unloadAll();
 		super.onDestroy();
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 	}
-	
+
+/*
 	public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         CO.menu = menu;
@@ -537,18 +507,17 @@ public class Memory extends Activity {
         CO.menu.add(0, MENU_AJUDA, 0, R.string.menu_ajuda);
         CO.menu.add(0, MENU_INICI, 0, R.string.menu_inici);
         CO.menu.add(0, MENU_SORTIR, 0, R.string.menu_sortir);
-        
         CO.menu.getItem(MENU_ANT).setIcon(android.R.drawable.ic_media_rew);
 		CO.menu.getItem(MENU_SEG).setIcon(android.R.drawable.ic_media_ff);
 		CO.menu.getItem(MENU_SOLUCIO).setIcon(android.R.drawable.btn_star_big_off);
 		CO.menu.getItem(MENU_AJUDA).setIcon(android.R.drawable.ic_menu_help);
 		CO.menu.getItem(MENU_INICI).setIcon(android.R.drawable.ic_menu_revert);
 		CO.menu.getItem(MENU_SORTIR).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
-		
+
         //Configuro els botons d'anterior i seguent
         CO.menu.getItem(MENU_SEG).setEnabled(true);
 		CO.menu.getItem(MENU_ANT).setEnabled(true);
-		
+
 		if(CO.activitatActual<1){
 			//estem a la primera activitat, pel que no podem habilitar l'anterior
 			CO.menu.getItem(MENU_ANT).setEnabled(false);
@@ -560,9 +529,10 @@ public class Memory extends Activity {
         
         if(CO.mostrarSolucio) CO.menu.getItem(MENU_SOLUCIO).setEnabled(true);
 		else CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
+
         return true;
 	}
-	
+
 	public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case MENU_ANT:
@@ -597,26 +567,30 @@ public class Memory extends Activity {
                     	if(CO.vecCaselles.elementAt(i) != null){
                     		CO.vecActual.addElement(CO.vecCaselles.elementAt(i).getText());
                     		CO.vecCaselles.elementAt(i).setText(CO.sortida.elementAt(i));
+
                     		CO.vecCaselles.elementAt(i).setBackgroundColor(CO.bg);
                     		CO.vecCaselles.elementAt(i).setTextColor(CO.fg);
                     		
                     		if(CO.imatge != null){
             					int indexSort = CO.sortida.indexOf(CO.vecCaselles.elementAt(i).getText());
-            		    		
+
             					CO.vecCaselles.elementAt(i).setBackgroundColor(Color.TRANSPARENT);
             		    		CO.vecCaselles.elementAt(i).setTextColor(Color.TRANSPARENT);
-            					
+
             		    		vecDraw.elementAt(indexSort).setAlpha(250);
             		    		
             		    		CO.vecCaselles.elementAt(i).
             		    			setBackgroundDrawable(vecDraw.elementAt(indexSort));
+
             				}
                     	} else CO.vecActual.addElement(null);
+
                     }
                 	bloquejarJoc(true);
                 	CO.solucioVisible = true;
                 	posAgafada = null;
                 	setMissatges();
+
                 	CO.menu.getItem(MENU_SOLUCIO).setTitle(R.string.menu_in_solucio);
                 	CO.menu.getItem(MENU_ANT).setEnabled(false);
                 	CO.menu.getItem(MENU_SEG).setEnabled(false);
@@ -625,6 +599,7 @@ public class Memory extends Activity {
             		for(int i = 0; i < CO.vecCaselles.size(); i++){
                     	if(CO.vecCaselles.elementAt(i) != null){
                     		CO.vecCaselles.elementAt(i).setText(CO.vecActual.elementAt(i));
+
                     		CO.vecCaselles.elementAt(i).setTextColor(CO.fg);
                     		CO.vecCaselles.elementAt(i).setBackgroundColor(CO.bg);
                     		
@@ -633,7 +608,7 @@ public class Memory extends Activity {
             		    		
             					CO.vecCaselles.elementAt(i).setBackgroundColor(Color.TRANSPARENT);
             		    		CO.vecCaselles.elementAt(i).setTextColor(Color.TRANSPARENT);
-            					
+
             		    		vecDraw.elementAt(indexSort).setAlpha(250);
             		    		
             		    		CO.vecCaselles.elementAt(i).
@@ -658,12 +633,14 @@ public class Memory extends Activity {
     					CO.menu.getItem(MENU_ANT).setEnabled(true);
     				}
             	}*/
-                return true;
+
+ /*               return true;
             case MENU_SORTIR:
             	AlertDialog.Builder builder = new AlertDialog.Builder(this);
             	builder.setIcon(R.drawable.jclic_aqua);
             	builder.setMessage("Estàs segur de que vols sortir?")
             	       .setCancelable(false)
+
             	       .setPositiveButton("Sí­", new DialogInterface.OnClickListener() {
             	           public void onClick(DialogInterface dialog, int id) {
             	                Memory.this.finish();
@@ -684,10 +661,9 @@ public class Memory extends Activity {
             	return true;
         }
         return false;
-    }
-	
-	public class Celda
-	{
+    }*/
+
+	public class Celda {
 		String celda;
 		String imagen;
 		int id;
@@ -696,9 +672,8 @@ public class Memory extends Activity {
 		String contenidoAlternativo;
 	//	boolean contAltImagen;
 		String contAltImagen;
-		
-		Celda()
-		{
+
+		Celda()	{
 			celda = "";
 			id = 0;
 			img = null;
