@@ -72,104 +72,108 @@ import org.xml.sax.SAXParseException;
  * An adapter for the IBM XML4J DOM parser.
  * 
  * @version $Revision: 1.18 $, $Date: 2007/11/10 05:28:59 $
- * @author  Brett McLaughlin
- * @author  Jason Hunter
+ * @author Brett McLaughlin
+ * @author Jason Hunter
  */
 public class XML4JDOMAdapter extends AbstractDOMAdapter {
 
-    private static final String CVS_ID = 
-      "@(#) $RCSfile: XML4JDOMAdapter.java,v $ $Revision: 1.18 $ $Date: 2007/11/10 05:28:59 $ $Name: jdom_1_1 $";
+	private static final String CVS_ID = "@(#) $RCSfile: XML4JDOMAdapter.java,v $ $Revision: 1.18 $ $Date: 2007/11/10 05:28:59 $ $Name: jdom_1_1 $";
 
-    /**
-     * This creates a new <code>{@link Document}</code> from an
-     * existing <code>InputStream</code> by letting a DOM
-     * parser handle parsing using the supplied stream.
-     *
-     * @param in <code>InputStream</code> to parse.
-     * @param validate <code>boolean</code> to indicate if validation should occur.
-     * @return <code>Document</code> - instance ready for use.
-     * @throws IOException when I/O error occurs.
-     * @throws JDOMException when errors occur in parsing.
-     */
-    public Document getDocument(InputStream in, boolean validate)
-        throws IOException, JDOMException  {
+	/**
+	 * This creates a new <code>{@link Document}</code> from an existing
+	 * <code>InputStream</code> by letting a DOM parser handle parsing using the
+	 * supplied stream.
+	 * 
+	 * @param in
+	 *            <code>InputStream</code> to parse.
+	 * @param validate
+	 *            <code>boolean</code> to indicate if validation should occur.
+	 * @return <code>Document</code> - instance ready for use.
+	 * @throws IOException
+	 *             when I/O error occurs.
+	 * @throws JDOMException
+	 *             when errors occur in parsing.
+	 */
+	public Document getDocument(InputStream in, boolean validate)
+			throws IOException, JDOMException {
 
-        try {
-            /*
-             * IBM XML4J actually uses the Xerces parser, so this is
-             *   all Xerces specific code.
-             */
+		try {
+			/*
+			 * IBM XML4J actually uses the Xerces parser, so this is all Xerces
+			 * specific code.
+			 */
 
-            // Load the parser class
-            Class parserClass = Class.forName("org.apache.xerces.parsers.DOMParser");
-            Object parser = parserClass.newInstance();
+			// Load the parser class
+			Class parserClass = Class
+					.forName("org.apache.xerces.parsers.DOMParser");
+			Object parser = parserClass.newInstance();
 
-            // Set validation
-            Method setFeature =
-                parserClass.getMethod("setFeature",
-                                      new Class[] {java.lang.String.class,
-                                                   boolean.class});
-            setFeature.invoke(parser, new Object[] {"http://xml.org/sax/features/validation",
-                                                    new Boolean(validate)});
+			// Set validation
+			Method setFeature = parserClass.getMethod("setFeature",
+					new Class[] { java.lang.String.class, boolean.class });
+			setFeature.invoke(parser, new Object[] {
+					"http://xml.org/sax/features/validation",
+					new Boolean(validate) });
 
-            // Set namespaces
-            setFeature.invoke(parser, new Object[] {"http://xml.org/sax/features/namespaces",
-                                                    new Boolean(false)});
+			// Set namespaces
+			setFeature.invoke(parser, new Object[] {
+					"http://xml.org/sax/features/namespaces",
+					new Boolean(false) });
 
-            // Set the error handler
-            if (validate) {
-                Method setErrorHandler =
-                    parserClass.getMethod("setErrorHandler",
-                        new Class[] {ErrorHandler.class});
-                setErrorHandler.invoke(parser, new Object[] {new BuilderErrorHandler()});
-            }
+			// Set the error handler
+			if (validate) {
+				Method setErrorHandler = parserClass.getMethod(
+						"setErrorHandler", new Class[] { ErrorHandler.class });
+				setErrorHandler.invoke(parser,
+						new Object[] { new BuilderErrorHandler() });
+			}
 
-            // Parse the document
-            Method parse =
-                parserClass.getMethod("parse",
-                                      new Class[] {org.xml.sax.InputSource.class});
-            parse.invoke(parser, new Object[]{new InputSource(in)});
+			// Parse the document
+			Method parse = parserClass.getMethod("parse",
+					new Class[] { org.xml.sax.InputSource.class });
+			parse.invoke(parser, new Object[] { new InputSource(in) });
 
-            // Get the Document object
-            Method getDocument = parserClass.getMethod("getDocument", null);
-            Document doc = (Document)getDocument.invoke(parser, null);
+			// Get the Document object
+			Method getDocument = parserClass.getMethod("getDocument", null);
+			Document doc = (Document) getDocument.invoke(parser, null);
 
-            return doc;
-        } catch (InvocationTargetException e) {
-            Throwable targetException = e.getTargetException();
-            if (targetException instanceof org.xml.sax.SAXParseException) {
-                SAXParseException parseException = (SAXParseException)targetException;
-                throw new JDOMException("Error on line " + parseException.getLineNumber() +
-                                      " of XML document: " + parseException.getMessage(), parseException);
-            } else if (targetException instanceof IOException) {
-                IOException ioException = (IOException) targetException;
-                throw ioException;
-            } else {
-                throw new JDOMException(targetException.getMessage(), targetException);
-            }
-        } catch (Exception e) {
-            throw new JDOMException(e.getClass().getName() + ": " +
-                                  e.getMessage(), e);
-        }
-    }
+			return doc;
+		} catch (InvocationTargetException e) {
+			Throwable targetException = e.getTargetException();
+			if (targetException instanceof org.xml.sax.SAXParseException) {
+				SAXParseException parseException = (SAXParseException) targetException;
+				throw new JDOMException("Error on line "
+						+ parseException.getLineNumber() + " of XML document: "
+						+ parseException.getMessage(), parseException);
+			} else if (targetException instanceof IOException) {
+				IOException ioException = (IOException) targetException;
+				throw ioException;
+			} else {
+				throw new JDOMException(targetException.getMessage(),
+						targetException);
+			}
+		} catch (Exception e) {
+			throw new JDOMException(e.getClass().getName() + ": "
+					+ e.getMessage(), e);
+		}
+	}
 
-    /**
-     * This creates an empty <code>Document</code> object based
-     * on a specific parser implementation.
-     *
-     * @return <code>Document</code> - created DOM Document.
-     * @throws JDOMException when errors occur.
-     */
-    public Document createDocument() throws JDOMException {
-        try {
-            return
-                (Document)Class.forName(
-                    "org.apache.xerces.dom.DocumentImpl")
-                    .newInstance();
+	/**
+	 * This creates an empty <code>Document</code> object based on a specific
+	 * parser implementation.
+	 * 
+	 * @return <code>Document</code> - created DOM Document.
+	 * @throws JDOMException
+	 *             when errors occur.
+	 */
+	public Document createDocument() throws JDOMException {
+		try {
+			return (Document) Class.forName(
+					"org.apache.xerces.dom.DocumentImpl").newInstance();
 
-        } catch (Exception e) {
-            throw new JDOMException(e.getClass().getName() + ": " +
-                                  e.getMessage() + " while creating document", e);
-        }
-    }
+		} catch (Exception e) {
+			throw new JDOMException(e.getClass().getName() + ": "
+					+ e.getMessage() + " while creating document", e);
+		}
+	}
 }

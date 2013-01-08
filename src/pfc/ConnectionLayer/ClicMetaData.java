@@ -23,7 +23,7 @@ public final class ClicMetaData {
 	private static final String TITLE_TAG = "title";
 	private static final String BODY_TAG = "body";
 	private static final String AUTHOR_TAG = "author";
-	private static final String AGE_TAG= "age";
+	private static final String AGE_TAG = "age";
 	private static final String LANGUAGE_TAG = "language";
 	private static final String THEME_TAG = "thematic";
 	private static final String CLIC_TAG = "path";
@@ -59,36 +59,47 @@ public final class ClicMetaData {
 	 *             Unchecked exception, it's thrown when there's no Internet at
 	 *             all (DNS servers unreachable).
 	 */
-	ClicMetaData(Element item) throws ParserConfigurationException, SAXException, IOException, DOMException {
+	ClicMetaData(Element item) throws ParserConfigurationException,
+			SAXException, IOException, DOMException {
 
 		// String attributes
-		title = item.getElementsByTagName(TITLE_TAG).item(0).getFirstChild().getNodeValue();
+		title = item.getElementsByTagName(TITLE_TAG).item(0).getFirstChild()
+				.getNodeValue();
 
 		Node authorNode = item.getElementsByTagName(AUTHOR_TAG).item(0);
-		if(authorNode.hasChildNodes()){
-			author = item.getElementsByTagName(AUTHOR_TAG).item(0).getFirstChild().getNodeValue();
+		if (authorNode.hasChildNodes()) {
+			author = item.getElementsByTagName(AUTHOR_TAG).item(0)
+					.getFirstChild().getNodeValue();
 		} else {
 			author = null;
 		}
-		
-		body = item.getElementsByTagName(BODY_TAG).item(0).getFirstChild().getNodeValue();	
-		
+
+		body = item.getElementsByTagName(BODY_TAG).item(0).getFirstChild()
+				.getNodeValue();
+
 		Node licenseNode = item.getElementsByTagName(LICENSE_TAG).item(0);
-		if(licenseNode.hasChildNodes()){
-			license = item.getElementsByTagName(LICENSE_TAG).item(0).getFirstChild().getNodeValue();
+		if (licenseNode.hasChildNodes()) {
+			license = item.getElementsByTagName(LICENSE_TAG).item(0)
+					.getFirstChild().getNodeValue();
 		} else {
 			license = null;
 		}
-		
-		thematic = Integer.parseInt(item.getElementsByTagName(THEME_TAG).item(0).getFirstChild().getNodeValue());
-		age = Integer.parseInt(item.getElementsByTagName(AGE_TAG).item(0).getFirstChild().getNodeValue());
-		language = Integer.parseInt(item.getElementsByTagName(LANGUAGE_TAG).item(0).getFirstChild().getNodeValue());
+
+		thematic = Integer.parseInt(item.getElementsByTagName(THEME_TAG)
+				.item(0).getFirstChild().getNodeValue());
+		age = Integer.parseInt(item.getElementsByTagName(AGE_TAG).item(0)
+				.getFirstChild().getNodeValue());
+		language = Integer.parseInt(item.getElementsByTagName(LANGUAGE_TAG)
+				.item(0).getFirstChild().getNodeValue());
 
 		// File attributes, only the URL is stored for later lazy downloading
-		image = new URL(item.getElementsByTagName(IMAGE_TAG).item(0).getFirstChild().getNodeValue());
-		clic = new URL(item.getElementsByTagName(CLIC_TAG).item(0).getFirstChild().getNodeValue());
-		
-		String[] split = item.getElementsByTagName(CLIC_TAG).item(0).getFirstChild().getNodeValue().split("/");		
+		image = new URL(item.getElementsByTagName(IMAGE_TAG).item(0)
+				.getFirstChild().getNodeValue());
+		clic = new URL(item.getElementsByTagName(CLIC_TAG).item(0)
+				.getFirstChild().getNodeValue());
+
+		String[] split = item.getElementsByTagName(CLIC_TAG).item(0)
+				.getFirstChild().getNodeValue().split("/");
 		fileName = split[split.length - 1].split("\\.")[0];
 
 	}
@@ -112,7 +123,7 @@ public final class ClicMetaData {
 	public int getThematic() {
 		return thematic;
 	}
-	
+
 	public int getAge() {
 		return age;
 	}
@@ -142,7 +153,7 @@ public final class ClicMetaData {
 	public byte[] getClic() throws IOException {
 		return Downloader.downloadFile(clic);
 	}
-	
+
 	public String getFileName() {
 		return fileName;
 	}

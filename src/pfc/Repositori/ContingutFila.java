@@ -24,5 +24,5 @@ public class ContingutFila {
 		this.lang = lang;
 		this.arrow = arrow;
 		this.file = file;
-    }	
+	}
 }

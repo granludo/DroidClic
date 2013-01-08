@@ -69,58 +69,67 @@ import org.w3c.dom.Document;
  * and obtaining a DOM {@link org.w3c.dom.Document org.w3c.dom.Document} object.
  * Implementing classes map these calls to DOM parser-specific calls, allowing
  * any third-party parser to be used with JDOM.
- *
+ * 
  * @version $Revision: 1.22 $, $Date: 2007/11/10 05:28:59 $
- * @author  Brett McLaughlin
- * @author  Jason Hunter
+ * @author Brett McLaughlin
+ * @author Jason Hunter
  */
 public interface DOMAdapter {
 
-    /**
-     * This creates a new <code>Document</code> from a
-     * given filename by letting a DOM parser handle parsing from the file.
-     *
-     * @param filename file to parse.
-     * @param validate <code>boolean</code> to indicate if validation 
-     * should occur.
-     * @return <code>Document</code> - instance ready for use.
-     * @throws IOException when I/O error occurs.
-     * @throws JDOMException when errors occur in parsing.
-     */
-    public Document getDocument(File filename, boolean validate)
-        throws IOException, JDOMException;
+	/**
+	 * This creates a new <code>Document</code> from a given filename by letting
+	 * a DOM parser handle parsing from the file.
+	 * 
+	 * @param filename
+	 *            file to parse.
+	 * @param validate
+	 *            <code>boolean</code> to indicate if validation should occur.
+	 * @return <code>Document</code> - instance ready for use.
+	 * @throws IOException
+	 *             when I/O error occurs.
+	 * @throws JDOMException
+	 *             when errors occur in parsing.
+	 */
+	public Document getDocument(File filename, boolean validate)
+			throws IOException, JDOMException;
 
-    /**
-     * This creates a new <code>Document</code> from an
-     * existing <code>InputStream</code> by letting a DOM
-     * parser handle parsing using the supplied stream.
-     *
-     * @param in <code>InputStream</code> to parse.
-     * @param validate <code>boolean</code> to indicate if validation 
-     * should occur.
-     * @return <code>Document</code> - instance ready for use.
-     * @throws IOException when I/O error occurs.
-     * @throws JDOMException when errors occur in parsing.
-     */
-    public Document getDocument(InputStream in, boolean validate)
-        throws IOException, JDOMException;
+	/**
+	 * This creates a new <code>Document</code> from an existing
+	 * <code>InputStream</code> by letting a DOM parser handle parsing using the
+	 * supplied stream.
+	 * 
+	 * @param in
+	 *            <code>InputStream</code> to parse.
+	 * @param validate
+	 *            <code>boolean</code> to indicate if validation should occur.
+	 * @return <code>Document</code> - instance ready for use.
+	 * @throws IOException
+	 *             when I/O error occurs.
+	 * @throws JDOMException
+	 *             when errors occur in parsing.
+	 */
+	public Document getDocument(InputStream in, boolean validate)
+			throws IOException, JDOMException;
 
-    /**
-     * This creates an empty <code>Document</code> object based
-     * on a specific parser implementation.
-     *
-     * @return <code>Document</code> - created DOM Document.
-     * @throws JDOMException when errors occur.
-     */
-    public Document createDocument() throws JDOMException;
+	/**
+	 * This creates an empty <code>Document</code> object based on a specific
+	 * parser implementation.
+	 * 
+	 * @return <code>Document</code> - created DOM Document.
+	 * @throws JDOMException
+	 *             when errors occur.
+	 */
+	public Document createDocument() throws JDOMException;
 
-    /**
-     * This creates an empty <code>Document</code> object based
-     * on a specific parser implementation with the given DOCTYPE.
-     *
-     * @param doctype Initial <code>DocType</code> of the document.
-     * @return <code>Document</code> - created DOM Document.
-     * @throws JDOMException when errors occur.
-     */
-    public Document createDocument(DocType doctype) throws JDOMException;
+	/**
+	 * This creates an empty <code>Document</code> object based on a specific
+	 * parser implementation with the given DOCTYPE.
+	 * 
+	 * @param doctype
+	 *            Initial <code>DocType</code> of the document.
+	 * @return <code>Document</code> - created DOM Document.
+	 * @throws JDOMException
+	 *             when errors occur.
+	 */
+	public Document createDocument(DocType doctype) throws JDOMException;
 }

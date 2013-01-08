@@ -31,188 +31,200 @@ import pfc.Descompressor.Descompressor;
 import pfc.Jclic.Jclic;
 import pfc.Jclic.R;
 
-
 @TargetApi(8)
 public class PanelsIdentify extends Activity {
 	private Constants CO = Constants.getInstance();
 	private String path = "/sdcard/tmp/jclic/";
-	
+
 	private int newWidth;
 	private int newHeight;
 	private int width;
 	private int height;
 	
+	private TextView ttiempo = null;
 	private TextView aciertos2=null;
 	private TextView intentos=null;
     private Button bMenu = null;
+
 	private ProgressBar tiempo = null;
 	private Vector<BitmapDrawable> vecDraw = null;
 
-	
 	private static final int MENU_ANT = 0;
 	private static final int MENU_SEG = 1;
 	private static final int MENU_SOLUCIO = 2;
 	private static final int MENU_AJUDA = 3;
 	private static final int MENU_INICI = 4;
 	private static final int MENU_SORTIR = 5;
-	
-	private Vector<TextView> textViews = new Vector<TextView>(CO.cols*CO.rows);
-	
-	private int maxTime = Parser.getActivitats().get(CO.activitatActual).getTempsMax();
-	private int maxIntents = Parser.getActivitats().get(CO.activitatActual).getIntentMax();
-	private boolean TimeCountDown = Parser.getActivitats().get(CO.activitatActual).getTimeCutDown();
-	private boolean IntentCountDown = Parser.getActivitats().get(CO.activitatActual).getIntentCutdown();
-	
+
+	private Vector<TextView> textViews = new Vector<TextView>(CO.cols * CO.rows);
+
+	private int maxTime = Parser.getActivitats().get(CO.activitatActual)
+			.getTempsMax();
+	private int maxIntents = Parser.getActivitats().get(CO.activitatActual)
+			.getIntentMax();
+	private boolean TimeCountDown = Parser.getActivitats()
+			.get(CO.activitatActual).getTimeCutDown();
+	private boolean IntentCountDown = Parser.getActivitats()
+			.get(CO.activitatActual).getIntentCutdown();
+
 	Sounds sound;
-	private ArrayList<Integer> ids = Parser.getActivitats().get(CO.activitatActual).getRelacions();
-	private ArrayList<String> imagenes = Parser.getActivitats().get(CO.activitatActual).getImages();
-	private Vector<String> textos = Parser.getActivitats().get(CO.activitatActual).getCeles();
-	
+	private ArrayList<Integer> ids = Parser.getActivitats()
+			.get(CO.activitatActual).getRelacions();
+	private ArrayList<String> imagenes = Parser.getActivitats()
+			.get(CO.activitatActual).getImages();
+	private Vector<String> textos = Parser.getActivitats()
+			.get(CO.activitatActual).getCeles();
+
 	private ArrayList<Celda> celdas = new ArrayList<Celda>();
-	
+
 	private ArrayList<ArrayList<Integer>> idPos = new ArrayList<ArrayList<Integer>>();
-	
+
 	int contadorIntents = 0;
 	int contadorTemps = 0;
 	int aciertos = 0;
 	int fallos = 0;
 	int casillasCorrectas = 0;
-	int sizeNoAlt = CO.cols*CO.rows;
+	int sizeNoAlt = CO.cols * CO.rows;
 	private CountDownTimer timer;
-	private String missatgeInicial = Parser.getActivitats().get(CO.activitatActual).getMissatgeIni();
+	private String missatgeInicial = Parser.getActivitats()
+			.get(CO.activitatActual).getMissatgeIni();
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.panels_identify);
+
 		aciertos2 = (TextView)findViewById(R.id.editAciertos);
 	    intentos = (TextView) findViewById(R.id.editIntentos);
+	    ttiempo = (TextView)findViewById(R.id.tiempo);
 	    //tiempo.setText(Integer.toString(maxTime));
 	    tiempo = (ProgressBar) findViewById(R.id.progressTime);
 	    
-	    //maxTime = 30; 
 	    tiempo.setMax(maxTime);
 	    tiempo.setProgress(0);
 	    bMenu = (Button) findViewById(R.id.menu);
-		sound = new Sounds(getApplicationContext());		
+		sound = new Sounds(getApplicationContext());
+		if (maxTime == 0) {
+			tiempo.setVisibility(tiempo.INVISIBLE);
+			ttiempo.setVisibility(ttiempo.INVISIBLE);
+		}
 		
 		try {
-			
+
 			TextView titulo = (TextView) findViewById(R.id.titulo);
 			titulo.setText(missatgeInicial);
-	        if(Parser.getActivitats().elementAt(CO.activitatActual).getName() != null)
-	        	titulo.setText(Parser.getActivitats().elementAt(CO.activitatActual).getName());
-	        else titulo.setText("Activitat JClic");
-	        
-			
-			for(int i = 0; i < sizeNoAlt; ++i) {
+			if (Parser.getActivitats().elementAt(CO.activitatActual).getName() != null)
+				titulo.setText(Parser.getActivitats()
+						.elementAt(CO.activitatActual).getName());
+			else
+				titulo.setText("Activitat JClic");
+
+			for (int i = 0; i < sizeNoAlt; ++i) {
 				Celda aux = new Celda();
-				if(textos.elementAt(i) != "") aux.celda = textos.elementAt(i);
-				//	aux.offset = false;
+				if (textos.elementAt(i) != "")
+					aux.celda = textos.elementAt(i);
+				// aux.offset = false;
 				aux.imagen = imagenes.get(i);
 				aux.id = ids.get(i);
 				celdas.add(aux);
 			}
-			
-			for(int i = sizeNoAlt; i < textos.size(); ++i) {
-				if(textos.elementAt(i) != "") {
-					celdas.get(i-sizeNoAlt).contenidoAlternativo=textos.elementAt(i);
-//					celdas.get(i-sizeNoAlt).contAltImagen=false;
+
+			for (int i = sizeNoAlt; i < textos.size(); ++i) {
+				if (textos.elementAt(i) != "") {
+					celdas.get(i - sizeNoAlt).contenidoAlternativo = textos
+							.elementAt(i);
+					// celdas.get(i-sizeNoAlt).contAltImagen=false;
 				}
-				if(imagenes.get(i) != "") {
-					celdas.get(i-sizeNoAlt).contAltImagen=imagenes.get(i);
-//					celdas.get(i-sizeNoAlt).contAltImagen=true;
+				if (imagenes.get(i) != "") {
+					celdas.get(i - sizeNoAlt).contAltImagen = imagenes.get(i);
+					// celdas.get(i-sizeNoAlt).contAltImagen=true;
 				}
-			}			
-			
+			}
+
 			long seed = System.nanoTime();
 			Random random = new Random(seed);
 			Collections.shuffle(celdas, random);
-			
-			for(int i = 0; i < sizeNoAlt; i++)
-				if(ids.get(i) == 1)
+
+			for (int i = 0; i < sizeNoAlt; i++)
+				if (ids.get(i) == 1)
 					casillasCorrectas++;
-			
+
 			ArrayList<Integer> row = new ArrayList<Integer>();
-		    row.add(R.id.pos1);
-		    row.add(R.id.pos2);
-		    row.add(R.id.pos3);
-		    row.add(R.id.pos4);
-		    idPos.add(row);
-		    row = new ArrayList<Integer>();
-		    row.add(R.id.pos5);
-		    row.add(R.id.pos6);
-		    row.add(R.id.pos7);
-		    row.add(R.id.pos8);
-		    idPos.add(row);
-		    row = new ArrayList<Integer>();
-		    row.add(R.id.pos9);
-		    row.add(R.id.pos10);
-		    row.add(R.id.pos11);
-		    row.add(R.id.pos12);
-		    idPos.add(row);
-		    row = new ArrayList<Integer>();
-		    row.add(R.id.pos13);
-		    row.add(R.id.pos14);
-		    row.add(R.id.pos15);
-		    row.add(R.id.pos16);
-		    idPos.add(row);
-		    row = new ArrayList<Integer>();
-		    row.add(R.id.pos17);
-		    row.add(R.id.pos18);
-		    row.add(R.id.pos19);
-		    row.add(R.id.pos20);
-		    idPos.add(row);
-				
+			row.add(R.id.pos1);
+			row.add(R.id.pos2);
+			row.add(R.id.pos3);
+			row.add(R.id.pos4);
+			idPos.add(row);
+			row = new ArrayList<Integer>();
+			row.add(R.id.pos5);
+			row.add(R.id.pos6);
+			row.add(R.id.pos7);
+			row.add(R.id.pos8);
+			idPos.add(row);
+			row = new ArrayList<Integer>();
+			row.add(R.id.pos9);
+			row.add(R.id.pos10);
+			row.add(R.id.pos11);
+			row.add(R.id.pos12);
+			idPos.add(row);
+			row = new ArrayList<Integer>();
+			row.add(R.id.pos13);
+			row.add(R.id.pos14);
+			row.add(R.id.pos15);
+			row.add(R.id.pos16);
+			idPos.add(row);
+			row = new ArrayList<Integer>();
+			row.add(R.id.pos17);
+			row.add(R.id.pos18);
+			row.add(R.id.pos19);
+			row.add(R.id.pos20);
+			idPos.add(row);
+
 			reiniciarMenu();
-			
-			if(TimeCountDown)
-				contadorTemps = maxTime;		
-			
-			if(IntentCountDown)
+
+			if (TimeCountDown)
+				contadorTemps = maxTime;
+
+			if (IntentCountDown)
 				contadorIntents = maxIntents;
-			
-					
-			if(maxTime != 0) {
-				timer = new CountDownTimer(maxTime*1000, 1000) {
+
+			if (maxTime != 0) {
+				timer = new CountDownTimer(maxTime * 1000, 1000) {
 					@Override
 					public void onFinish() {
-						if(TimeCountDown) { 
+						if (TimeCountDown) {
 							contadorTemps--;
 							tiempo.setProgress(contadorTemps);
-						}
-						else {
+						} else {
 							contadorTemps++;
 							tiempo.setProgress(contadorTemps);
 						}
 						sound.playFinished_error();
 						finalizarJuego();
 					}
-					
+
 					@Override
 					public void onTick(long arg0) {
-						if(TimeCountDown) {
+						if (TimeCountDown) {
 							contadorTemps--;
 							tiempo.setProgress(contadorTemps);
-						}
-						else {
+						} else {
 							contadorTemps++;
 							tiempo.setProgress(contadorTemps);
-						}						
+						}
 						imprimirInfo();
 					}
 				}.start();
 			}
-			
-			iniciarCasillas();		
-		    sound.playStart();
+
+			iniciarCasillas();
+			sound.playStart();
 
 			imprimirInfo();
 
-			
-			//sound.playFinished_error();
-			
-		} catch(Exception e) {
-			Log.d("Error", "catch PanelsIdentify: "+e);
+			// sound.playFinished_error();
+
+		} catch (Exception e) {
+			Log.d("Error", "catch PanelsIdentify: " + e);
 			e.printStackTrace();
 		}
 		final Context aC = this;
@@ -225,193 +237,187 @@ public class PanelsIdentify extends Activity {
 				MenuActivitats ma = new MenuActivitats(timer);
 				ma.butsMenu(dialog, aC, vecDraw);
 			}
-		});	
-		
+		});
+
 	}
-	
+
 	private void iniciarCasillas() {
-		
-		for(int i = 0; i < CO.rows; ++i) {
-			for(int j = 0; j < CO.cols; ++j) {
+
+		for (int i = 0; i < CO.rows; ++i) {
+			for (int j = 0; j < CO.cols; ++j) {
 				TextView aux = (TextView) findViewById(idPos.get(i).get(j));
-				
+
 				textViews.add(aux);
 			}
 		}
-		
-		for(int i = CO.rows; i < 5; ++i) {
-			for(int j = CO.cols; j < 4; ++j) {
+
+		for (int i = CO.rows; i < 5; ++i) {
+			for (int j = CO.cols; j < 4; ++j) {
 				TextView aux = (TextView) findViewById(idPos.get(i).get(j));
-				
+
 				resizeTextViewsUseless(aux);
 			}
 		}
-		
-		for(int i = 0; i < CO.rows; ++i) {
-			for(int j = 0; j < CO.cols; ++j) {
-				TextView aux = textViews.elementAt(CO.cols*i+j);
-				
+
+		for (int i = 0; i < CO.rows; ++i) {
+			for (int j = 0; j < CO.cols; ++j) {
+				TextView aux = textViews.elementAt(CO.cols * i + j);
+
 				resizeCaselles(aux);
-				Celda aux2 = celdas.get(CO.cols*i+j);
-				/*if(!aux2.offset) {
-					aux.setText(aux2.celda);
-					aux.setTextColor(Color.BLACK);
-					aux.setBackgroundColor(Color.WHITE);
-				}
-				else {
-					if(Descompressor.descompressor(aux2.celda, CO.path)) {
-						BitmapDrawable img = new BitmapDrawable(path+aux2.celda);
-						img = resizeImg(img);
-						aux.setBackgroundDrawable(img);
-					} 
-				}*/
-				
+				Celda aux2 = celdas.get(CO.cols * i + j);
+				/*
+				 * if(!aux2.offset) { aux.setText(aux2.celda);
+				 * aux.setTextColor(Color.BLACK);
+				 * aux.setBackgroundColor(Color.WHITE); } else {
+				 * if(Descompressor.descompressor(aux2.celda, CO.path)) {
+				 * BitmapDrawable img = new BitmapDrawable(path+aux2.celda); img
+				 * = resizeImg(img); aux.setBackgroundDrawable(img); } }
+				 */
+
 				aux.setText(aux2.celda);
 				aux.setTextColor(Color.BLACK);
 				aux.setBackgroundColor(Color.WHITE);
-				if (aux2.imagen != ""){
-					if(Descompressor.descompressor(aux2.imagen, CO.path)) {
-						BitmapDrawable img = new BitmapDrawable(path+aux2.imagen);
+				if (aux2.imagen != "") {
+					if (Descompressor.descompressor(aux2.imagen, CO.path)) {
+						BitmapDrawable img = new BitmapDrawable(path
+								+ aux2.imagen);
 						img = resizeImg(img);
 						aux.setBackgroundDrawable(img);
-					} 
+					}
 				}
-								
+
 				aux.setClickable(true);
 				aux.setOnClickListener(new View.OnClickListener() {
-					
+
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
 						click(v);
 					}
 				});
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	private void click(View v) {
 		int correcto = 0;
 		String image = "";
 		String contenidoAlternativo = "";
 		String contAltImagen = "";
-		
+
 		int id = v.getId();
-		for(int i = 0; i < CO.rows; ++i) {
-			for(int j = 0; j < CO.cols; ++j) {
-				if(id == idPos.get(i).get(j)) {
-					correcto = celdas.get(CO.cols*i+j).id;
-					image = celdas.get(CO.cols*i+j).imagen;
-					contenidoAlternativo = celdas.get(CO.cols*i+j).contenidoAlternativo;
-					contAltImagen = celdas.get(CO.cols*i+j).contAltImagen;
+		for (int i = 0; i < CO.rows; ++i) {
+			for (int j = 0; j < CO.cols; ++j) {
+				if (id == idPos.get(i).get(j)) {
+					correcto = celdas.get(CO.cols * i + j).id;
+					image = celdas.get(CO.cols * i + j).imagen;
+					contenidoAlternativo = celdas.get(CO.cols * i + j).contenidoAlternativo;
+					contAltImagen = celdas.get(CO.cols * i + j).contAltImagen;
 				}
 			}
 		}
-		
-		if(correcto == 1) {
+
+		if (correcto == 1) {
 			v.setBackgroundColor(Color.DKGRAY);
 			TextView tmp = (TextView) findViewById(id);
 			tmp.setText("");
-			if(contenidoAlternativo != "") tmp.setText(contenidoAlternativo);
-			if(contAltImagen != "") {
-				if(Descompressor.descompressor(contAltImagen, CO.path)) {
-					BitmapDrawable img = new BitmapDrawable(path+contAltImagen);
+			if (contenidoAlternativo != "")
+				tmp.setText(contenidoAlternativo);
+			if (contAltImagen != "") {
+				if (Descompressor.descompressor(contAltImagen, CO.path)) {
+					BitmapDrawable img = new BitmapDrawable(path
+							+ contAltImagen);
 					img = resizeImg(img);
 					tmp.setBackgroundDrawable(img);
-						//tmp.setText("");
+					// tmp.setText("");
 				}
 			}
-			/*	else {
-					tmp.setText(contenidoAlternativo);
-				}
-				*/
-			
-		/*	else {
-				if(image == "") {
-					tmp.setText("");
-				}
-			}*/
+			/*
+			 * else { tmp.setText(contenidoAlternativo); }
+			 */
+
+			/*
+			 * else { if(image == "") { tmp.setText(""); } }
+			 */
 			v.setClickable(false);
 			aciertos++;
 
-		}
-		else {
+		} else {
 			fallos++;
 
 		}
-		
-		if(IntentCountDown)
+
+		if (IntentCountDown)
 			contadorIntents--;
 		else
 			contadorIntents++;
-		
+
 		imprimirInfo();
 
-		
-		if(aciertos == casillasCorrectas) {
+		if (aciertos == casillasCorrectas) {
 			sound.playFinished_ok();
 			finalizarJuego();
-		}
-		else if(IntentCountDown) {
-			if(contadorIntents == 0) {
+		} else if (IntentCountDown) {
+			if (contadorIntents == 0) {
 				sound.playFinished_error();
 				finalizarJuego();
 			}
-		} else if(contadorIntents == maxIntents){
+		} else if (contadorIntents == maxIntents) {
 			sound.playFinished_error();
 			finalizarJuego();
 		}
-		
-		if(correcto == 1)
+
+		if (correcto == 1)
 			sound.playAction_ok();
 		else
 			sound.playActionError();
 	}
-	
+
 	private BitmapDrawable resizeImg(BitmapDrawable bitmapd) {
 		Bitmap bitmapOrg = bitmapd.getBitmap();
 		int widthImage = bitmapOrg.getWidth();
 		int heightImage = bitmapOrg.getHeight();
-		
-		newWidth = width*CO.cols;
-		newHeight = height*CO.rows;
-		
+
+		newWidth = 2 * width * CO.cols;
+		newHeight = 2 * height * CO.rows;
+
 		float scaleWidth = ((float) newWidth) / widthImage;
 		float scaleHeight = ((float) newHeight) / heightImage;
-		
+
 		Matrix matrix = new Matrix();
 		matrix.postScale(scaleWidth, scaleHeight);
-		
-		Bitmap resizedBitmap = Bitmap.createBitmap(bitmapOrg,  0, 0, widthImage, heightImage, matrix, true);
-		
+
+		Bitmap resizedBitmap = Bitmap.createBitmap(bitmapOrg, 0, 0, widthImage,
+				heightImage, matrix, true);
+
 		return new BitmapDrawable(resizedBitmap);
 	}
-	
+
 	private void resizeCaselles(TextView pos) {
-		if(CO.cols == 1) {
+		if (CO.cols == 1) {
 			pos.setWidth(300);
 			width = 300;
-		} else if(CO.cols == 2) {
+		} else if (CO.cols == 2) {
 			pos.setWidth(150);
 			width = 150;
-		} else if(CO.cols == 3) {
+		} else if (CO.cols == 3) {
 			pos.setWidth(100);
 			width = 100;
 		} else {
 			pos.setWidth(75);
 			width = 75;
 		}
-		
-		if(CO.rows == 1 || CO.rows == 2) {
+
+		if (CO.rows == 1 || CO.rows == 2) {
 			pos.setHeight(75);
 			pos.setMaxLines(4);
 			height = 75;
-		} else if(CO.rows == 3) {
+		} else if (CO.rows == 3) {
 			pos.setHeight(50);
 			pos.setMaxLines(3);
 			height = 50;
-		} else if(CO.rows == 4) {
+		} else if (CO.rows == 4) {
 			pos.setHeight(40);
 			pos.setMaxLines(2);
 			height = 40;
@@ -423,28 +429,28 @@ public class PanelsIdentify extends Activity {
 		width /= 10;
 		height /= 10;
 	}
-	
-	private void resizeTextViewsUseless(TextView pos)
-	{
+
+	private void resizeTextViewsUseless(TextView pos) {
 		pos.setWidth(0);
 		pos.setHeight(0);
 	}
-	
+
 	private void imprimirInfo() {
 		TextView missIni = (TextView) findViewById(R.id.missatge);
 		missIni.setText(missatgeInicial);
-		
+
 		TextView miss2 = (TextView) findViewById(R.id.correcte);
 		aciertos2.setText(Integer.toString(aciertos));
-		intentos.setText(Integer.toString(fallos));
+		intentos.setText(Integer.toString(contadorIntents));
+
 		//miss2.setText("Aciertos: "+aciertos+" Fallos: "+fallos);
 		
 		//TextView info = (TextView) findViewById(R.id.cas1);
 		//info.setText("Time: "+contadorTemps+" Intentos: "+contadorIntents);
 	}
-	
+
 	private void reiniciarMenu() {
-		if(CO.menu != null) {
+		if (CO.menu != null) {
 			CO.menu.clear();
 			CO.menu.add(0, MENU_ANT, 0, R.string.menu_ant);
 			CO.menu.add(0, MENU_SEG, 0, R.string.menu_seg);
@@ -452,33 +458,38 @@ public class PanelsIdentify extends Activity {
 			CO.menu.add(0, MENU_AJUDA, 0, R.string.menu_ajuda);
 			CO.menu.add(0, MENU_INICI, 0, R.string.menu_inici);
 			CO.menu.add(0, MENU_SORTIR, 0, R.string.menu_sortir);
-			
+
 			CO.menu.getItem(MENU_ANT).setIcon(android.R.drawable.ic_media_rew);
 			CO.menu.getItem(MENU_SEG).setIcon(android.R.drawable.ic_media_ff);
-			CO.menu.getItem(MENU_SOLUCIO).setIcon(android.R.drawable.btn_star_big_off);
-			CO.menu.getItem(MENU_AJUDA).setIcon(android.R.drawable.ic_menu_help);
-			CO.menu.getItem(MENU_INICI).setIcon(android.R.drawable.ic_menu_revert);
-			CO.menu.getItem(MENU_SORTIR).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
-			
-			if(CO.mostrarSolucio) CO.menu.getItem(MENU_SOLUCIO).setEnabled(true);
-			else CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
+			CO.menu.getItem(MENU_SOLUCIO).setIcon(
+					android.R.drawable.btn_star_big_off);
+			CO.menu.getItem(MENU_AJUDA)
+					.setIcon(android.R.drawable.ic_menu_help);
+			CO.menu.getItem(MENU_INICI).setIcon(
+					android.R.drawable.ic_menu_revert);
+			CO.menu.getItem(MENU_SORTIR).setIcon(
+					android.R.drawable.ic_menu_close_clear_cancel);
+
+			if (CO.mostrarSolucio)
+				CO.menu.getItem(MENU_SOLUCIO).setEnabled(true);
+			else
+				CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
 			CO.menu.getItem(MENU_SOLUCIO).setTitle(R.string.menu_solucio);
-			
+
 			CO.menu.getItem(MENU_SEG).setEnabled(true);
 			CO.menu.getItem(MENU_ANT).setEnabled(true);
-			
-			if(CO.activitatActual<1) {
+
+			if (CO.activitatActual < 1) {
 				CO.menu.getItem(MENU_ANT).setEnabled(false);
 			}
-			if(CO.activitatActual == Parser.getActivitats().size()-1) {
+			if (CO.activitatActual == Parser.getActivitats().size() - 1) {
 				CO.menu.getItem(MENU_SEG).setEnabled(false);
 			}
 		}
 	}
-	
-	private void finalizarJuego()
-	{
-		for(int i = 0; i < textViews.size(); ++i)
+
+	private void finalizarJuego() {
+		for (int i = 0; i < textViews.size(); ++i)
 			textViews.get(i).setClickable(false);
 		final Context aC = this;
 		Dialog dialog = new Dialog(aC, R.style.Dialog);
@@ -489,81 +500,91 @@ public class PanelsIdentify extends Activity {
 		TextView textFinal = (TextView) dialog.findViewById(R.id.tMenuClic);
 		TextView aux = (TextView) findViewById(R.id.cas1);
 		TextView aux2 = (TextView) findViewById(R.id.correcte);
-		if(aciertos == casillasCorrectas) {
+		if (aciertos == casillasCorrectas) {
 			textFinal.setText("Juego Terminado");
-			//aux.setText("Pulsa aquí para continuar");
-		}
-		else if((contadorIntents == maxIntents && !IntentCountDown) || (contadorIntents == 0 && IntentCountDown)) {
+			// aux.setText("Pulsa aquí para continuar");
+		} else if ((contadorIntents == maxIntents && !IntentCountDown)
+				|| (contadorIntents == 0 && IntentCountDown)) {
 			textFinal.setText("Número de intentos superado");
-			//aux.setText("Pulsa aquí para continuar");
-		}
-		else if((contadorTemps == maxTime && !TimeCountDown) || (contadorTemps == 0 && TimeCountDown)) {
+			// aux.setText("Pulsa aquí para continuar");
+		} else if ((contadorTemps == maxTime && !TimeCountDown)
+				|| (contadorTemps == 0 && TimeCountDown)) {
 			textFinal.setText("Tiempo máximo superado");
-			//aux.setText("Pulsa aquí para continuar");
+			// aux.setText("Pulsa aquí para continuar");
 		}
 
-	
-		if(maxTime != 0)
+		if (maxTime != 0)
 			timer.cancel();
 		dialog.show();
 		aux.setOnClickListener(new View.OnClickListener() {
-			
+
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				finalClick(v);
 			}
 		});
-		
+
 	}
-	
-	private void finalClick(View v)
-	{
+
+	private void finalClick(View v) {
 		Intent iSeg = new Intent(this, Puzzle.class);
-    	startActivity(iSeg);
+		startActivity(iSeg);
 		this.finish();
 	}
-	
+
 	protected void onDestroy() {
+		if (maxTime != 0) timer.cancel();
 		sound.unloadAll();
 		super.onDestroy();
 	}
+
 	
+	@Override
+	public void onBackPressed() {
+	}
+
+	/*
 	public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        CO.menu = menu;
-        CO.menu.clear();
-        CO.menu.add(0, MENU_ANT, 0, R.string.menu_ant);
-        CO.menu.add(0, MENU_SEG, 0, R.string.menu_seg);
-        CO.menu.add(0, MENU_SOLUCIO, 0, R.string.menu_solucio);
-        CO.menu.add(0, MENU_AJUDA, 0, R.string.menu_ajuda);
-        CO.menu.add(0, MENU_INICI, 0, R.string.menu_inici);
-        CO.menu.add(0, MENU_SORTIR, 0, R.string.menu_sortir);
-        
-        CO.menu.getItem(MENU_ANT).setIcon(android.R.drawable.ic_media_rew);
+		super.onCreateOptionsMenu(menu);
+		CO.menu = menu;
+		CO.menu.clear();
+		CO.menu.add(0, MENU_ANT, 0, R.string.menu_ant);
+		CO.menu.add(0, MENU_SEG, 0, R.string.menu_seg);
+		CO.menu.add(0, MENU_SOLUCIO, 0, R.string.menu_solucio);
+		CO.menu.add(0, MENU_AJUDA, 0, R.string.menu_ajuda);
+		CO.menu.add(0, MENU_INICI, 0, R.string.menu_inici);
+		CO.menu.add(0, MENU_SORTIR, 0, R.string.menu_sortir);
+
+		CO.menu.getItem(MENU_ANT).setIcon(android.R.drawable.ic_media_rew);
 		CO.menu.getItem(MENU_SEG).setIcon(android.R.drawable.ic_media_ff);
-		CO.menu.getItem(MENU_SOLUCIO).setIcon(android.R.drawable.btn_star_big_off);
+		CO.menu.getItem(MENU_SOLUCIO).setIcon(
+				android.R.drawable.btn_star_big_off);
 		CO.menu.getItem(MENU_AJUDA).setIcon(android.R.drawable.ic_menu_help);
 		CO.menu.getItem(MENU_INICI).setIcon(android.R.drawable.ic_menu_revert);
-		CO.menu.getItem(MENU_SORTIR).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
-		
-        //Configuro els botons d'anterior i seguent
-        CO.menu.getItem(MENU_SEG).setEnabled(true);
+		CO.menu.getItem(MENU_SORTIR).setIcon(
+				android.R.drawable.ic_menu_close_clear_cancel);
+
+		// Configuro els botons d'anterior i seguent
+		CO.menu.getItem(MENU_SEG).setEnabled(true);
 		CO.menu.getItem(MENU_ANT).setEnabled(true);
-		
-		if(CO.activitatActual<1){
-			//estem a la primera activitat, pel que no podem habilitar l'anterior
+
+		if (CO.activitatActual < 1) {
+			// estem a la primera activitat, pel que no podem habilitar
+			// l'anterior
 			CO.menu.getItem(MENU_ANT).setEnabled(false);
 		}
-		if(CO.activitatActual == Parser.getActivitats().size() - 1){
-			//estem a l'ultima activitat, pel que no podem habilitar el seguent
+		if (CO.activitatActual == Parser.getActivitats().size() - 1) {
+			// estem a l'ultima activitat, pel que no podem habilitar el seguent
 			CO.menu.getItem(MENU_SEG).setEnabled(false);
 		}
-        
-        if(CO.mostrarSolucio) CO.menu.getItem(MENU_SOLUCIO).setEnabled(true);
-		else CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
-        return true;
+
+		if (CO.mostrarSolucio)
+			CO.menu.getItem(MENU_SOLUCIO).setEnabled(true);
+		else
+			CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
+		return true;
 	}
-	
+
 	public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case MENU_ANT:
@@ -659,7 +680,7 @@ public class PanelsIdentify extends Activity {
     					CO.menu.getItem(MENU_ANT).setEnabled(true);
     				}
             	}*/
-                return true;
+           /*     return true;
             case MENU_SORTIR:
             	AlertDialog.Builder builder = new AlertDialog.Builder(this);
             	builder.setIcon(R.drawable.jclic_aqua);
@@ -686,22 +707,21 @@ public class PanelsIdentify extends Activity {
         }
         return false;
     }
+	*/
 	
-	public class Celda
-	{
+	public class Celda {
 		String celda;
 		String imagen;
 		int id;
-	//	boolean offset;
+		// boolean offset;
 		String contenidoAlternativo;
-	//	boolean contAltImagen;
+		// boolean contAltImagen;
 		String contAltImagen;
-		
-		Celda()
-		{
+
+		Celda() {
 			celda = "";
 			id = 0;
-	//		offset = false;
+			// offset = false;
 			contenidoAlternativo = "";
 			contAltImagen = "";
 			imagen = "";

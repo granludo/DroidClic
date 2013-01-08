@@ -62,144 +62,147 @@ package org.jdom;
  * identical to a simple {@link Text} object, but output behavior is different.
  * CDATA makes no guarantees about the underlying textual representation of
  * character data, but does expose that data as a Java String.
- *
+ * 
  * @version $Revision: 1.32 $, $Date: 2007/11/10 05:28:58 $
- * @author  Dan Schaffer
- * @author  Brett McLaughlin
- * @author  Jason Hunter
- * @author  Bradley S. Huffman
- * @author  Victor Toni
+ * @author Dan Schaffer
+ * @author Brett McLaughlin
+ * @author Jason Hunter
+ * @author Bradley S. Huffman
+ * @author Victor Toni
  */
 public class CDATA extends Text {
 
-    private static final String CVS_ID = 
-      "@(#) $RCSfile: CDATA.java,v $ $Revision: 1.32 $ $Date: 2007/11/10 05:28:58 $ $Name: jdom_1_1 $";
+	private static final String CVS_ID = "@(#) $RCSfile: CDATA.java,v $ $Revision: 1.32 $ $Date: 2007/11/10 05:28:58 $ $Name: jdom_1_1 $";
 
-    /**
-     * This is the protected, no-args constructor standard in all JDOM
-     * classes. It allows subclassers to get a raw instance with no
-     * initialization.
-     */
-    protected CDATA() { }
+	/**
+	 * This is the protected, no-args constructor standard in all JDOM classes.
+	 * It allows subclassers to get a raw instance with no initialization.
+	 */
+	protected CDATA() {
+	}
 
-    /**
-     * This constructor creates a new <code>CDATA</code> node, with the
-     * supplied string value as it's character content.
-     *
-     * @param string the node's character content.
-     * @throws IllegalDataException if <code>str</code> contains an 
-     *         illegal character such as a vertical tab (as determined
-     *          by {@link org.jdom.Verifier#checkCharacterData})
-     *         or the CDATA end delimiter <code>]]&gt;</code>.
-     */
-    public CDATA(final String string) {
-        setText(string);
-    }
+	/**
+	 * This constructor creates a new <code>CDATA</code> node, with the supplied
+	 * string value as it's character content.
+	 * 
+	 * @param string
+	 *            the node's character content.
+	 * @throws IllegalDataException
+	 *             if <code>str</code> contains an illegal character such as a
+	 *             vertical tab (as determined by
+	 *             {@link org.jdom.Verifier#checkCharacterData}) or the CDATA
+	 *             end delimiter <code>]]&gt;</code>.
+	 */
+	public CDATA(final String string) {
+		setText(string);
+	}
 
-    /**
-     * This will set the value of this <code>CDATA</code> node.
-     *
-     * @param str value for node's content.
-     * @return the object on which the method was invoked
-     * @throws IllegalDataException if <code>str</code> contains an 
-     *         illegal character such as a vertical tab (as determined
-     *          by {@link org.jdom.Verifier#checkCharacterData})
-     *         or the CDATA end delimiter <code>]]&gt;</code>.
-     */
-    public Text setText(final String str) {
-        // Overrides Text.setText() because this needs to check that CDATA rules
-        // are enforced. We could have a separate Verifier check for CDATA
-        // beyond Text and call that alone before super.setText().
+	/**
+	 * This will set the value of this <code>CDATA</code> node.
+	 * 
+	 * @param str
+	 *            value for node's content.
+	 * @return the object on which the method was invoked
+	 * @throws IllegalDataException
+	 *             if <code>str</code> contains an illegal character such as a
+	 *             vertical tab (as determined by
+	 *             {@link org.jdom.Verifier#checkCharacterData}) or the CDATA
+	 *             end delimiter <code>]]&gt;</code>.
+	 */
+	public Text setText(final String str) {
+		// Overrides Text.setText() because this needs to check that CDATA rules
+		// are enforced. We could have a separate Verifier check for CDATA
+		// beyond Text and call that alone before super.setText().
 
-        if (str == null || "".equals(str)) {
-            value = EMPTY_STRING;
-            return this;
-        }
+		if (str == null || "".equals(str)) {
+			value = EMPTY_STRING;
+			return this;
+		}
 
-        final String reason = Verifier.checkCDATASection(str);
-        if (reason != null) {
-            throw new IllegalDataException(str, "CDATA section", reason);
-        }
+		final String reason = Verifier.checkCDATASection(str);
+		if (reason != null) {
+			throw new IllegalDataException(str, "CDATA section", reason);
+		}
 
-        value = str;
+		value = str;
 
-        return this;
-    }
+		return this;
+	}
 
-    /**
-     * This will append character content to whatever content already
-     * exists within this <code>CDATA</code> node.
-     *
-     * @param str character content to append.
-     * @throws IllegalDataException if <code>str</code> contains an 
-     *         illegal character such as a vertical tab (as determined
-     *          by {@link org.jdom.Verifier#checkCharacterData})
-     *         or the CDATA end delimiter <code>]]&gt;</code>.
-     */
-    public void append(final String str) {
-        // Overrides Text.append(String) because this needs to check that CDATA
-        // rules are enforced. We could have a separate Verifier check for CDATA
-        // beyond Text and call that alone before super.setText().
-    
-        if (str == null || "".equals(str)) {
-            return;
-        }
-    
-        // we need a temp value to ensure that the value is changed _after_
-        // validation
-        final String tmpValue;
-        if (value == EMPTY_STRING) {
-            tmpValue = str;
-        } else {
-            tmpValue = value + str;
-        }
-    
-        // we have to do late checking since the end of a CDATA section could 
-        // have been created by concating both strings:
-        // "]" + "]>" 
-        // or 
-        // "]]" + ">"
-        // TODO: maybe this could be optimized for this two cases
-        final String reason = Verifier.checkCDATASection(tmpValue);
-        if (reason != null) {
-            throw new IllegalDataException(str, "CDATA section", reason);
-        }
-    
-        value = tmpValue;
-    }
-    
-    /**
-     * This will append the content of another <code>Text</code> node
-     * to this node.
-     *
-     * @param text Text node to append.
-     */
-    public void append(final Text text) {
-        // Overrides Text.append(Text) because this needs to check that CDATA
-        // rules are enforced. We could have a separate Verifier check for CDATA
-        // beyond Text and call that alone before super.setText().
-    
-        if (text == null) {
-            return;
-        }
-        append(text.getText());
-    }
+	/**
+	 * This will append character content to whatever content already exists
+	 * within this <code>CDATA</code> node.
+	 * 
+	 * @param str
+	 *            character content to append.
+	 * @throws IllegalDataException
+	 *             if <code>str</code> contains an illegal character such as a
+	 *             vertical tab (as determined by
+	 *             {@link org.jdom.Verifier#checkCharacterData}) or the CDATA
+	 *             end delimiter <code>]]&gt;</code>.
+	 */
+	public void append(final String str) {
+		// Overrides Text.append(String) because this needs to check that CDATA
+		// rules are enforced. We could have a separate Verifier check for CDATA
+		// beyond Text and call that alone before super.setText().
 
-    /**
-     * This returns a <code>String</code> representation of the
-     * <code>CDATA</code> node, suitable for debugging. If the XML
-     * representation of the <code>CDATA</code> node is desired,
-     * either <code>{@link #getText}</code> or
-     * {@link org.jdom.output.XMLOutputter#output(CDATA, java.io.Writer)}</code>
-     * should be used.
-     *
-     * @return <code>String</code> - information about this node.
-     */
-    public String toString() {
-        return new StringBuffer(64)
-            .append("[CDATA: ")
-            .append(getText())
-            .append("]")
-            .toString();
-    }
+		if (str == null || "".equals(str)) {
+			return;
+		}
+
+		// we need a temp value to ensure that the value is changed _after_
+		// validation
+		final String tmpValue;
+		if (value == EMPTY_STRING) {
+			tmpValue = str;
+		} else {
+			tmpValue = value + str;
+		}
+
+		// we have to do late checking since the end of a CDATA section could
+		// have been created by concating both strings:
+		// "]" + "]>"
+		// or
+		// "]]" + ">"
+		// TODO: maybe this could be optimized for this two cases
+		final String reason = Verifier.checkCDATASection(tmpValue);
+		if (reason != null) {
+			throw new IllegalDataException(str, "CDATA section", reason);
+		}
+
+		value = tmpValue;
+	}
+
+	/**
+	 * This will append the content of another <code>Text</code> node to this
+	 * node.
+	 * 
+	 * @param text
+	 *            Text node to append.
+	 */
+	public void append(final Text text) {
+		// Overrides Text.append(Text) because this needs to check that CDATA
+		// rules are enforced. We could have a separate Verifier check for CDATA
+		// beyond Text and call that alone before super.setText().
+
+		if (text == null) {
+			return;
+		}
+		append(text.getText());
+	}
+
+	/**
+	 * This returns a <code>String</code> representation of the
+	 * <code>CDATA</code> node, suitable for debugging. If the XML
+	 * representation of the <code>CDATA</code> node is desired, either
+	 * <code>{@link #getText}</code> or
+	 * {@link org.jdom.output.XMLOutputter#output(CDATA, java.io.Writer)}</code>
+	 * should be used.
+	 * 
+	 * @return <code>String</code> - information about this node.
+	 */
+	public String toString() {
+		return new StringBuffer(64).append("[CDATA: ").append(getText())
+				.append("]").toString();
+	}
 }

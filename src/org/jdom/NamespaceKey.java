@@ -56,52 +56,48 @@
 
 package org.jdom;
 
-
 /**
  * Key for storing a namespace representation in a map.
- *
+ * 
  * @version $Revision: 1.2 $, $Date: 2007/11/10 05:28:59 $
- * @author  Tatu Saloranta
- * @author  Bradley S. Huffman
+ * @author Tatu Saloranta
+ * @author Bradley S. Huffman
  */
 final class NamespaceKey {
 
-    private static final String CVS_ID =
-      "@(#) $RCSfile: NamespaceKey.java,v $ $Revision: 1.2 $ $Date: 2007/11/10 05:28:59 $ $Name: jdom_1_1 $";
+	private static final String CVS_ID = "@(#) $RCSfile: NamespaceKey.java,v $ $Revision: 1.2 $ $Date: 2007/11/10 05:28:59 $ $Name: jdom_1_1 $";
 
-    private String prefix;
-    private String uri;
-    private int hash;
+	private String prefix;
+	private String uri;
+	private int hash;
 
-    public NamespaceKey(String prefix, String uri) {
-        this.prefix = prefix;
-        this.uri = uri;
-        this.hash = prefix.hashCode();
-    }
+	public NamespaceKey(String prefix, String uri) {
+		this.prefix = prefix;
+		this.uri = uri;
+		this.hash = prefix.hashCode();
+	}
 
-    public NamespaceKey(Namespace namespace) {
-        this(namespace.getPrefix(), namespace.getURI());
-    }
+	public NamespaceKey(Namespace namespace) {
+		this(namespace.getPrefix(), namespace.getURI());
+	}
 
-    public boolean equals(Object ob) {
-        if (this == ob) {
-            return true;
-        }
-        else if (ob instanceof NamespaceKey) {
-            NamespaceKey other = (NamespaceKey) ob;
-            return prefix.equals(other.prefix) && uri.equals(other.uri);
-        }
-        else {
-            return false;
-        }
-    }
+	public boolean equals(Object ob) {
+		if (this == ob) {
+			return true;
+		} else if (ob instanceof NamespaceKey) {
+			NamespaceKey other = (NamespaceKey) ob;
+			return prefix.equals(other.prefix) && uri.equals(other.uri);
+		} else {
+			return false;
+		}
+	}
 
-    public int hashCode() {
-        return hash;
-    }
-    
-    public String toString() {
-        return "[NamespaceKey: prefix \"" + prefix +
-               "\" is mapped to URI \"" + uri + "\"]";
-    }
+	public int hashCode() {
+		return hash;
+	}
+
+	public String toString() {
+		return "[NamespaceKey: prefix \"" + prefix + "\" is mapped to URI \""
+				+ uri + "\"]";
+	}
 }

@@ -1,6 +1,5 @@
 package pfc.ConnectionLayer;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
@@ -33,8 +32,10 @@ public final class ServerAPI {
 	 *             Malformed response.
 	 * 
 	 */
-	public static SearchResult getAll(int page) throws SAXException, IOException {
-		return callServer(SERVER_URL + "?page=" + Integer.toString(page) + CLICS_PER_PAGE);
+	public static SearchResult getAll(int page) throws SAXException,
+			IOException {
+		return callServer(SERVER_URL + "?page=" + Integer.toString(page)
+				+ CLICS_PER_PAGE);
 
 	}
 
@@ -68,18 +69,22 @@ public final class ServerAPI {
 	 * @throws SAXException
 	 *             Malformed response.
 	 */
-	// search params can be "title", "author", "age", "language", "thematic", "link",
+	// search params can be "title", "author", "age", "language", "thematic",
+	// "link",
 	// "license", "other_license" and "license_link"
-	public static SearchResult search(Map<String, String> params, int page) throws IOException, SAXException {
+	public static SearchResult search(Map<String, String> params, int page)
+			throws IOException, SAXException {
 		String url = SERVER_URL + "?";
 		for (Map.Entry<String, String> param : params.entrySet()) {
-			url = url + "data[" + param.getKey() + "]=" + param.getValue() + "&";
+			url = url + "data[" + param.getKey() + "]=" + param.getValue()
+					+ "&";
 		}
 		url = url + CLICS_PER_PAGE;
 		return callServer(url);
 	}
 
-	private static SearchResult callServer(String s) throws IOException, SAXException {
+	private static SearchResult callServer(String s) throws IOException,
+			SAXException {
 		URL url = new URL(s);
 		byte[] response = Downloader.downloadFile(url);
 		return new SearchResult(response);

@@ -61,61 +61,54 @@ package org.jdom;
  * where the name breaks XML naming conventions.
  * 
  * @version $Revision: 1.14 $, $Date: 2007/11/10 05:28:59 $
- * @author  Brett McLaughlin
- * @author  Elliotte Rusty Harold
+ * @author Brett McLaughlin
+ * @author Elliotte Rusty Harold
  */
 public class IllegalNameException extends IllegalArgumentException {
 
-    private static final String CVS_ID = 
-      "@(#) $RCSfile: IllegalNameException.java,v $ $Revision: 1.14 $ $Date: 2007/11/10 05:28:59 $ $Name: jdom_1_1 $";
+	private static final String CVS_ID = "@(#) $RCSfile: IllegalNameException.java,v $ $Revision: 1.14 $ $Date: 2007/11/10 05:28:59 $ $Name: jdom_1_1 $";
 
-    /**
-     * This will create an <code>Exception</code> indicating
-     * that the specified name is illegal for the construct
-     * it was supplied to.
-     *
-     * @param name <code>String</code> name that breaks rules.
-     * @param construct <code>String</code> name of JDOM construct
-     *        that <code>name</code> was supplied to.
-     * @param reason <code>String</code> message or reason name is illegal.
-     */
-    IllegalNameException(String name, String construct, String reason) {
-        super(new StringBuffer()
-              .append("The name \"")
-              .append(name)
-              .append("\" is not legal for JDOM/XML ")
-              .append(construct)
-              .append("s: ")
-              .append(reason)
-              .append(".")
-              .toString());
-    }
+	/**
+	 * This will create an <code>Exception</code> indicating that the specified
+	 * name is illegal for the construct it was supplied to.
+	 * 
+	 * @param name
+	 *            <code>String</code> name that breaks rules.
+	 * @param construct
+	 *            <code>String</code> name of JDOM construct that
+	 *            <code>name</code> was supplied to.
+	 * @param reason
+	 *            <code>String</code> message or reason name is illegal.
+	 */
+	IllegalNameException(String name, String construct, String reason) {
+		super(new StringBuffer().append("The name \"").append(name)
+				.append("\" is not legal for JDOM/XML ").append(construct)
+				.append("s: ").append(reason).append(".").toString());
+	}
 
-    /**
-     * This will create an <code>Exception</code> indicating
-     * that the specified name is illegal for the construct
-     * it was supplied to.
-     *
-     * @param name <code>String</code> name that breaks rules.
-     * @param construct <code>String</code> name of JDOM construct
-     *        that <code>name</code> was supplied to.
-     */
-    IllegalNameException(String name, String construct) {
-        super(new StringBuffer()
-              .append("The name \"")
-              .append(name)
-              .append("\" is not legal for JDOM/XML ")
-              .append(construct)
-              .append("s.")
-              .toString());
-    }
+	/**
+	 * This will create an <code>Exception</code> indicating that the specified
+	 * name is illegal for the construct it was supplied to.
+	 * 
+	 * @param name
+	 *            <code>String</code> name that breaks rules.
+	 * @param construct
+	 *            <code>String</code> name of JDOM construct that
+	 *            <code>name</code> was supplied to.
+	 */
+	IllegalNameException(String name, String construct) {
+		super(new StringBuffer().append("The name \"").append(name)
+				.append("\" is not legal for JDOM/XML ").append(construct)
+				.append("s.").toString());
+	}
 
-    /**
-     * Creates an exception with the specified error message.
-     *
-     * @param reason cause of the problem
-     */
-    public IllegalNameException(String reason) {
-        super(reason);
-    }
+	/**
+	 * Creates an exception with the specified error message.
+	 * 
+	 * @param reason
+	 *            cause of the problem
+	 */
+	public IllegalNameException(String reason) {
+		super(reason);
+	}
 }

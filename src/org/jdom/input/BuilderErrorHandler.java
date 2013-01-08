@@ -63,51 +63,55 @@ import org.xml.sax.SAXParseException;
 /**
  * The standard JDOM error handler implementation.
  * 
- * @author  Jason Hunter
+ * @author Jason Hunter
  * @version $Revision: 1.13 $, $Date: 2007/11/10 05:29:00 $
  */
 
 public class BuilderErrorHandler implements ErrorHandler {
 
-    private static final String CVS_ID = 
-      "@(#) $RCSfile: BuilderErrorHandler.java,v $ $Revision: 1.13 $ $Date: 2007/11/10 05:29:00 $ $Name: jdom_1_1 $";
+	private static final String CVS_ID = "@(#) $RCSfile: BuilderErrorHandler.java,v $ $Revision: 1.13 $ $Date: 2007/11/10 05:29:00 $ $Name: jdom_1_1 $";
 
-    /**
-     * This method is called when a warning has occurred; this indicates
-     * that while no XML rules were broken, something appears to be
-     * incorrect or missing.
-     * The implementation of this method here is a "no op".
-     *
-     * @param exception <code>SAXParseException</code> that occurred.
-     * @throws SAXException when things go wrong
-     */
-    public void warning(SAXParseException exception) throws SAXException {
-        // nothing
-    }
+	/**
+	 * This method is called when a warning has occurred; this indicates that
+	 * while no XML rules were broken, something appears to be incorrect or
+	 * missing. The implementation of this method here is a "no op".
+	 * 
+	 * @param exception
+	 *            <code>SAXParseException</code> that occurred.
+	 * @throws SAXException
+	 *             when things go wrong
+	 */
+	public void warning(SAXParseException exception) throws SAXException {
+		// nothing
+	}
 
-    /**
-     * This method is called in response to an error that has occurred; 
-     * this indicates that a rule was broken, typically in validation, but 
-     * that parsing could reasonably continue.
-     * The implementation of this method here is to rethrow the exception.
-     *
-     * @param exception <code>SAXParseException</code> that occurred.
-     * @throws SAXException when things go wrong
-     */
-    public void error(SAXParseException exception) throws SAXException {
-        throw exception;
-    }
+	/**
+	 * This method is called in response to an error that has occurred; this
+	 * indicates that a rule was broken, typically in validation, but that
+	 * parsing could reasonably continue. The implementation of this method here
+	 * is to rethrow the exception.
+	 * 
+	 * @param exception
+	 *            <code>SAXParseException</code> that occurred.
+	 * @throws SAXException
+	 *             when things go wrong
+	 */
+	public void error(SAXParseException exception) throws SAXException {
+		throw exception;
+	}
 
-    /**
-     * This method is called in response to a fatal error; this indicates that
-     * a rule has been broken that makes continued parsing either impossible
-     * or an almost certain waste of time.
-     * The implementation of this method here is to rethrow the exception.
-     *
-     * @param exception <code>SAXParseException</code> that occurred.
-     * @throws SAXException when things go wrong
-     */
-    public void fatalError(SAXParseException exception) throws SAXException {
-        throw exception;
-    }
+	/**
+	 * This method is called in response to a fatal error; this indicates that a
+	 * rule has been broken that makes continued parsing either impossible or an
+	 * almost certain waste of time. The implementation of this method here is
+	 * to rethrow the exception.
+	 * 
+	 * @param exception
+	 *            <code>SAXParseException</code> that occurred.
+	 * @throws SAXException
+	 *             when things go wrong
+	 */
+	public void fatalError(SAXParseException exception) throws SAXException {
+		throw exception;
+	}
 }

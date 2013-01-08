@@ -70,79 +70,82 @@ import org.xml.sax.SAXParseException;
  * An adapter for the Oracle Version 2 DOM parser.
  * 
  * @version $Revision: 1.19 $, $Date: 2007/11/10 05:28:59 $
- * @author  Brett McLaughlin
- * @author  Jason Hunter
+ * @author Brett McLaughlin
+ * @author Jason Hunter
  */
 public class OracleV2DOMAdapter extends AbstractDOMAdapter {
 
-    private static final String CVS_ID = 
-      "@(#) $RCSfile: OracleV2DOMAdapter.java,v $ $Revision: 1.19 $ $Date: 2007/11/10 05:28:59 $ $Name: jdom_1_1 $";
+	private static final String CVS_ID = "@(#) $RCSfile: OracleV2DOMAdapter.java,v $ $Revision: 1.19 $ $Date: 2007/11/10 05:28:59 $ $Name: jdom_1_1 $";
 
-    /**
-     * This creates a new <code>{@link Document}</code> from an
-     * existing <code>InputStream</code> by letting a DOM
-     * parser handle parsing using the supplied stream.
-     *
-     * @param in <code>InputStream</code> to parse.
-     * @param validate <code>boolean</code> to indicate if validation should occur.
-     * @return <code>Document</code> - instance ready for use.
-     * @throws IOException when I/O error occurs.
-     * @throws JDOMException when errors occur in parsing.
-     */
-    public Document getDocument(InputStream in, boolean validate)
-        throws IOException, JDOMException {
+	/**
+	 * This creates a new <code>{@link Document}</code> from an existing
+	 * <code>InputStream</code> by letting a DOM parser handle parsing using the
+	 * supplied stream.
+	 * 
+	 * @param in
+	 *            <code>InputStream</code> to parse.
+	 * @param validate
+	 *            <code>boolean</code> to indicate if validation should occur.
+	 * @return <code>Document</code> - instance ready for use.
+	 * @throws IOException
+	 *             when I/O error occurs.
+	 * @throws JDOMException
+	 *             when errors occur in parsing.
+	 */
+	public Document getDocument(InputStream in, boolean validate)
+			throws IOException, JDOMException {
 
-        try {
-            // Load the parser class
-            Class parserClass = Class.forName("oracle.xml.parser.v2.DOMParser");
-            Object parser = parserClass.newInstance();
+		try {
+			// Load the parser class
+			Class parserClass = Class.forName("oracle.xml.parser.v2.DOMParser");
+			Object parser = parserClass.newInstance();
 
-            // Parse the document
-            Method parse =
-                parserClass.getMethod("parse",
-                                      new Class[] {org.xml.sax.InputSource.class});
-            parse.invoke(parser, new Object[] {new InputSource(in)});
+			// Parse the document
+			Method parse = parserClass.getMethod("parse",
+					new Class[] { org.xml.sax.InputSource.class });
+			parse.invoke(parser, new Object[] { new InputSource(in) });
 
-            // Get the Document object
-            Method getDocument = parserClass.getMethod("getDocument", null);
-            Document doc = (Document)getDocument.invoke(parser, null);
+			// Get the Document object
+			Method getDocument = parserClass.getMethod("getDocument", null);
+			Document doc = (Document) getDocument.invoke(parser, null);
 
-            return doc;
-        } catch (InvocationTargetException e) {
-            Throwable targetException = e.getTargetException();
-            if (targetException instanceof org.xml.sax.SAXParseException) {
-                SAXParseException parseException = (SAXParseException)targetException;
-                throw new JDOMException("Error on line " + parseException.getLineNumber() +
-                                      " of XML document: " + parseException.getMessage(), parseException);
-            } else if (targetException instanceof IOException) {
-                IOException ioException = (IOException) targetException;
-                throw ioException;
-            } else {
-                throw new JDOMException(targetException.getMessage(), targetException);
-            }
-        } catch (Exception e) {
-            throw new JDOMException(e.getClass().getName() + ": " +
-                                  e.getMessage(), e);
-        }
-    }
+			return doc;
+		} catch (InvocationTargetException e) {
+			Throwable targetException = e.getTargetException();
+			if (targetException instanceof org.xml.sax.SAXParseException) {
+				SAXParseException parseException = (SAXParseException) targetException;
+				throw new JDOMException("Error on line "
+						+ parseException.getLineNumber() + " of XML document: "
+						+ parseException.getMessage(), parseException);
+			} else if (targetException instanceof IOException) {
+				IOException ioException = (IOException) targetException;
+				throw ioException;
+			} else {
+				throw new JDOMException(targetException.getMessage(),
+						targetException);
+			}
+		} catch (Exception e) {
+			throw new JDOMException(e.getClass().getName() + ": "
+					+ e.getMessage(), e);
+		}
+	}
 
-    /**
-     * This creates an empty <code>Document</code> object based
-     * on a specific parser implementation.
-     *
-     * @return <code>Document</code> - created DOM Document.
-     * @throws JDOMException when errors occur.
-     */
-    public Document createDocument() throws JDOMException {
-        try {
-            return
-                (Document)Class.forName(
-                    "oracle.xml.parser.v2.XMLDocument")
-                    .newInstance();
+	/**
+	 * This creates an empty <code>Document</code> object based on a specific
+	 * parser implementation.
+	 * 
+	 * @return <code>Document</code> - created DOM Document.
+	 * @throws JDOMException
+	 *             when errors occur.
+	 */
+	public Document createDocument() throws JDOMException {
+		try {
+			return (Document) Class.forName("oracle.xml.parser.v2.XMLDocument")
+					.newInstance();
 
-        } catch (Exception e) {
-            throw new JDOMException(e.getClass().getName() + ": " +
-                                  e.getMessage() + " when creating document", e);
-        }
-    }
+		} catch (Exception e) {
+			throw new JDOMException(e.getClass().getName() + ": "
+					+ e.getMessage() + " when creating document", e);
+		}
+	}
 }
