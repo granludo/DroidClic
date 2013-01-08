@@ -85,7 +85,7 @@ public class ExchangePuzzle extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	   
-
+	    Log.d("EXCHANGEPUZZLEE", "LOLLLLLLLLLLLLL");
 	    
 	    setContentView(R.layout.exchange_hole_puzzle);
 	    sounds = new Sounds(this.getApplicationContext());
