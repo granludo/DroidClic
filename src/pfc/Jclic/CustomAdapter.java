@@ -7,6 +7,7 @@ import pfc.Activitats.Constants;
 import pfc.Activitats.Puzzle;
 import pfc.Descompressor.Descompressor;
 import pfc.Parser.Parser;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;

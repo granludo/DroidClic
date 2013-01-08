@@ -1078,7 +1078,7 @@ private int generarEntrada(int rand) {
 		aciertos.setText("" + CO.correcte);
 		intentos.setText("" + contadorIntent);
 	}
-
+/*
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		CO.menu = menu;
@@ -1365,6 +1365,6 @@ private int generarEntrada(int rand) {
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 }

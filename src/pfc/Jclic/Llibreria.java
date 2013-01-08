@@ -1,6 +1,5 @@
 package pfc.Jclic;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -130,6 +129,7 @@ public class Llibreria extends Activity {
 				Toast.makeText(getApplicationContext(), "Inici...",
 						Toast.LENGTH_LONG).show();
 				startActivity(i);
+				Llibreria.this.finish();
 			}
 		});
 

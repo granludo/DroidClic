@@ -205,6 +205,7 @@ public class Inici extends Activity {
 				Intent i = new Intent(getApplicationContext(), Llibreria.class);
 				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(i);
+				Inici.this.finish();
 			}
 		});
 

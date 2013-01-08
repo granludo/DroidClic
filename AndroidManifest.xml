@@ -26,8 +26,8 @@
 		<activity android:name="pfc.Activitats.SimpleAssociation" android:screenOrientation="landscape" />
 		<activity android:name="pfc.Activitats.Memory" android:screenOrientation="landscape" />
 		<activity android:name="pfc.Activitats.PanelsIdentify" android:screenOrientation="landscape" />
-		<activity android:name="pfc.Activitats.ComplexAssociation" />
-		<activity android:name="pfc.Activitats.WrittenAnswer" />
+		<activity android:name="pfc.Activitats.ComplexAssociation" android:screenOrientation="landscape" />
+		<activity android:name="pfc.Activitats.WrittenAnswer" android:screenOrientation="landscape" />
 		<activity android:name="pfc.Activitats.Text" android:screenOrientation="landscape" />
         <activity android:name="pfc.Activitats.FillinBlanks" android:screenOrientation="landscape" />
         <activity android:name="pfc.Activitats.Identify" android:screenOrientation="landscape" />
