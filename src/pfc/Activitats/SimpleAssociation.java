@@ -279,7 +279,7 @@ public class SimpleAssociation extends Activity {
 		MenuActivitats ma = new MenuActivitats(timer);
 		ma.butsMenu(dialog, aC, vecDraw);
 		TextView textFinal = (TextView) dialog.findViewById(R.id.tMenuClic);
-		if (CO.correcte == CO.casIni) {
+		if (CO.correcte == CO.cols*CO.rows) {
 			// Hem acabat el joc
 			sound.playFinished_ok();
 			if (maxTime != 0) {
@@ -626,8 +626,9 @@ public class SimpleAssociation extends Activity {
 			}
 		}
 		if (cont == CO.cols * CO.rows) {
-			sound.playFinished_ok();
+//			sound.playFinished_ok();
 		}
+		setMissatges();
 	}
 
 	private void makeRandomPlafoA() {
@@ -795,7 +796,7 @@ public class SimpleAssociation extends Activity {
 			}
 		}
 	}
-
+/*
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		CO.menu = menu;
@@ -917,7 +918,7 @@ public class SimpleAssociation extends Activity {
 			 * CO.menu.getItem(MENU_SEG).setEnabled(true);
 			 * CO.menu.getItem(MENU_ANT).setEnabled(true); } }
 			 */
-			return true;
+/*			return true;
 		case MENU_SORTIR:
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setIcon(R.drawable.jclic_aqua);
@@ -947,6 +948,6 @@ public class SimpleAssociation extends Activity {
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 }
