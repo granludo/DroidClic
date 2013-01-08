@@ -186,7 +186,7 @@ public class MenuActivitats extends Activity {
 					bloquejarJoc(true);
 					CO.solucioVisible = true;
 					// posAgafada = null;
-					setMissatges();
+					//setMissatges();
 				} else {
 					// Estic mostrant la solucio i vull continuar
 					for (int i = 0; i < CO.vecCaselles.size(); i++) {
@@ -259,100 +259,4 @@ public class MenuActivitats extends Activity {
 		}
 	}
 
-	private void setMissatges() {
-		if (CO.solucioVisible) {
-			CO.miss.setText("");
-			CO.miss2.setText("");
-			CO.missCorrectes.setText("");
-			CO.missCorrectes2.setText("");
-			CO.cas1.setText("");
-			CO.cas2.setText("");
-			CO.p1 = "<buit>";
-		} else {
-			if (CO.correcte == CO.casIni) {
-				// Hem acabat el joc
-				sound.playFinished_ok();
-				if (maxTime != 0)
-					timer.cancel();
-				if (Parser.getActivitats().elementAt(CO.activitatActual)
-						.getMissatgeFi() != null) {
-					CO.miss.setText(Parser.getActivitats()
-							.elementAt(CO.activitatActual).getMissatgeFi());
-					CO.miss2.setText(Parser.getActivitats()
-							.elementAt(CO.activitatActual).getMissatgeFi());
-				} else {
-					CO.miss.setText("Joc finalitzat!");
-					CO.miss2.setText("Joc finalitzat!");
-				}
-
-				// CO.missCorrectes.setText("Prem aqui per continuar.");
-				CO.missCorrectes.setBackgroundColor(Color.WHITE);
-				CO.missCorrectes.setTextColor(Color.BLACK);
-
-				// CO.missCorrectes2.setText("Prem aqui per continuar.");
-				CO.missCorrectes2.setBackgroundColor(Color.WHITE);
-				CO.missCorrectes2.setTextColor(Color.BLACK);
-
-				bloquejarJoc(true);
-				/*
-				 * if (CO.menu != null)
-				 * CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
-				 */
-
-			} else if ((CO.correcte != CO.casIni && maxIntents != 0 && maxIntents == contador)
-					|| contadorTemps == maxTime && maxTime != 0) {
-				sound.playFinished_error();
-				if (maxTime != 0)
-					timer.cancel();
-				/*
-				 * if(Parser.getActivitats().elementAt(CO.activitatActual).
-				 * getMissatgeFi() != null) {
-				 * CO.miss.setText(Parser.getActivitats
-				 * ().elementAt(CO.activitatActual).getMissatgeFi());
-				 * CO.miss2.setText
-				 * (Parser.getActivitats().elementAt(CO.activitatActual
-				 * ).getMissatgeFi()); } else {
-				 */
-				if (maxTime != 0 && contadorTemps == maxTime) {
-					CO.miss.setText("S'ha acabat el temps!");
-					CO.miss2.setText("S'ha acabat el temps!");
-				} else {
-					CO.miss.setText("Has superat els intents maxims!");
-					CO.miss2.setText("Has superat els intents maxims!");
-				}
-				CO.missCorrectes.setText("Prem aqui per continuar.");
-				CO.missCorrectes.setBackgroundColor(Color.WHITE);
-				CO.missCorrectes.setTextColor(Color.BLACK);
-
-				CO.missCorrectes2.setText("Prem aqui per continuar.");
-				CO.missCorrectes2.setBackgroundColor(Color.WHITE);
-				CO.missCorrectes2.setTextColor(Color.BLACK);
-
-				bloquejarJoc(true);
-				if (CO.menu != null)
-					CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
-			} else {
-				if (Parser.getActivitats().elementAt(CO.activitatActual)
-						.getMissatgeIni() != null) {
-					CO.miss.setText(Parser.getActivitats()
-							.elementAt(CO.activitatActual).getMissatgeIni());
-					CO.miss2.setText(Parser.getActivitats()
-							.elementAt(CO.activitatActual).getMissatgeIni());
-				} else {
-					CO.miss.setText("Comenca el joc!");
-					CO.miss2.setText("Comenca el joc!");
-				}
-				int displayedIntents;
-				if (IntentCountDown && maxIntents != 0) {
-					displayedIntents = maxIntents - contador;
-				} else
-					displayedIntents = contador;
-				int displayedTime;
-				if (TimeCountDown && maxTime != 0) {
-					displayedTime = maxTime - contadorTemps;
-				} else
-					displayedTime = contadorTemps;
-			}
-		}
-	}
 }

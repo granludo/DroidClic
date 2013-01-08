@@ -37,26 +37,16 @@ import android.widget.TextView;
 
 @TargetApi(3)
 public class ExchangePuzzle extends Activity {
-	private static final int MENU_ANT = 0;
-	private static final int MENU_SEG = 1;
-	private static final int MENU_SOLUCIO = 2;
-	private static final int MENU_AJUDA = 3;
-	private static final int MENU_INICI = 4;
-	private static final int MENU_SORTIR = 5;
 	private int newWidth;
 	private int newHeight;
 	private int width;
 	private int height;
-	private View ll = null;
 	private TextView posAgafada1 = null;
 	private TextView posAgafada2 = null;
-	private TextView aciertos=null;
-	private TextView intentos=null;
+	//private TextView aciertos = null;
+	private TextView intentos = null;
 	private TextView ttiempo = null;
     private Button bMenu = null;
-    private Button bInici = null;
-	//private  menu = null;
-	//private TextView tiempo=null;
 
 	private ProgressBar tiempo = null;
 	private Vector<BitmapDrawable> vecDraw;
@@ -80,26 +70,8 @@ public class ExchangePuzzle extends Activity {
 
 	    setContentView(R.layout.exchange_hole_puzzle);
 	    sounds = new Sounds(this.getApplicationContext());
-	    
-	    //LinearLayout Mainlayout = (LinearLayout) findViewById(R.layout.exchange_hole_puzzle);
-	    //setContentView(findViewById(R.layout.exchange_hole_puzzle));
-	    /*ll = (LinearLayout) findViewById(R.layout.barra_menu);
-	    if (ll == null) Log.d("#########", "null ll");
-	    Mainlayout.addView(ll);*/
-	    
-	    //LinearLayout layoutMain = new LinearLayout(this);
-	    //layoutMain.setOrientation(LinearLayout.HORIZONTAL);
-	    //setContentView(layoutMain);
-	    /*LayoutInflater inflate = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	    ll = (LinearLayout) inflate.inflate(
-	        R.layout.barra_menu, null);
-	    
-	    Mainlayout.addView(ll);*/ 
-
-	    
-	    //aciertos = (EditText)findViewById(R.id.editAciertos);
+	    //aciertos = (TextView) findViewById(R.id.editAciertos);
 	    intentos = (TextView) findViewById(R.id.editIntentos);
-	    //tiempo.setText(Integer.toString(maxTime));
 	    ttiempo = (TextView)findViewById(R.id.tiempo);
 	    tiempo = (ProgressBar) findViewById(R.id.progressTime);
 	    
@@ -114,7 +86,6 @@ public class ExchangePuzzle extends Activity {
 
 	    
 	    try{
-	    	//reiniciarMenu();
 
 			agafarDades();
 			comprobarInicial();
@@ -152,8 +123,6 @@ public class ExchangePuzzle extends Activity {
 					@Override
 					public void onFinish() {
 						++contadorT;
-						// tiempo.setText(Integer.toString(maxTime-contadorT));
-						// // contador enrere
 						tiempo.setProgress(contadorT);
 						setMissatges();
 
@@ -162,8 +131,6 @@ public class ExchangePuzzle extends Activity {
 					@Override
 					public void onTick(long arg0) {
 						contadorT++;
-						// tiempo.setText(Integer.toString(maxTime-contadorT));
-						// // contador enrere
 						tiempo.setProgress(contadorT);
 						setMissatges();
 
@@ -189,38 +156,6 @@ public class ExchangePuzzle extends Activity {
 		});
 	}
 
-	/*
-	 * @TargetApi(3) private void reiniciarMenu(){ if(CO.menu != null){
-	 * CO.menu.clear(); CO.menu.add(0, MENU_ANT, 0, R.string.menu_ant);
-	 * CO.menu.add(0, MENU_SEG, 0, R.string.menu_seg); CO.menu.add(0,
-	 * MENU_SOLUCIO, 0, R.string.menu_solucio); CO.menu.add(0, MENU_AJUDA, 0,
-	 * R.string.menu_ajuda); CO.menu.add(0, MENU_INICI, 0, R.string.menu_inici);
-	 * CO.menu.add(0, MENU_SORTIR, 0, R.string.menu_sortir);
-	 * 
-	 * CO.menu.getItem(MENU_ANT).setIcon(android.R.drawable.ic_media_rew);
-	 * CO.menu.getItem(MENU_SEG).setIcon(android.R.drawable.ic_media_ff);
-	 * CO.menu
-	 * .getItem(MENU_SOLUCIO).setIcon(android.R.drawable.btn_star_big_off);
-	 * CO.menu.getItem(MENU_AJUDA).setIcon(android.R.drawable.ic_menu_help);
-	 * CO.menu.getItem(MENU_INICI).setIcon(android.R.drawable.ic_menu_revert);
-	 * CO.menu.getItem(MENU_SORTIR).setIcon(android.R.drawable.
-	 * ic_menu_close_clear_cancel);
-	 * 
-	 * //Configuracio del menu per mostrarSolucio if(CO.mostrarSolucio)
-	 * CO.menu.getItem(MENU_SOLUCIO).setEnabled(true); else
-	 * CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
-	 * CO.menu.getItem(MENU_SOLUCIO).setTitle(R.string.menu_solucio);
-	 * 
-	 * //Configuracio del menu per ant i seguent
-	 * CO.menu.getItem(MENU_SEG).setEnabled(true);
-	 * CO.menu.getItem(MENU_ANT).setEnabled(true);
-	 * 
-	 * if(CO.activitatActual<1){ //estem a la primera activitat, pel que no
-	 * podem habilitar l'anterior CO.menu.getItem(MENU_ANT).setEnabled(false); }
-	 * if(CO.activitatActual == Parser.getActivitats().size() - 1){ //estem a
-	 * l'ultima activitat, pel que no podem habilitar el seguent
-	 * CO.menu.getItem(MENU_SEG).setEnabled(false); } } }
-	 */
 
 	private void agafarDades() {
 		CO.tl = (TableLayout) findViewById(R.id.tl);
@@ -790,7 +725,6 @@ public class ExchangePuzzle extends Activity {
 				//CO.missCorrectes.setTextColor(Color.BLACK);
 				dialog.show();
 				bloquejarJoc(true);
-				if(CO.menu != null) CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
 			}
 			if (contadorT == maxTime && maxTime!=0){
 				sounds.playFinished_error();
@@ -803,8 +737,6 @@ public class ExchangePuzzle extends Activity {
 				//CO.missCorrectes.setTextColor(Color.BLACK);
 				dialog.show();
 				bloquejarJoc(true);
-				if (CO.menu != null)
-					CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
 			} else if (CO.correcte == CO.casIni) {
 				// Hem acabat el joc
 				if (maxTime != 0)
@@ -822,8 +754,6 @@ public class ExchangePuzzle extends Activity {
 				// CO.missCorrectes.setTextColor(Color.BLACK);
 				dialog.show();
 				bloquejarJoc(true);
-				if (CO.menu != null)
-					CO.menu.getItem(MENU_SOLUCIO).setEnabled(false);
 
 			} else {
 				/*
