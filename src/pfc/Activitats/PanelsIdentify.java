@@ -379,8 +379,8 @@ public class PanelsIdentify extends Activity {
 		int widthImage = bitmapOrg.getWidth();
 		int heightImage = bitmapOrg.getHeight();
 
-		newWidth = width * CO.cols;
-		newHeight = height * CO.rows;
+		newWidth = 2 * width * CO.cols;
+		newHeight = 2 * height * CO.rows;
 
 		float scaleWidth = ((float) newWidth) / widthImage;
 		float scaleHeight = ((float) newHeight) / heightImage;
